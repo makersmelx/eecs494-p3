@@ -6,7 +6,7 @@
 1. WASD: basic movement
 2. Mouse: perspective 
 3. Space: jump
-4. Left shift: grab the ledge (when player is close to it)
+4. Left shift: grab the ledge (when player is close to it and is in air (e.g. after jumping))
 5. Left ctrl: crouch (something is wrong with this functionality, left to be modified)
 
 ### Flaws:
