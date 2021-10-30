@@ -5,13 +5,13 @@ using UnityEngine;
 public class SendHelpOnTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] bool is_load_from_file = false;
+    [SerializeField] bool isLoadFromFile = false;
     [SerializeField] string message = "";
     [SerializeField] string directory = "";
 
     void Start()
     {
-        if (is_load_from_file)
+        if (isLoadFromFile)
         {
             message = Resources.Load<TextAsset>(directory).text;
         }

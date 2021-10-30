@@ -6,47 +6,47 @@ using UnityEngine.UI;
 
 public class ToastManager : MonoBehaviour
 {
-    Subscription<MessageSendEvent> send_sub;
-    Subscription<MessageRemoveEvent> remove_sub;
+    Subscription<MessageSendEvent> sendSub;
+    Subscription<MessageRemoveEvent> removeSub;
 
-    Text toast_text;
+    Text toastText;
     RectTransform rect;
     CanvasGroup cgroup;
 
     string current_sender = "";
 
     [Header("Process Control")]
-    private bool is_showing = false;
-    [SerializeField] float fade_in_time = 0.5f;
-    [SerializeField] float fade_out_time = 0.5f;
+    private bool isShowing = false;
+    [SerializeField] float fadeInTime = 0.5f;
+    [SerializeField] float fadeOutTime = 0.5f;
 
     
 
     // Start is called before the first frame update
     void Start()
     {
-        send_sub = EventBus.Subscribe<MessageSendEvent>(_OnNewMessage);
-        remove_sub = EventBus.Subscribe<MessageRemoveEvent>(_OnMessageRemoval);
-        toast_text = transform.Find("ToastText").GetComponent<Text>();
+        sendSub = EventBus.Subscribe<MessageSendEvent>(_OnNewMessage);
+        removeSub = EventBus.Subscribe<MessageRemoveEvent>(_OnMessageRemoval);
+        toastText = transform.Find("ToastText").GetComponent<Text>();
         cgroup = GetComponent<CanvasGroup>();
         Debug.Log(cgroup != null);
         rect = gameObject.GetComponent<RectTransform>();
     }
     void _OnNewMessage(MessageSendEvent m)
     {
-        if (is_showing) return;
-        is_showing = true;
+        if (isShowing) return;
+        isShowing = true;
         current_sender = m.sender;
-        StartCoroutine(appear(m.message));
+        StartCoroutine(Appear(m.message));
     }
-    IEnumerator appear(string message)
+    IEnumerator Appear(string message)
     {
-        toast_text.text = message;
+        toastText.text = message;
         float initial_time = Time.time;
-        float progress = (Time.time - initial_time) / fade_in_time;
+        float progress = (Time.time - initial_time) / fadeInTime;
         while (progress <= 1.0f)
         {
-            progress = (Time.time - initial_time) / fade_out_time;
+            progress = (Time.time - initial_time) / fadeInTime;
             cgroup.alpha = progress;
             yield return null;
         }
@@ -54,23 +54,23 @@ public class ToastManager : MonoBehaviour
     void _OnMessageRemoval(MessageRemoveEvent m)
     {
         Debug.Log("Received!");
-        if (!is_showing) return;
+        if (!isShowing) return;
         if (m.sender != current_sender) return;
-        StartCoroutine(disappear());
+        StartCoroutine(Disappear());
 
     }
-    IEnumerator disappear()
+    IEnumerator Disappear()
     {
         float initial_time = Time.time;
-        float progress = (Time.time - initial_time) / fade_out_time;
+        float progress = (Time.time - initial_time) / fadeOutTime;
         while (progress <= 1.0f)
         {
-            progress = (Time.time - initial_time) / fade_out_time;
+            progress = (Time.time - initial_time) / fadeOutTime;
             cgroup.alpha = (1f-progress);
             
             yield return null;
         }
-        is_showing = false;
+        isShowing = false;
     }
 
 }
