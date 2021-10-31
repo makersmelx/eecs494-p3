@@ -4498,7 +4498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLoadFromFile: 0
-  message: The best camera angle is on the roof top! Let's go there!
+  message: Press shift to climb the ledge!
   directory: 
 --- !u!54 &2031277425
 Rigidbody:
