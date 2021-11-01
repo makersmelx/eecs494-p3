@@ -1,0 +1,3 @@
+- include the issue id in jira, named the pull request with the feature, like `#1 set up the project management`
+- one feature, one issue, one pull request
+- do not forget to request view from other of us

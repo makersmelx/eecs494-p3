@@ -224,8 +224,6 @@ public class PlayerControl : MonoBehaviour
             float inputMagnitude = new Vector2(XMOV, YMOV).normalized.magnitude;
             // get speed to apply to
             float targetSpeed = Mathf.Lerp(BackwardsMovementSpeed, MaxSpeed, YMOV);
-
-
             // check crouch
             if (Crouch)
             {
@@ -324,7 +322,6 @@ public class PlayerControl : MonoBehaviour
         float accel = Acceleration;
         if (mag == 0)
             accel = Deccelleration;
-
         ActSpeed = Mathf.Lerp(ActSpeed, LaMT, d * accel);
     }
 
