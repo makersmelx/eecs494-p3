@@ -17,6 +17,7 @@ public class SendHelpOnTrigger : MonoBehaviour
         }
     }
 
+    //Pop message to toast when around. 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
