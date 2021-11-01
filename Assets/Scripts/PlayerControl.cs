@@ -82,6 +82,7 @@ public class PlayerControl : MonoBehaviour
         Cap = GetComponent<CapsuleCollider>();
         StandingHeight = Cap.height;
         AdjustmentAmt = 1;
+        Crouch = false;
 
     }
 
@@ -105,20 +106,24 @@ public class PlayerControl : MonoBehaviour
             }
 
             // check for crouching
-            if (Input.GetButtonDown("Crouching"))
+            if (Input.GetButton("Crouching"))
 
             {
+                Debug.Log("Crouch input detected");
+
                 if (!Crouch)
                 {
+                    Debug.Log("Start crouch");
                     StartCrouching();
                 }
             }
             else
             {
                 bool check = Coli.CheckRoof(transform.up);
-                if (!check)
+
+                if (!check && Crouch)
                 {
-                    //StartCrouching();
+                    Debug.Log("Stop crouch");
                     StopCrouching();
                 }
 
@@ -137,7 +142,7 @@ public class PlayerControl : MonoBehaviour
         {
 
             // check ledge grab
-            if (Input.GetButtonDown("Grab"))
+            if (Input.GetButtonDown("Jump"))
             {
                 Vector3 Ledge = Coli.CheckLedges();
                 if (Ledge != Vector3.zero)
@@ -412,7 +417,7 @@ public class PlayerControl : MonoBehaviour
     void StartCrouching()
     {
         Crouch = true;
-        Cap.height = StandingHeight;
+        Cap.height = CrouchHeight;
 
         if (ActSpeed > SlideSpeedLimit)
             SlideForward();
@@ -426,12 +431,17 @@ public class PlayerControl : MonoBehaviour
 
     void SlideForward()
     {
+        Debug.Log("In sliding");
+
+        /*
         ActSpeed = SlideSpeedLimit;
         AdjustmentAmt = 0;
+        */
         Vector3 Dir = Rb.velocity.normalized;
 
         Dir.y = 0;
         Rb.AddForce(Dir * SlideAmt, ForceMode.Impulse);
+
     }
 
 }
