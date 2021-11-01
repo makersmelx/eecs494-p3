@@ -1,0 +1,1 @@
+Our game is called "Night Cap". You play as a paparrazo in a fictional cyber-punk city inspired by Hong Kong. You must do parkour/freerunning to capture your images and collect bounties. Use WASD/arrow-keys to move and spacebar to jump. Climb up ledges and wallrun to make it to the finish platform.
