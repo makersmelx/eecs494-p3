@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,21 @@ public class PlayerInputHandler : MonoBehaviour
 
     [Tooltip("Used to flip the horizontal input axis")]
     public bool invertXAxis = false;
+
+    private bool canProcessMouseInput = false;
+
+    private void Update()
+    {
+        if (IsMouseOverGameWindow)
+        {
+            canProcessMouseInput = true;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            canProcessMouseInput = false;
+        }
+    }
 
     // todo: add condition that cannot control
     public bool CanProcessInput()
@@ -63,7 +79,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private float GetMouseInputByAxis(string mouseInputName)
     {
-        if (CanProcessInput())
+        if (CanProcessInput() && canProcessMouseInput)
         {
             float mouseLook = Input.GetAxisRaw(mouseInputName);
 
@@ -82,4 +98,11 @@ public class PlayerInputHandler : MonoBehaviour
 
         return 0f;
     }
+
+    bool IsMouseOverGameWindow =>
+        !(0 > Input.mousePosition.x
+          || 0 > Input.mousePosition.y
+          || Screen.width < Input.mousePosition.x
+          || Screen.height < Input.mousePosition.y
+            );
 }
