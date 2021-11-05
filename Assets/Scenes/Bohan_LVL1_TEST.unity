@@ -1701,6 +1701,14 @@ PrefabInstance:
       propertyPath: checkGroundedCooldownTime
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 4794333982805640085, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
+      propertyPath: wallDetectionSphereRadiusRatio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6815304548927789131, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
+      propertyPath: m_Name
+      value: Wall Detector
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 374256530334195747, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
     - {fileID: 374256530334195744, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
