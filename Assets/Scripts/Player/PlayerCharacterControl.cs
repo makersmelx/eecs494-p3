@@ -38,7 +38,17 @@ public class PlayerCharacterControl : MonoBehaviour
     [Header("Camera")] [Tooltip("Rotation speed for moving the camera")]
     public float cameraMoveSpeed = 200f;
 
-    public bool IsGrounded { get; private set; }
+
+    public enum CharacterState
+    {
+        InAir = 0,
+        DefaultGrounded = 1,
+        WallWalk = 2,
+    }
+
+    // todo: make it not editable
+    public CharacterState currentState;
+
     public Vector3 CharacterVelocity { get; set; }
 
     /*
@@ -98,16 +108,20 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void CheckGrounded()
     {
+        // Skip ground check when the character is walking on the wall
+        if (currentState == CharacterState.WallWalk)
+        {
+            return;
+        }
+
         float finalCheckDistance =
-            IsGrounded
+            currentState == CharacterState.DefaultGrounded
                 ? groundCheckDistance + characterController.skinWidth
                 : groundCheckDistanceInAir;
 
         // reset
-        IsGrounded = false;
         currentGroundNormal = Vector3.up;
 
-        // todo: consider the variety when wall run
         Vector3 toGroundDirection = Vector3.down;
         // only try to detect ground if it's been a short amount of time since last jump;
         if (Time.time >= lastJumpTime + checkGroundedCooldownTime)
@@ -125,7 +139,7 @@ public class PlayerCharacterControl : MonoBehaviour
                 // and if the slope angle is lower than the character controller's limit
                 if (Vector3.Dot(hit.normal, toGroundDirection * -1) > 0f)
                 {
-                    IsGrounded = true;
+                    currentState = CharacterState.DefaultGrounded;
                     if (hit.distance > characterController.skinWidth)
                     {
                         characterController.Move(toGroundDirection * hit.distance);
@@ -139,7 +153,8 @@ public class PlayerCharacterControl : MonoBehaviour
     {
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
-        if (IsGrounded)
+        if (currentState == CharacterState.DefaultGrounded
+            || currentState == CharacterState.WallWalk)
         {
             Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
             // todo: if there is  crouch, reduce the speed by a ratio
@@ -147,24 +162,24 @@ public class PlayerCharacterControl : MonoBehaviour
             CharacterVelocity =
                 Vector3.Lerp(CharacterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
             // Jumping
-            if (IsGrounded && playerInputHandler.GetJumpInputIsHolding())
+            if (playerInputHandler.GetJumpInputIsHolding())
             {
                 // todo: if we need to clear the up vector of the velocity
                 CharacterVelocity += transform.up * jumpForce;
-                IsGrounded = false;
+                currentState = CharacterState.InAir;
                 currentGroundNormal = Vector3.up;
                 lastJumpTime = Time.time;
             }
         }
-        else
+        else if (currentState == CharacterState.InAir)
         {
+            // Only apply the gravity to get the character down when he is in the air
             Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
             CharacterVelocity =
                 Vector3.Lerp(CharacterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
             CharacterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
         }
-
-
+        
         characterController.Move(CharacterVelocity * Time.deltaTime);
     }
 }
