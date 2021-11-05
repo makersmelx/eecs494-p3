@@ -167,16 +167,4 @@ public class PlayerCharacterControl : MonoBehaviour
 
         characterController.Move(CharacterVelocity * Time.deltaTime);
     }
-
-    // Gets the center point of the bottom hemisphere of the character controller capsule    
-    Vector3 GetCapsuleBottomHemisphere()
-    {
-        return transform.position + (transform.up * characterController.radius);
-    }
-
-    // Gets the center point of the top hemisphere of the character controller capsule    
-    Vector3 GetCapsuleTopHemisphere()
-    {
-        return transform.position + (transform.up * (characterController.height - characterController.radius));
-    }
 }
