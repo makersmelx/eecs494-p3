@@ -43,6 +43,6 @@ public class BillBoard : MonoBehaviour
         if (healthBar == null) return;
         healthBar.TakeDamage(1);
         rb.velocity = Vector3.zero;
-        rb.AddForce(-hitBackMagnitude * collision.relativeVelocity);
+        rb.AddForce(-hitBackMagnitude * collision.relativeVelocity,ForceMode.Impulse);
     }
 }

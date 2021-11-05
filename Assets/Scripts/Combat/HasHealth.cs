@@ -17,6 +17,9 @@ public class HasHealth : MonoBehaviour
     public HealthEffect DamageExtra;
     public HealthEffect HealExtra;
 
+    public float invincibleTime = 0.5f;
+    private bool isInvincible;
+    
     void Start()
     {
         hp = maxHP;
@@ -37,10 +40,14 @@ public class HasHealth : MonoBehaviour
             Debug.Log("Please enter a positive amount for damage!");
             return false;
         }
+
+        if (isInvincible) return false;
+
         bool isSuccess = amount != 0;
         ModifyHealth(-amount);
         if (isSuccess)
         {
+            StartCoroutine(EnterPostDamageInvincibility());
             DamageExtra(amount);
         }
         if (hp <= 0)
@@ -83,7 +90,12 @@ public class HasHealth : MonoBehaviour
         EventBus.Publish(new DeathEvent(gameObject.name));
         ExecuteDeath();
     }
-    
+    IEnumerator EnterPostDamageInvincibility()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibleTime);
+        isInvincible = false;
+    }
 }
 public class DeathEvent{
     public string name;
