@@ -1668,7 +1668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alternateTime: 2.5
-  hitBackMagnitude: 1
+  hitBackMagnitude: 2
   startColor: {r: 0.9843137, g: 1, b: 0.4392157, a: 0}
   stopColor: {r: 0.5, g: 0.49188387, b: 0.24245283, a: 0}
 --- !u!1001 &778479774
