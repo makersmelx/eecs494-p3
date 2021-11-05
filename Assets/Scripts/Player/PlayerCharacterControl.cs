@@ -44,7 +44,7 @@ public class PlayerCharacterControl : MonoBehaviour
     public float wallDetectionMaxDetectionDistanceRatioForward = 0.5f;
 
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
-    public float WallDetectionSphereRadiusRatio = 0.6f;
+    public float wallDetectionSphereRadiusRatio = 0.6f;
 
     public enum CharacterState
     {
@@ -92,7 +92,7 @@ public class PlayerCharacterControl : MonoBehaviour
     private float WallDetectionMaxDistance =>
         characterController.radius * wallDetectionMaxDetectionDistanceRatioForward;
 
-    private float WallDetectionSphereRadius => characterController.radius * WallDetectionSphereRadiusRatio;
+    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
 
     private void Start()
     {
@@ -282,19 +282,6 @@ public class PlayerCharacterControl : MonoBehaviour
         Gizmos.DrawSphere(
             WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
             WallDetectionSphereRadius);
-    }
-
-    private Vector3 GetForwardVectorAfterWallWalkRotation(Vector3 forward, Vector3 wallNormal, Vector3 destPoint)
-    {
-        float cameraHeight = 1f;
-        wallNormal = wallNormal.normalized;
-        forward = forward.normalized;
-        Vector3 currentCamera = transform.position + transform.up * cameraHeight;
-        Vector3 futureCamera = destPoint + wallNormal * cameraHeight;
-        Vector3 BAProjection = Vector3.Dot((futureCamera - currentCamera), wallNormal) * wallNormal;
-        float cosine = Vector3.Dot(forward, wallNormal);
-        Vector3 viewEndPoint = currentCamera + forward * BAProjection.magnitude / cosine;
-        return (viewEndPoint - futureCamera).normalized;
     }
 
     private Vector3 GetForwardVectorClimbingWall(Vector3 currentNormal, Vector3 nextNormal)
