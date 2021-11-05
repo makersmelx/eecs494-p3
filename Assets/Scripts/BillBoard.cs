@@ -35,7 +35,7 @@ public class BillBoard : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (!isOn) return;
         HasHealth healthBar = collision.gameObject.GetComponent<HasHealth>();
@@ -45,4 +45,6 @@ public class BillBoard : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.AddForce(-hitBackMagnitude * collision.relativeVelocity,ForceMode.Impulse);
     }
+
+
 }
