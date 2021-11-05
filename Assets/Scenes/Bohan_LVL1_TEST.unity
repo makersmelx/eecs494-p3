@@ -1699,7 +1699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4794333982805640085, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
       propertyPath: checkGroundedCooldownTime
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4794333982805640085, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
       propertyPath: wallDetectionSphereRadiusRatio
