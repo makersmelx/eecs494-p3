@@ -101,7 +101,7 @@ public class PlayerCharacterControl : MonoBehaviour
     public static PlayerCharacterControl Instance;
 
 
-    // todo: if aiming is needed, modify here
+    // todo: if a slower camera movement for aiming or taking photo is needed, modify here
     // The coefficient of the camera speed, may be affected by aiming or other actions
     public float CameraCoefficient
     {
@@ -113,6 +113,7 @@ public class PlayerCharacterControl : MonoBehaviour
         InAir = 0,
         DefaultGrounded = 1,
         WallWalk = 2,
+        OnLedge = 3,
     }
 
 
@@ -126,6 +127,7 @@ public class PlayerCharacterControl : MonoBehaviour
     private float lastJumpTime = 0f;
 
     private Vector3 currentGroundNormal;
+    private Vector3 currentLedgeNormal;
 
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
@@ -233,6 +235,10 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentGroundNormal = Vector3.up;
                 transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
             }
+            else if (currentState == CharacterState.OnLedge)
+            {
+                return;
+            }
             else
             {
                 currentState = CharacterState.InAir;
@@ -245,14 +251,11 @@ public class PlayerCharacterControl : MonoBehaviour
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
         Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
-        // todo: if there is  crouch, reduce the speed by a ratio
+        // todo: if there is a crouch, reduce the speed by a ratio
         // todo: if there is a slope, adjust the velocity
         characterVelocity =
             Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
 
-        // Check the current state here both in "if" statement and inside the function
-        // to prevent unexpected code because of immediate state change
-        // like "jump will trigger all the conditions"
         if (currentState == CharacterState.DefaultGrounded
             || currentState == CharacterState.WallWalk)
         {
@@ -262,15 +265,18 @@ public class PlayerCharacterControl : MonoBehaviour
         {
             HandleCharacterGravity();
         }
+        else if (currentState == CharacterState.OnLedge)
+        {
+            HandleCharacterJump();
+        }
 
         characterController.Move(characterVelocity * Time.deltaTime);
     }
 
+    // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if ((currentState == CharacterState.DefaultGrounded
-             || currentState == CharacterState.WallWalk)
-            && playerInputHandler.GetJumpInputIsHolding())
+        if (playerInputHandler.GetJumpInputIsHolding())
         {
             // todo: if we need to clear the up vector of the velocity
             characterVelocity += currentJumpNormal * jumpForce;
@@ -327,17 +333,30 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void HandleCharacterClimbLedge()
     {
-        if (currentState == CharacterState.InAir
-            && Physics.SphereCast(
-                LedgeDetectionCastOrigin,
-                LedgeDetectionSphereRadius,
-                transform.forward,
-                out RaycastHit hit,
-                LedgeDetectionMaxDistance,
-                ledgeCheckLayers,
-                QueryTriggerInteraction.Ignore))
+        bool canClimbLedge = Physics.SphereCast(
+            LedgeDetectionCastOrigin,
+            LedgeDetectionSphereRadius,
+            transform.forward,
+            out RaycastHit hit,
+            LedgeDetectionMaxDistance,
+            ledgeCheckLayers,
+            QueryTriggerInteraction.Ignore);
+
+        if (currentState == CharacterState.InAir)
         {
-            print("A ledge!!!!");
+            if (canClimbLedge)
+            {
+                currentState = CharacterState.OnLedge;
+                currentLedgeNormal = hit.normal;
+                characterVelocity = Vector3.zero;
+            }
+        }
+        else if (currentState == CharacterState.OnLedge)
+        {
+            if (!canClimbLedge)
+            {
+                currentState = CharacterState.InAir;
+            }
         }
     }
 
