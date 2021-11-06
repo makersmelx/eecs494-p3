@@ -142,10 +142,10 @@ public class PlayerCharacterControl : MonoBehaviour
         HandleCameraMove();
 
         CheckGrounded();
-
-
+        
         HandleCharacterMove();
         HandleCharacterJumpOntoWall();
+        HandleCharacterClimbLedge();
     }
 
     private void Awake()
@@ -314,6 +314,19 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void HandleCharacterClimbLedge()
     {
+        if (currentState == CharacterState.InAir
+            && Physics.SphereCast(
+                LedgeDetectionCastOrigin,
+                LedgeDetectionSphereRadius,
+                transform.forward,
+                out RaycastHit hit,
+                LedgeDetectionMaxDistance,
+                ledgeCheckLayers,
+                QueryTriggerInteraction.Ignore))
+        {
+            print("A ledge!!!!");
+            
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -322,7 +335,7 @@ public class PlayerCharacterControl : MonoBehaviour
         Gizmos.DrawSphere(
             WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
             WallDetectionSphereRadius);
-        
+
         Gizmos.color = ledgeDetectionColor;
         Gizmos.DrawSphere(
             LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,

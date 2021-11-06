@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityDownForce: 120
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 374256529656680466}
   cameraMoveSpeed: 200
   maxSpeedOnGround: 13
   speedSharpnessOnGround: 15
@@ -254,7 +254,7 @@ MonoBehaviour:
     m_Bits: 960
   groundCheckDistance: 1
   groundCheckDistanceInAir: 0.07
-  checkGroundedCooldownTime: 0.2
+  checkGroundedCooldownTime: 1
   wallCheckLayers:
     serializedVersion: 2
     m_Bits: 512
@@ -265,8 +265,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   ledgeDetectionHeightRatio: 0.3
-  ledgeDetectionMaxDistanceForwardRatio: 0.5
-  ledgeDetectionSphereRadiusRatio: 0.6
+  ledgeDetectionMaxDistanceForwardRatio: 1
+  ledgeDetectionSphereRadiusRatio: 0.7
   ledgeDetectionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   currentState: 0
 --- !u!143 &340988925640918788
