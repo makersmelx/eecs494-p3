@@ -142,7 +142,7 @@ public class PlayerCharacterControl : MonoBehaviour
         HandleCameraMove();
 
         CheckGrounded();
-        
+
         HandleCharacterMove();
         HandleCharacterJumpOntoWall();
         HandleCharacterClimbLedge();
@@ -244,40 +244,53 @@ public class PlayerCharacterControl : MonoBehaviour
     {
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
+        Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
+        // todo: if there is  crouch, reduce the speed by a ratio
+        // todo: if there is a slope, adjust the velocity
+        characterVelocity =
+            Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
+
+        // Check the current state here both in "if" statement and inside the function
+        // to prevent unexpected code because of immediate state change
+        // like "jump will trigger all the conditions"
         if (currentState == CharacterState.DefaultGrounded
             || currentState == CharacterState.WallWalk)
         {
-            Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
-            // todo: if there is  crouch, reduce the speed by a ratio
-            // todo: if there is a slope, adjust the velocity
-            characterVelocity =
-                Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
-            // Jumping
-            {
-                if (playerInputHandler.GetJumpInputIsHolding())
-                {
-                    // todo: if we need to clear the up vector of the velocity
-                    characterVelocity += currentJumpNormal * jumpForce;
-                    currentState = CharacterState.InAir;
-                    currentGroundNormal = Vector3.up;
-                    // todo: add coroutine to make it not so dizzy
-                    Vector3 forwardHorizontal = transform.forward;
-                    forwardHorizontal.y = 0;
-                    transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
-                    lastJumpTime = Time.time;
-                }
-            }
+            HandleCharacterJump();
         }
         else if (currentState == CharacterState.InAir)
         {
-            // Only apply the gravity to get the character down when he is in the air
-            Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
-            characterVelocity =
-                Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
-            characterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
+            HandleCharacterGravity();
         }
 
         characterController.Move(characterVelocity * Time.deltaTime);
+    }
+
+    private void HandleCharacterJump()
+    {
+        if ((currentState == CharacterState.DefaultGrounded
+             || currentState == CharacterState.WallWalk)
+            && playerInputHandler.GetJumpInputIsHolding())
+        {
+            // todo: if we need to clear the up vector of the velocity
+            characterVelocity += currentJumpNormal * jumpForce;
+            currentState = CharacterState.InAir;
+            currentGroundNormal = Vector3.up;
+            // todo: add coroutine to make it not so dizzy
+            Vector3 forwardHorizontal = transform.forward;
+            forwardHorizontal.y = 0;
+            transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
+            lastJumpTime = Time.time;
+        }
+    }
+
+    private void HandleCharacterGravity()
+    {
+        if (currentState == CharacterState.InAir)
+        {
+            // Only apply the gravity to get the character down when he is in the air
+            characterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
+        }
     }
 
     private void HandleCharacterJumpOntoWall()
@@ -325,7 +338,6 @@ public class PlayerCharacterControl : MonoBehaviour
                 QueryTriggerInteraction.Ignore))
         {
             print("A ledge!!!!");
-            
         }
     }
 
