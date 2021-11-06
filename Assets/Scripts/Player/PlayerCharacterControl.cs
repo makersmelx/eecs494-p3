@@ -6,24 +6,33 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputHandler), typeof(CharacterController))]
 public class PlayerCharacterControl : MonoBehaviour
 {
+    // ============================================= General =============================================
     [Header("General")] [Tooltip("Force applied downward when in the air")]
     public float gravityDownForce = 20f;
 
+
+    // ============================================= Camera =============================================
     [Header("Camera")] [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
 
     [Tooltip("Rotation speed for moving the camera")]
     public float cameraMoveSpeed = 200f;
 
+
+    // ============================================= Movement =============================================
     [Header("Movement")] [Tooltip("Max movement speed when grounded")]
     public float maxSpeedOnGround = 10f;
 
     [Tooltip("How fast the player can change his speed")]
     public float speedSharpnessOnGround = 15;
 
+
+    // ============================================= Jump =============================================
     [Header("Jump")] [Tooltip("Force applied upward when jumping")]
     public float jumpForce = 9f;
 
+
+    // ============================================= Check Grounded =============================================
     [Header("Check Grounded")] [Tooltip("Physic layers checked to consider the player grounded")]
     public LayerMask groundCheckLayers = -1;
 
@@ -36,63 +45,92 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("The waiting time for the next ground detection since last jump")]
     public float checkGroundedCooldownTime = 0.2f;
 
-    [Header("Wall Walk")] [Tooltip("The component from this game object's child that climbs the walls around")]
+
+    // ============================================= Wall Walk =============================================
+    [Header("Wall Walk")] [Tooltip("Physic layers checked to consider the player is close to a wall")]
     public LayerMask wallCheckLayers = -1;
 
     [Tooltip(
-        "(Ratio to the character's radius) the max distance from the position to detect the wall")]
-    public float wallDetectionMaxDetectionDistanceRatioForward = 0.5f;
+        "(Ratio to the character's radius) the max forward distance from the transform position to detect the wall")]
+    public float wallDetectionMaxDistanceForwardRatio = 0.5f;
 
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
     public float wallDetectionSphereRadiusRatio = 0.6f;
 
-    public enum CharacterState
-    {
-        InAir = 0,
-        DefaultGrounded = 1,
-        WallWalk = 2,
-    }
+    [Tooltip("Color of the wall detection sphere for debug")]
+    public Color wallDetectionColor = Color.red;
 
-    // Non Editable Fields
+    private Vector3 WallDetectionCastOrigin => transform.position;
 
-    // todo: make it not editable
-    public CharacterState currentState;
+    private float WallDetectionMaxDistance =>
+        characterController.radius * wallDetectionMaxDistanceForwardRatio;
+
+    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
 
 
-    // if the character is close to a wall, he can climb onto the wall
-    // this value will be modified externally
-    public bool CanJumpOntoWall { get; set; }
+    // ============================================= Ledge Climb =============================================
+    [Header("Ledge Climb")] [Tooltip("Physic layers checked to consider the player is close to a ledge")]
+    public LayerMask ledgeCheckLayers = -1;
 
+    [Tooltip(
+        "(Ratio to the character's height) the height of the origin of the detection compared to the transform position")]
+    public float ledgeDetectionHeightRatio = 0.3f;
+
+    [Tooltip(
+        "(Ratio to the character's radius) the max forward distance from the origin position to detect the wall")]
+    public float ledgeDetectionMaxDistanceForwardRatio = 0.5f;
+
+    [Tooltip("(Ratio to the character's radius) the radius of the ledge detection sphere")]
+    public float ledgeDetectionSphereRadiusRatio = 0.6f;
+
+    [Tooltip("Color of the ledge detection sphere for debug")]
+    public Color ledgeDetectionColor = Color.yellow;
+
+    private Vector3 LedgeDetectionCastOrigin =>
+        transform.position + transform.up * ledgeDetectionHeightRatio * characterController.height;
+
+    private float LedgeDetectionMaxDistance =>
+        characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
+
+    private float LedgeDetectionSphereRadius => characterController.radius * ledgeDetectionSphereRadiusRatio;
+
+
+    // ============================================= Component Reference ============================================= 
+    private PlayerInputHandler playerInputHandler;
+    private CharacterController characterController;
     public static PlayerCharacterControl Instance;
 
-    // todo: if aiming is needed, modify here
+
+    // todo: if a slower camera movement for aiming or taking photo is needed, modify here
     // The coefficient of the camera speed, may be affected by aiming or other actions
     public float CameraCoefficient
     {
         get { return 1f; }
     }
 
-    // Component Reference
-    private PlayerInputHandler playerInputHandler;
-    private CharacterController characterController;
+    public enum CharacterState
+    {
+        InAir = 0,
+        DefaultGrounded = 1,
+        WallWalk = 2,
+        OnLedge = 3,
+    }
 
-    // Runtime Value
+
+    // ============================================= Runtime Value ============================================= 
+    // todo: make it not editable
+    [Header("Runtime Value for Display")] public CharacterState currentState;
+
     // record the current velocity
     private Vector3 characterVelocity;
     private float currentCameraAngleVertical = 0f;
     private float lastJumpTime = 0f;
 
     private Vector3 currentGroundNormal;
+    private Vector3 currentLedgeNormal;
 
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
-
-    private Vector3 WallDetectionCastOrigin => transform.position;
-
-    private float WallDetectionMaxDistance =>
-        characterController.radius * wallDetectionMaxDetectionDistanceRatioForward;
-
-    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
 
     private void Start()
     {
@@ -107,9 +145,9 @@ public class PlayerCharacterControl : MonoBehaviour
 
         CheckGrounded();
 
-
         HandleCharacterMove();
         HandleCharacterJumpOntoWall();
+        HandleCharacterClimbLedge();
     }
 
     private void Awake()
@@ -197,6 +235,10 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentGroundNormal = Vector3.up;
                 transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
             }
+            else if (currentState == CharacterState.OnLedge)
+            {
+                return;
+            }
             else
             {
                 currentState = CharacterState.InAir;
@@ -208,40 +250,53 @@ public class PlayerCharacterControl : MonoBehaviour
     {
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
+        Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
+        // todo: if there is a crouch, reduce the speed by a ratio
+        // todo: if there is a slope, adjust the velocity
+        characterVelocity =
+            Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
+
         if (currentState == CharacterState.DefaultGrounded
             || currentState == CharacterState.WallWalk)
         {
-            Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
-            // todo: if there is  crouch, reduce the speed by a ratio
-            // todo: if there is a slope, adjust the velocity
-            characterVelocity =
-                Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
-            // Jumping
-            {
-                if (playerInputHandler.GetJumpInputIsHolding())
-                {
-                    // todo: if we need to clear the up vector of the velocity
-                    characterVelocity += currentJumpNormal * jumpForce;
-                    currentState = CharacterState.InAir;
-                    currentGroundNormal = Vector3.up;
-                    // todo: add coroutine to make it not so dizzy
-                    Vector3 forwardHorizontal = transform.forward;
-                    forwardHorizontal.y = 0;
-                    transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
-                    lastJumpTime = Time.time;
-                }
-            }
+            HandleCharacterJump();
         }
         else if (currentState == CharacterState.InAir)
         {
-            // Only apply the gravity to get the character down when he is in the air
-            Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
-            characterVelocity =
-                Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
-            characterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
+            HandleCharacterGravity();
+        }
+        else if (currentState == CharacterState.OnLedge)
+        {
+            HandleCharacterJump();
         }
 
         characterController.Move(characterVelocity * Time.deltaTime);
+    }
+
+    // Jump Function will not check the character's current state
+    private void HandleCharacterJump()
+    {
+        if (playerInputHandler.GetJumpInputIsHolding())
+        {
+            // todo: if we need to clear the up vector of the velocity
+            characterVelocity += currentJumpNormal * jumpForce;
+            currentState = CharacterState.InAir;
+            currentGroundNormal = Vector3.up;
+            // todo: add coroutine to make it not so dizzy
+            Vector3 forwardHorizontal = transform.forward;
+            forwardHorizontal.y = 0;
+            transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
+            lastJumpTime = Time.time;
+        }
+    }
+
+    private void HandleCharacterGravity()
+    {
+        if (currentState == CharacterState.InAir)
+        {
+            // Only apply the gravity to get the character down when he is in the air
+            characterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
+        }
     }
 
     private void HandleCharacterJumpOntoWall()
@@ -276,11 +331,45 @@ public class PlayerCharacterControl : MonoBehaviour
         }
     }
 
+    private void HandleCharacterClimbLedge()
+    {
+        bool canClimbLedge = Physics.SphereCast(
+            LedgeDetectionCastOrigin,
+            LedgeDetectionSphereRadius,
+            transform.forward,
+            out RaycastHit hit,
+            LedgeDetectionMaxDistance,
+            ledgeCheckLayers,
+            QueryTriggerInteraction.Ignore);
+
+        if (currentState == CharacterState.InAir)
+        {
+            if (canClimbLedge)
+            {
+                currentState = CharacterState.OnLedge;
+                currentLedgeNormal = hit.normal;
+                characterVelocity = Vector3.zero;
+            }
+        }
+        else if (currentState == CharacterState.OnLedge)
+        {
+            if (!canClimbLedge)
+            {
+                currentState = CharacterState.InAir;
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = wallDetectionColor;
         Gizmos.DrawSphere(
             WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
+            WallDetectionSphereRadius);
+
+        Gizmos.color = ledgeDetectionColor;
+        Gizmos.DrawSphere(
+            LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
             WallDetectionSphereRadius);
     }
 
