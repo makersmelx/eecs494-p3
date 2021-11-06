@@ -6,24 +6,33 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputHandler), typeof(CharacterController))]
 public class PlayerCharacterControl : MonoBehaviour
 {
+    // ============================================= General =============================================
     [Header("General")] [Tooltip("Force applied downward when in the air")]
     public float gravityDownForce = 20f;
 
+
+    // ============================================= Camera =============================================
     [Header("Camera")] [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
 
     [Tooltip("Rotation speed for moving the camera")]
     public float cameraMoveSpeed = 200f;
 
+
+    // ============================================= Movement =============================================
     [Header("Movement")] [Tooltip("Max movement speed when grounded")]
     public float maxSpeedOnGround = 10f;
 
     [Tooltip("How fast the player can change his speed")]
     public float speedSharpnessOnGround = 15;
 
+
+    // ============================================= Jump =============================================
     [Header("Jump")] [Tooltip("Force applied upward when jumping")]
     public float jumpForce = 9f;
 
+
+    // ============================================= Check Grounded =============================================
     [Header("Check Grounded")] [Tooltip("Physic layers checked to consider the player grounded")]
     public LayerMask groundCheckLayers = -1;
 
@@ -36,6 +45,8 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("The waiting time for the next ground detection since last jump")]
     public float checkGroundedCooldownTime = 0.2f;
 
+
+    // ============================================= Wall Walk =============================================
     [Header("Wall Walk")] [Tooltip("The component from this game object's child that climbs the walls around")]
     public LayerMask wallCheckLayers = -1;
 
@@ -46,25 +57,17 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
     public float wallDetectionSphereRadiusRatio = 0.6f;
 
-    public enum CharacterState
-    {
-        InAir = 0,
-        DefaultGrounded = 1,
-        WallWalk = 2,
-    }
 
-    // Non Editable Fields
+    // ============================================= Ledge Climb =============================================
+    
+    
 
-    // todo: make it not editable
-    public CharacterState currentState;
-
-
-    // if the character is close to a wall, he can climb onto the wall
-    // this value will be modified externally
-    public bool CanJumpOntoWall { get; set; }
-
+    // ============================================= Component Reference ============================================= 
+    private PlayerInputHandler playerInputHandler;
+    private CharacterController characterController;
     public static PlayerCharacterControl Instance;
 
+    
     // todo: if aiming is needed, modify here
     // The coefficient of the camera speed, may be affected by aiming or other actions
     public float CameraCoefficient
@@ -72,11 +75,18 @@ public class PlayerCharacterControl : MonoBehaviour
         get { return 1f; }
     }
 
-    // Component Reference
-    private PlayerInputHandler playerInputHandler;
-    private CharacterController characterController;
+    public enum CharacterState
+    {
+        InAir = 0,
+        DefaultGrounded = 1,
+        WallWalk = 2,
+    }
 
-    // Runtime Value
+    
+    // ============================================= Runtime Value ============================================= 
+    // todo: make it not editable
+    [Header("Runtime Value for Display")] public CharacterState currentState;
+    
     // record the current velocity
     private Vector3 characterVelocity;
     private float currentCameraAngleVertical = 0f;
@@ -274,6 +284,10 @@ public class PlayerCharacterControl : MonoBehaviour
             characterVelocity -= currentGroundNormal * jumpForce -
                                  currentGroundNormal * Vector3.Dot(characterVelocity, currentGroundNormal);
         }
+    }
+
+    private void HandleCharacterClimbLedge()
+    {
     }
 
     private void OnDrawGizmosSelected()
