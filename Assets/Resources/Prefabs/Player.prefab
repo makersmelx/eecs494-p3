@@ -258,12 +258,17 @@ MonoBehaviour:
   wallCheckLayers:
     serializedVersion: 2
     m_Bits: 512
-  wallDetectionMaxDetectionDistanceRatioForward: 0.5
-  WallDetectionSphereRadiusRatio: 1
+  wallDetectionMaxDistanceForwardRatio: 0.5
+  wallDetectionSphereRadiusRatio: 0.6
+  wallDetectionColor: {r: 1, g: 0, b: 0, a: 1}
+  ledgeCheckLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  ledgeDetectionHeightRatio: 0.3
+  ledgeDetectionMaxDistanceForwardRatio: 0.5
+  ledgeDetectionSphereRadiusRatio: 0.6
+  ledgeDetectionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   currentState: 0
-  characterVelocity: {x: 0, y: 0, z: 0}
-  currentGroundNormal: {x: 0, y: 0, z: 0}
-  currentJumpNormal: {x: 0, y: 0, z: 0}
 --- !u!143 &340988925640918788
 CharacterController:
   m_ObjectHideFlags: 0

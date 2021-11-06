@@ -47,27 +47,60 @@ public class PlayerCharacterControl : MonoBehaviour
 
 
     // ============================================= Wall Walk =============================================
-    [Header("Wall Walk")] [Tooltip("The component from this game object's child that climbs the walls around")]
+    [Header("Wall Walk")] [Tooltip("Physic layers checked to consider the player is close to a wall")]
     public LayerMask wallCheckLayers = -1;
 
     [Tooltip(
-        "(Ratio to the character's radius) the max distance from the position to detect the wall")]
-    public float wallDetectionMaxDetectionDistanceRatioForward = 0.5f;
+        "(Ratio to the character's radius) the max forward distance from the transform position to detect the wall")]
+    public float wallDetectionMaxDistanceForwardRatio = 0.5f;
 
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
     public float wallDetectionSphereRadiusRatio = 0.6f;
 
+    [Tooltip("Color of the wall detection sphere for debug")]
+    public Color wallDetectionColor = Color.red;
+
+    private Vector3 WallDetectionCastOrigin => transform.position;
+
+    private float WallDetectionMaxDistance =>
+        characterController.radius * wallDetectionMaxDistanceForwardRatio;
+
+    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
+
 
     // ============================================= Ledge Climb =============================================
-    
-    
+    [Header("Ledge Climb")] [Tooltip("Physic layers checked to consider the player is close to a ledge")]
+    public LayerMask ledgeCheckLayers = -1;
+
+    [Tooltip(
+        "(Ratio to the character's height) the height of the origin of the detection compared to the transform position")]
+    public float ledgeDetectionHeightRatio = 0.3f;
+
+    [Tooltip(
+        "(Ratio to the character's radius) the max forward distance from the origin position to detect the wall")]
+    public float ledgeDetectionMaxDistanceForwardRatio = 0.5f;
+
+    [Tooltip("(Ratio to the character's radius) the radius of the ledge detection sphere")]
+    public float ledgeDetectionSphereRadiusRatio = 0.6f;
+
+    [Tooltip("Color of the ledge detection sphere for debug")]
+    public Color ledgeDetectionColor = Color.yellow;
+
+    private Vector3 LedgeDetectionCastOrigin =>
+        transform.position + transform.up * ledgeDetectionHeightRatio * characterController.height;
+
+    private float LedgeDetectionMaxDistance =>
+        characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
+
+    private float LedgeDetectionSphereRadius => characterController.radius * ledgeDetectionSphereRadiusRatio;
+
 
     // ============================================= Component Reference ============================================= 
     private PlayerInputHandler playerInputHandler;
     private CharacterController characterController;
     public static PlayerCharacterControl Instance;
 
-    
+
     // todo: if aiming is needed, modify here
     // The coefficient of the camera speed, may be affected by aiming or other actions
     public float CameraCoefficient
@@ -82,11 +115,11 @@ public class PlayerCharacterControl : MonoBehaviour
         WallWalk = 2,
     }
 
-    
+
     // ============================================= Runtime Value ============================================= 
     // todo: make it not editable
     [Header("Runtime Value for Display")] public CharacterState currentState;
-    
+
     // record the current velocity
     private Vector3 characterVelocity;
     private float currentCameraAngleVertical = 0f;
@@ -96,13 +129,6 @@ public class PlayerCharacterControl : MonoBehaviour
 
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
-
-    private Vector3 WallDetectionCastOrigin => transform.position;
-
-    private float WallDetectionMaxDistance =>
-        characterController.radius * wallDetectionMaxDetectionDistanceRatioForward;
-
-    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
 
     private void Start()
     {
@@ -292,9 +318,14 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = wallDetectionColor;
         Gizmos.DrawSphere(
             WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
+            WallDetectionSphereRadius);
+        
+        Gizmos.color = ledgeDetectionColor;
+        Gizmos.DrawSphere(
+            LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
             WallDetectionSphereRadius);
     }
 
