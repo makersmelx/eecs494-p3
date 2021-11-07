@@ -5,11 +5,12 @@ using UnityEngine;
 public class FallReset : MonoBehaviour
 {
     // Start is called before the first frame update
-    //This is a test code that is temporary to automatically respawn the main player.
-    Vector3 init_pos;
+    // This is a test code that is temporary to automatically respawn the main player.
+    Vector3 initPos;
+
     void Start()
     {
-        init_pos = transform.position;
+        initPos = transform.position;
     }
 
     // Update is called once per frame
@@ -17,7 +18,7 @@ public class FallReset : MonoBehaviour
     {
         if (transform.position.y < -25f)
         {
-            transform.position = init_pos;
+            transform.position = initPos;
         }
     }
 }

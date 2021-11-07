@@ -22,42 +22,42 @@ public class EventBus
 
     static Dictionary<Type, IList> _topics = new Dictionary<Type, IList>();
 
-    public static void Publish<T>(T published_event)
+    public static void Publish<T>(T publishedEvent)
     {
         /* Use type T to identify correct subscriber list (correct "topic") */
         Type t = typeof(T);
 
         if (DEBUG_MODE)
-            Debug.Log("[Publish] event of type " + t + " with contents (" + published_event.ToString() + ")");
+            Debug.Log("[Publish] event of type " + t + " with contents (" + publishedEvent.ToString() + ")");
 
         if (_topics.ContainsKey(t))
         {
-            IList subscriber_list = new List<Subscription<T>>(_topics[t].Cast<Subscription<T>>());
+            IList subscriberList = new List<Subscription<T>>(_topics[t].Cast<Subscription<T>>());
 
             /* iterate through the subscribers and pass along the event T */
             if (DEBUG_MODE)
-                Debug.Log("..." + subscriber_list.Count + " subscriptions being executed for this event.");
+                Debug.Log("..." + subscriberList.Count + " subscriptions being executed for this event.");
 
             /* This is a collection of subscriptions that have lost their target object. */
-            List<Subscription<T>> orphaned_subscriptions = new List<Subscription<T>>();
+            List<Subscription<T>> orphanedSubscriptions = new List<Subscription<T>>();
 
-            foreach (Subscription<T> s in subscriber_list)
+            foreach (Subscription<T> s in subscriberList)
             {
                 if (s.callback.Target == null || s.callback.Target.Equals(null))
                 {
                     /* This callback is hanging, as its target object was destroyed */
                     /* Collect this callback and remove it later */
-                    orphaned_subscriptions.Add(s);
+                    orphanedSubscriptions.Add(s);
 
                 }
                 else
                 {
-                    s.callback(published_event);
+                    s.callback(publishedEvent);
                 }
             }
 
             /* Unsubcribe orphaned subs that have had their target objects destroyed */
-            foreach (Subscription<T> orphan_subscription in orphaned_subscriptions)
+            foreach (Subscription<T> orphan_subscription in orphanedSubscriptions)
             {
                 EventBus.Unsubscribe<T>(orphan_subscription);
             }
@@ -74,18 +74,18 @@ public class EventBus
     {
         /* Determine event type so we can find the correct subscriber list */
         Type t = typeof(T);
-        Subscription<T> new_subscription = new Subscription<T>(callback);
+        Subscription<T> newSubscription = new Subscription<T>(callback);
 
         /* If a subscriber list doesn't exist for this event type, create one */
         if (!_topics.ContainsKey(t))
             _topics[t] = new List<Subscription<T>>();
 
-        _topics[t].Add(new_subscription);
+        _topics[t].Add(newSubscription);
 
         if (DEBUG_MODE)
             Debug.Log("[Subscribe] subscription of function (" + callback.Target.ToString() + "." + callback.Method.Name + ") to type " + t + ". There are now " + _topics[t].Count + " subscriptions to this type.");
 
-        return new_subscription;
+        return newSubscription;
     }
 
     public static void Unsubscribe<T>(Subscription<T> subscription)

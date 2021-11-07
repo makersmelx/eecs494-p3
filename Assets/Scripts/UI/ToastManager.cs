@@ -20,8 +20,6 @@ public class ToastManager : MonoBehaviour
     [SerializeField] float fadeInTime = 0.5f;
     [SerializeField] float fadeOutTime = 0.5f;
 
-    
-
     // Start is called before the first frame update
     void Start()
     {

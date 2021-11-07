@@ -6,42 +6,43 @@ using UnityEngine.UI;
 public class GetText : MonoBehaviour
 {
     // Start is called before the first frame update
-    Subscription<MessageSendEvent> message_sub;
+    Subscription<MessageSendEvent> messageSub;
     Text text;
-    [SerializeField] typeOfMessage hearing = typeOfMessage.Dialogue;
-    public bool is_get_text = true;
-    public bool is_typewriter = false;
-    public float type_speed = 0.05f;
-    bool is_typing = false;
+    // [SerializeField] typeOfMessage hearing = typeOfMessage.Dialogue;
+    public bool isGetText = true;
+    public bool isTypewriter = false;
+    public float typeSpeed = 0.05f;
+    bool isTyping = false;
+
     void Start()
     {
-        message_sub = EventBus.Subscribe<MessageSendEvent>(_OnMessage);
+        messageSub = EventBus.Subscribe<MessageSendEvent>(_OnMessage);
         text = GetComponent<Text>();
     }
 
     void _OnMessage(MessageSendEvent m)
     {
         text.text = "";
-        if (!is_typewriter)
+        if (!isTypewriter)
         {
             text.text = m.message;
         }
         else
         {
-            if (is_typing) StopAllCoroutines();
+            if (isTyping) StopAllCoroutines();
             StartCoroutine(typewriting(m.message));
         }
     }
     
     IEnumerator typewriting(string input)
     {
-        is_typing = true;
+        isTyping = true;
         foreach (char c in input)
         {
             text.text += c;
-            yield return new WaitForSeconds(type_speed);
+            yield return new WaitForSeconds(typeSpeed);
         }
-        is_typing = false;
+        isTyping = false;
     }
 }
 
@@ -50,6 +51,4 @@ public enum typeOfMessage
     Name,
     Dialogue
 }
-
-
 
