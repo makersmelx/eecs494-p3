@@ -12,78 +12,76 @@ public class PlayerControl : MonoBehaviour
         ledgegrab,
     }
 
-    public PlayerStates CurrentState;
+    public PlayerStates currentState;
 
     [Header("Physics")]
-    public float MaxSpeed;
-    public float BackwardsMovementSpeed;
-    public float InAirControl;
+    public float maxSpeed;
+    public float backwardsMovementSpeed;
+    public float inAirControl;
 
-    private float ActSpeed;
+    private float actualSpeed;
 
-    public float Acceleration;
-    public float Deccelleration;
-    public float DirectionalControl;
+    public float acceleration;
+    public float deceleration;
+    public float directionalControl;
 
-    private float InAirTimer;
-    private float GroundedTimer;
-    private float AdjustmentAmt;
+    private float inAirTimer;
+    private float groundedTimer;
+    private float adjustmentAmt;
 
     [Header("Jumping")]
-    public float JumpAmt;
+    public float jumpAmt;
 
     [Header("Turning")]
-    public float TurnSpeed;
-    public float TurnSpeedInAir;
-    public float TurnSpeedOnWalls;
+    public float turnSpeed;
+    public float turnSpeedInAir;
+    public float turnSpeedOnWalls;
 
-    public float LookUpSpeed;
-    public Camera Head;
+    public float lookUpSpeed;
+    public Camera playerCamera;
 
-    private float YTurn;
-    private float XTurn;
+    private float yTurn;
+    private float xTurn;
 
-    public float MaxLookAngle;
-    public float MinLookAngle;
+    public float maxLookAngle;
+    public float minLookAngle;
 
     [Header("WallRuns")]
-    public float WallRunTime = 1;
-    private float ActWallTime = 0;
-    public float WallRunUpwardsMovement = 4;
-    public float WallRunSpeedAcceleration = 2f;
+    public float wallRunTime = 1;
+    private float actWallTime = 0;
+    public float wallRunUpwardsMovement = 4;
+    public float wallRunSpeedacceleration = 2f;
 
     [Header("Sliding")]
-    public float PlayerCtrl;
-    public float SlideSpeedLimit;
-    public float SlideAmt;
+    public float playerCtrl;
+    public float slideSpeedLimit;
+    public float slideAmt;
 
     [Header("Ledge Grab")]
-    public float PullUpTime = 0.5f;
-    private Vector3 OriginPos;
-    private Vector3 LedgePos;
-    private float ActPullUpTime;
+    public float pullUpTime = 0.5f;
+    private Vector3 originPos;
+    private Vector3 ledgePos;
+    private float actPullUpTime;
 
     [Header("Crouching")]
-    private bool Crouch;
-    private CapsuleCollider Cap;
-    public float CrouchHeight;
-    private float StandingHeight;
-    public float CrouchSpeed;
+    private bool crouch;
+    private CapsuleCollider cap;
+    public float crouchHeight;
+    private float standingHeight;
+    public float crouchSpeed;
 
-    private PlayerCollision Coli;
-    private Rigidbody Rb;
+    private PlayerCollision playerCollision;
+    private Rigidbody rb;
 
 
     void Start()
     {
-
-        Coli = GetComponent<PlayerCollision>();
-        Rb = GetComponent<Rigidbody>();
-        Cap = GetComponent<CapsuleCollider>();
-        StandingHeight = Cap.height;
-        AdjustmentAmt = 1;
-        Crouch = false;
-
+        playerCollision = GetComponent<PlayerCollision>();
+        rb = GetComponent<Rigidbody>();
+        cap = GetComponent<CapsuleCollider>();
+        standingHeight = cap.height;
+        adjustmentAmt = 1;
+        crouch = false;
     }
 
 
@@ -96,7 +94,7 @@ public class PlayerControl : MonoBehaviour
 
         //Debug.Log("XY INPUTS: " + XMOV.ToString() + "," + YMOV.ToString());
 
-        if (CurrentState == PlayerStates.grounded)
+        if (currentState == PlayerStates.grounded)
         {
 
             // check for jumping
@@ -111,7 +109,7 @@ public class PlayerControl : MonoBehaviour
             {
                 Debug.Log("Crouch input detected");
 
-                if (!Crouch)
+                if (!crouch)
                 {
                     Debug.Log("Start crouch");
                     StartCrouching();
@@ -119,9 +117,9 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
-                bool check = Coli.CheckRoof(transform.up);
+                bool check = playerCollision.CheckRoof(transform.up);
 
-                if (!check && Crouch)
+                if (!check && crouch)
                 {
                     Debug.Log("Stop crouch");
                     StopCrouching();
@@ -130,7 +128,7 @@ public class PlayerControl : MonoBehaviour
             }
 
             // check on ground
-            bool checkG = Coli.CheckFloors(-transform.up);
+            bool checkG = playerCollision.CheckFloors(-transform.up);
             if (!checkG)
             {
                 InAir();
@@ -138,13 +136,13 @@ public class PlayerControl : MonoBehaviour
 
         }
 
-        else if (CurrentState == PlayerStates.inair)
+        else if (currentState == PlayerStates.inair)
         {
 
             // check ledge grab
             if (Input.GetButtonDown("Jump"))
             {
-                Vector3 Ledge = Coli.CheckLedges();
+                Vector3 Ledge = playerCollision.CheckLedges();
                 if (Ledge != Vector3.zero)
                 {
                     LedgeGrab(Ledge);
@@ -160,14 +158,14 @@ public class PlayerControl : MonoBehaviour
                 return;
             }
 
-            bool checkG = Coli.CheckFloors(-transform.up);
-            if (checkG && InAirTimer > 0.2f)
+            bool checkG = playerCollision.CheckFloors(-transform.up);
+            if (checkG && inAirTimer > 0.2f)
             {
                 OnGround();
             }
         }
 
-        else if (CurrentState == PlayerStates.onwall)
+        else if (currentState == PlayerStates.onwall)
         {
             bool wall = CheckWall(XMOV, YMOV);
 
@@ -177,36 +175,25 @@ public class PlayerControl : MonoBehaviour
                 return;
             }
 
-            bool onGround = Coli.CheckFloors(-transform.up);
+            bool onGround = playerCollision.CheckFloors(-transform.up);
             if (onGround)
             {
                 OnGround();
             }
         }
 
-        else if (CurrentState == PlayerStates.ledgegrab)
+        else if (currentState == PlayerStates.ledgegrab)
         {
-            Rb.velocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     private void FixedUpdate()
     {
         float Del = Time.deltaTime;
 
-        float XMOV = Input.GetAxis("Horizontal");
-        float YMOV = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
         float CamX = Input.GetAxis("Mouse X");
         float CamY = Input.GetAxis("Mouse Y");
@@ -214,76 +201,76 @@ public class PlayerControl : MonoBehaviour
 
         LookUpDown(CamY, Del);
 
-        if (CurrentState == PlayerStates.grounded)
+        if (currentState == PlayerStates.grounded)
         {
             // increase timer
-            if (GroundedTimer < 10)
-                GroundedTimer += Del;
+            if (groundedTimer < 10)
+                groundedTimer += Del;
 
             // magnitude of inputs
-            float inputMagnitude = new Vector2(XMOV, YMOV).normalized.magnitude;
+            float inputMagnitude = new Vector2(horizontalInput, verticalInput).normalized.magnitude;
             // get speed to apply to
-            float targetSpeed = Mathf.Lerp(BackwardsMovementSpeed, MaxSpeed, YMOV);
+            float targetSpeed = Mathf.Lerp(backwardsMovementSpeed, maxSpeed, verticalInput);
             // check crouch
-            if (Crouch)
+            if (crouch)
             {
-                targetSpeed = CrouchSpeed;
+                targetSpeed = crouchSpeed;
             }
 
 
             lerpSpeed(inputMagnitude, Del, targetSpeed);
 
 
-            MovePlayer(XMOV, YMOV, Del, 1);
-            TurnPlayer(CamX, Del, TurnSpeed);
+            MovePlayer(horizontalInput, verticalInput, Del, 1);
+            TurnPlayer(CamX, Del, turnSpeed);
 
-            if (AdjustmentAmt < 1)
-                AdjustmentAmt += Del * PlayerCtrl;
+            if (adjustmentAmt < 1)
+                adjustmentAmt += Del * playerCtrl;
             else
-                AdjustmentAmt = 1;
+                adjustmentAmt = 1;
 
 
         }
 
-        else if (CurrentState == PlayerStates.inair)
+        else if (currentState == PlayerStates.inair)
         {
 
 
-            if (InAirTimer < 10)
-                InAirTimer += Del;
+            if (inAirTimer < 10)
+                inAirTimer += Del;
 
-            MovePlayer(XMOV, YMOV, Del, InAirControl);
-            TurnPlayer(CamX, Del, TurnSpeedInAir);
+            MovePlayer(horizontalInput, verticalInput, Del, inAirControl);
+            TurnPlayer(CamX, Del, turnSpeedInAir);
         }
 
-        else if (CurrentState == PlayerStates.onwall)
+        else if (currentState == PlayerStates.onwall)
         {
-            ActWallTime += Del;
+            actWallTime += Del;
 
-            TurnPlayer(CamX, Del, TurnSpeedOnWalls);
+            TurnPlayer(CamX, Del, turnSpeedOnWalls);
 
-            WallRunMovement(YMOV, Del);
+            WallRunMovement(verticalInput, Del);
         }
 
-        else if (CurrentState == PlayerStates.ledgegrab)
+        else if (currentState == PlayerStates.ledgegrab)
         {
-            ActPullUpTime += Del;
-            float pullUpLerp = ActPullUpTime / PullUpTime;
+            actPullUpTime += Del;
+            float pullUpLerp = actPullUpTime / pullUpTime;
             if (pullUpLerp < 0.5)
             {
                 float lamt = pullUpLerp * 2;
-                Vector3 LPos = new Vector3(OriginPos.x, LedgePos.y, OriginPos.z);
-                transform.position = Vector3.Lerp(OriginPos, LPos, lamt);
+                Vector3 LPos = new Vector3(originPos.x, ledgePos.y, originPos.z);
+                transform.position = Vector3.Lerp(originPos, LPos, lamt);
             }
             else if (pullUpLerp <= 1)
             {
-                if (OriginPos.y != LedgePos.y)
+                if (originPos.y != ledgePos.y)
                 {
-                    OriginPos = new Vector3(OriginPos.x, LedgePos.y, OriginPos.z);
+                    originPos = new Vector3(originPos.x, ledgePos.y, originPos.z);
                 }
 
                 float lamt = (pullUpLerp - 0.5f) * 2f;
-                transform.position = Vector3.Lerp(OriginPos, LedgePos, pullUpLerp);
+                transform.position = Vector3.Lerp(originPos, ledgePos, pullUpLerp);
             }
             else
             {
@@ -292,26 +279,14 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     void JumpUp()
     {
-        Vector3 Vel = Rb.velocity;
+        Vector3 Vel = rb.velocity;
         Vel.y = 0;
 
-        Rb.velocity = Vel;
+        rb.velocity = Vel;
 
-        Rb.AddForce(transform.up * JumpAmt, ForceMode.Impulse);
+        rb.AddForce(transform.up * jumpAmt, ForceMode.Impulse);
 
         InAir();
     }
@@ -319,10 +294,10 @@ public class PlayerControl : MonoBehaviour
     void lerpSpeed(float mag, float d, float speed)
     {
         float LaMT = speed * mag;
-        float accel = Acceleration;
+        float accel = acceleration;
         if (mag == 0)
-            accel = Deccelleration;
-        ActSpeed = Mathf.Lerp(ActSpeed, LaMT, d * accel);
+            accel = deceleration;
+        actualSpeed = Mathf.Lerp(actualSpeed, LaMT, d * accel);
     }
 
     void MovePlayer(float hor, float ver, float d, float control)
@@ -332,55 +307,55 @@ public class PlayerControl : MonoBehaviour
 
         // if no input, stay original speed
         if (hor == 0 && ver == 0)
-            MovDir = Rb.velocity.normalized;
+            MovDir = rb.velocity.normalized;
 
-        MovDir = MovDir * ActSpeed;
-        MovDir.y = Rb.velocity.y;
+        MovDir = MovDir * actualSpeed;
+        MovDir.y = rb.velocity.y;
 
 
-        float acel = DirectionalControl * AdjustmentAmt * control;
-        Vector3 LerpVel = Vector3.Lerp(Rb.velocity, MovDir, acel * d);
-        Rb.velocity = LerpVel;
+        float acel = directionalControl * adjustmentAmt * control;
+        Vector3 LerpVel = Vector3.Lerp(rb.velocity, MovDir, acel * d);
+        rb.velocity = LerpVel;
     }
 
     void TurnPlayer(float xamt, float d, float speed)
     {
-        YTurn += xamt * d * speed;
+        yTurn += xamt * d * speed;
 
-        transform.rotation = Quaternion.Euler(0, YTurn, 0);
+        transform.rotation = Quaternion.Euler(0, yTurn, 0);
     }
 
     void LookUpDown(float YAmt, float d)
     {
-        XTurn -= (YAmt * d) * LookUpSpeed;
-        XTurn = Mathf.Clamp(XTurn, MinLookAngle, MaxLookAngle);
+        xTurn -= (YAmt * d) * lookUpSpeed;
+        xTurn = Mathf.Clamp(xTurn, minLookAngle, maxLookAngle);
 
-        Head.transform.localRotation = Quaternion.Euler(XTurn, 0, 0);
+        playerCamera.transform.localRotation = Quaternion.Euler(xTurn, 0, 0);
     }
 
     void InAir()
     {
-        if (Crouch)
+        if (crouch)
         {
             StopCrouching();
         }
-        InAirTimer = 0;
-        CurrentState = PlayerStates.inair;
+        inAirTimer = 0;
+        currentState = PlayerStates.inair;
     }
 
     void OnGround()
     {
-        GroundedTimer = 0;
-        ActWallTime = 0;
-        CurrentState = PlayerStates.grounded;
+        groundedTimer = 0;
+        actWallTime = 0;
+        currentState = PlayerStates.grounded;
     }
 
     void LedgeGrab(Vector3 LPos)
     {
-        LedgePos = LPos;
-        OriginPos = transform.position;
-        ActPullUpTime = 0;
-        CurrentState = PlayerStates.ledgegrab;
+        ledgePos = LPos;
+        originPos = transform.position;
+        actPullUpTime = 0;
+        currentState = PlayerStates.ledgegrab;
     }
 
     bool CheckWall(float XM, float YM)
@@ -388,45 +363,45 @@ public class PlayerControl : MonoBehaviour
         if (XM == 0 && YM == 0)
             return false;
 
-        if (ActWallTime > WallRunTime)
+        if (actWallTime > wallRunTime)
             return false;
 
         Vector3 WallDirection = transform.forward * YM + transform.right * XM;
         WallDirection = WallDirection.normalized;
 
-        bool WallCol = Coli.CheckWalls(WallDirection);
+        bool WallCol = playerCollision.CheckWalls(WallDirection);
         return WallCol;
     }
 
     void WallRun()
     {
-        CurrentState = PlayerStates.onwall;
+        currentState = PlayerStates.onwall;
     }
 
     void WallRunMovement(float verticalMov, float D)
     {
         Vector3 MovDir = transform.up * verticalMov;
-        MovDir = MovDir * WallRunUpwardsMovement;
+        MovDir = MovDir * wallRunUpwardsMovement;
 
-        MovDir += transform.forward * ActSpeed;
+        MovDir += transform.forward * actualSpeed;
 
-        Vector3 lerpAmt = Vector3.Lerp(Rb.velocity, MovDir, WallRunSpeedAcceleration * D);
-        Rb.velocity = lerpAmt;
+        Vector3 lerpAmt = Vector3.Lerp(rb.velocity, MovDir, wallRunSpeedacceleration * D);
+        rb.velocity = lerpAmt;
     }
 
     void StartCrouching()
     {
-        Crouch = true;
-        Cap.height = CrouchHeight;
+        crouch = true;
+        cap.height = crouchHeight;
 
-        if (ActSpeed > SlideSpeedLimit)
+        if (actualSpeed > slideSpeedLimit)
             SlideForward();
     }
 
     void StopCrouching()
     {
-        Crouch = false;
-        Cap.height = StandingHeight;
+        crouch = false;
+        cap.height = standingHeight;
     }
 
     void SlideForward()
@@ -434,13 +409,13 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("In sliding");
 
         /*
-        ActSpeed = SlideSpeedLimit;
-        AdjustmentAmt = 0;
+        actualSpeed = SlideSpeedLimit;
+        adjustmentAmt = 0;
         */
-        Vector3 Dir = Rb.velocity.normalized;
+        Vector3 Dir = rb.velocity.normalized;
 
         Dir.y = 0;
-        Rb.AddForce(Dir * SlideAmt, ForceMode.Impulse);
+        rb.AddForce(Dir * slideAmt, ForceMode.Impulse);
 
     }
 
