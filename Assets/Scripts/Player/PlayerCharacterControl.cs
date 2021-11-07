@@ -60,7 +60,9 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("Color of the wall detection sphere for debug")]
     public Color wallDetectionColor = Color.red;
 
-    private Vector3 WallDetectionCastOrigin => transform.position;
+    private Vector3 WallDetectionCastOrigin => transform.position +
+                                               transform.forward *
+                                               (characterController.radius - WallDetectionSphereRadius);
 
     private float WallDetectionMaxDistance =>
         characterController.radius * wallDetectionMaxDistanceForwardRatio;
@@ -87,7 +89,9 @@ public class PlayerCharacterControl : MonoBehaviour
     public Color ledgeDetectionColor = Color.yellow;
 
     private Vector3 LedgeDetectionCastOrigin =>
-        transform.position + transform.up * ledgeDetectionHeightRatio * characterController.height;
+        transform.position
+        + transform.up * ledgeDetectionHeightRatio * characterController.height
+        + transform.forward * (characterController.radius - LedgeDetectionSphereRadius);
 
     private float LedgeDetectionMaxDistance =>
         characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
@@ -353,7 +357,7 @@ public class PlayerCharacterControl : MonoBehaviour
         }
         else if (currentState == CharacterState.OnLedge)
         {
-            if (!canClimbLedge)
+            if (!characterVelocity.Equals(Vector3.zero) && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
             }

@@ -252,7 +252,7 @@ MonoBehaviour:
   jumpForce: 80
   groundCheckLayers:
     serializedVersion: 2
-    m_Bits: 961
+    m_Bits: 5056
   groundCheckDistance: 1
   groundCheckDistanceInAir: 0.07
   checkGroundedCooldownTime: 1
