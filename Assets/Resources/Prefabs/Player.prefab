@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 374256529656680466}
   - component: {fileID: 374256529656680467}
   - component: {fileID: 7029181103789133893}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -131,7 +131,8 @@ GameObject:
   - component: {fileID: 8158837502627113820}
   - component: {fileID: 4794333982805640085}
   - component: {fileID: 340988925640918788}
-  m_Layer: 0
+  - component: {fileID: 412608356228166722}
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -251,19 +252,19 @@ MonoBehaviour:
   jumpForce: 80
   groundCheckLayers:
     serializedVersion: 2
-    m_Bits: 960
+    m_Bits: 961
   groundCheckDistance: 1
   groundCheckDistanceInAir: 0.07
   checkGroundedCooldownTime: 1
   wallCheckLayers:
     serializedVersion: 2
     m_Bits: 512
-  wallDetectionMaxDistanceForwardRatio: 0.5
-  wallDetectionSphereRadiusRatio: 0.6
+  wallDetectionMaxDistanceForwardRatio: 1
+  wallDetectionSphereRadiusRatio: 1.5
   wallDetectionColor: {r: 1, g: 0, b: 0, a: 1}
   ledgeCheckLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   ledgeDetectionHeightRatio: 0.3
   ledgeDetectionMaxDistanceForwardRatio: 1
   ledgeDetectionSphereRadiusRatio: 0.7
@@ -287,3 +288,18 @@ CharacterController:
   m_SkinWidth: 0.001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &412608356228166722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374256530334195802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd170ac9e624f04bbbc4fee1723206b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 8
+  hp: 0
+  invincibleTime: 0.5
