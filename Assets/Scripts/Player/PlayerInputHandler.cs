@@ -11,98 +11,72 @@ public class PlayerInputHandler : MonoBehaviour
     [Tooltip("Additional sensitivity multiplier for WebGL on the base of APP build")]
     public float webGLCameraSensitivityMultiplier = 0.25f;
 
-    [Tooltip("Limit to consider an input when using a trigger on a controller")]
-    public float triggerAxisThreshold = 0.4f;
-
-    [Tooltip("Used to flip the vertical input axis")]
-    public bool invertYAxis = false;
-
-    [Tooltip("Used to flip the horizontal input axis")]
-    public bool invertXAxis = false;
-
+    // Store input state
+    private Vector2 mouseInput;
+    private Vector2 movementInput;
+    private bool jumping;
+    private bool crouching;
     private bool canProcessMouseInput = false;
 
+    // -------------------------------------------------------------------------
+    // Public methods
+    // -------------------------------------------------------------------------
+
+    // Arrow key / WASD Input
+    public Vector2 GetMoveInput() { return movementInput.normalized; }
+
+    // Horizontal mouse input
+    public Vector2 GetMouseInput() { return mouseInput; }
+
+    // Jump input
+    public bool JumpKeyPressed() { return jumping; }
+
+
+    // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
     private void Update()
     {
-        if (IsMouseOverGameWindow)
-        {
-            canProcessMouseInput = true;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
+        if (!IsMouseOverGameWindow())
         {
             canProcessMouseInput = false;
-        }
-    }
-
-    // todo: add condition that cannot control
-    public bool CanProcessInput()
-    {
-        return true;
-    }
-
-    /*
-     * return the normalized movement Vector3
-     */
-    public Vector3 GetMoveInput()
-    {
-        if (CanProcessInput())
-        {
-            Vector3 move = new Vector3(
-                Input.GetAxisRaw(GameConstants.KeyboardAxisNameHorizontal),
-                0f,
-                Input.GetAxisRaw(GameConstants.KeyboardAxisNameVertical)
-            );
-
-            move = Vector3.ClampMagnitude(move, 1);
-            return move;
+            return;
         }
 
-        return Vector3.zero;
+        // Collect user input each frame
+        canProcessMouseInput = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        UpdateUserInput();
     }
 
-    public float GetCameraInputHorizontal()
+    private void UpdateUserInput()
     {
-        return GetMouseInputByAxis(GameConstants.MouseAxisNameHorizontal);
-    }
+        // Update movement x, y values
+        float horizontalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisHorizontal);
+        float verticalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisVertical);
+        movementInput = new Vector2(horizontalInput, verticalInput);
 
-    public float GetCameraInputVertical()
-    {
-        return GetMouseInputByAxis(GameConstants.MouseAxisNameVertical);
-    }
+        // Update jump, crouch input
+        jumping = Input.GetButton(GameConstants.ButtonJump);
+        crouching = Input.GetKey(KeyCode.LeftShift);
 
-    public bool GetJumpInputIsHolding()
-    {
-        return CanProcessInput() && Input.GetButton(GameConstants.ButtonNameJump);
-    }
+        // Update mouse input
+        float mouseX = Input.GetAxisRaw(GameConstants.MouseAxisHorizontal);
+        float mouseY = Input.GetAxisRaw(GameConstants.MouseAxisVertical);
+        mouseX *= cameraSensitivity * 0.01f;
+        mouseY *= cameraSensitivity * 0.01f;
 
-
-    private float GetMouseInputByAxis(string mouseInputName)
-    {
-        if (CanProcessInput() && canProcessMouseInput)
-        {
-            float mouseLook = Input.GetAxisRaw(mouseInputName);
-
-            // todo: make sure of this
-            if (invertYAxis)
-            {
-                mouseLook *= -1f;
-            }
-
-            mouseLook *= cameraSensitivity * 0.01f;
 #if UNITY_WEBGL
-            mouseLook *= webGLCameraSensitivityMultiplier;
+            mouseX *= webGLCameraSensitivityMultiplier;
+            mouseY *= webGLCameraSensitivityMultiplier;
 #endif
-            return mouseLook;
-        }
-
-        return 0f;
+        mouseInput = new Vector2(mouseX, mouseY);
     }
 
-    bool IsMouseOverGameWindow =>
-        !(0 > Input.mousePosition.x
-          || 0 > Input.mousePosition.y
-          || Screen.width < Input.mousePosition.x
-          || Screen.height < Input.mousePosition.y
-            );
+    private bool IsMouseOverGameWindow()
+    {
+        float xPos = Input.mousePosition.x;
+        float yPos = Input.mousePosition.y;
+        return !(0 > xPos || 0 > yPos || Screen.width < xPos || Screen.height < yPos);
+    }
 }
