@@ -57,6 +57,8 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
     public float wallDetectionSphereRadiusRatio = 0.6f;
 
+    [Tooltip("Wall Walk Audio")] public AudioClip wallWalkAudio;
+
     [Tooltip("Color of the wall detection sphere for debug")]
     public Color wallDetectionColor = Color.red;
 
@@ -92,6 +94,8 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip(
         "(Ratio to the character's radius) Describe how much the camera will move backward to see the ledge when climbing ledge")]
     public float ledgeCameraBackRatio = 0.5f;
+
+    [Tooltip("Ledge Audio")] public AudioClip ledgeClimbAudio;
 
     [Tooltip("Color of the ledge detection sphere for debug")]
     public Color ledgeDetectionColor = Color.yellow;
@@ -144,11 +148,18 @@ public class PlayerCharacterControl : MonoBehaviour
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
 
+    private Vector3 initialCameraOffset;
+    private Vector3 cameraOffset = Vector3.zero;
+
+    // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+    public bool isWin = false;
+
     private void Start()
     {
         playerInputHandler = GetComponent<PlayerInputHandler>();
         characterController = GetComponent<CharacterController>();
         currentGroundNormal = Vector3.up;
+        initialCameraOffset = playerCamera.transform.position - transform.position;
     }
 
     private void Update()
@@ -192,6 +203,17 @@ public class PlayerCharacterControl : MonoBehaviour
             currentCameraAngleVertical = Mathf.Clamp(currentCameraAngleVertical, -89f, 89f);
             playerCamera.transform.localEulerAngles = new Vector3(currentCameraAngleVertical, 0, 0);
         }
+
+        if (currentState == CharacterState.OnLedge)
+        {
+            cameraOffset = -1f * transform.forward * ledgeCameraBackRatio + -1f * transform.up * ledgeCameraDownRatio;
+        }
+        else
+        {
+            cameraOffset = Vector3.zero;
+        }
+
+        playerCamera.transform.position = transform.position + initialCameraOffset + cameraOffset;
     }
 
     private void CheckGrounded()
@@ -340,6 +362,8 @@ public class PlayerCharacterControl : MonoBehaviour
 
             characterVelocity -= currentGroundNormal * jumpForce -
                                  currentGroundNormal * Vector3.Dot(characterVelocity, currentGroundNormal);
+
+            AudioSource.PlayClipAtPoint(wallWalkAudio, transform.position);
         }
     }
 
@@ -361,10 +385,7 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentState = CharacterState.OnLedge;
                 currentLedgeNormal = hit.normal;
                 characterVelocity = Vector3.zero;
-                playerCamera.transform.position -= transform.up * ledgeCameraDownRatio * characterController.height
-                                                   + transform.forward * ledgeCameraBackRatio *
-                                                   characterController.radius;
-                ;
+                AudioSource.PlayClipAtPoint(ledgeClimbAudio, transform.position);
             }
         }
         else if (currentState == CharacterState.OnLedge)
@@ -372,9 +393,6 @@ public class PlayerCharacterControl : MonoBehaviour
             if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
-                playerCamera.transform.position += transform.up * ledgeCameraDownRatio * characterController.height
-                                                   + transform.forward * ledgeCameraBackRatio *
-                                                   characterController.radius;
             }
         }
     }

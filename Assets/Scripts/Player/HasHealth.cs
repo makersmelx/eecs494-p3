@@ -48,6 +48,7 @@ public class HasHealth : MonoBehaviour
         if (isSuccess)
         {
             StartCoroutine(EnterPostDamageInvincibility());
+            Debug.Log("Damage is done");
             DamageExtra(amount);
         }
         if (hp <= 0)

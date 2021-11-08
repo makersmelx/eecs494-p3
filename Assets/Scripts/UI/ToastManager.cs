@@ -54,7 +54,6 @@ public class ToastManager : MonoBehaviour
 
     void _OnMessageRemoval(MessageRemoveEvent m)
     {
-        Debug.Log("Received!");
         if (!isShowing) return;
         if (m.sender != current_sender) return;
         StartCoroutine(Disappear());
