@@ -85,6 +85,14 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("(Ratio to the character's radius) the radius of the ledge detection sphere")]
     public float ledgeDetectionSphereRadiusRatio = 0.6f;
 
+    [Tooltip(
+        "(Ratio to the character's height) Describe how much the camera will move downward to see the ledge when climbing ledge")]
+    public float ledgeCameraDownRatio = 0.4f;
+
+    [Tooltip(
+        "(Ratio to the character's radius) Describe how much the camera will move backward to see the ledge when climbing ledge")]
+    public float ledgeCameraBackRatio = 0.5f;
+
     [Tooltip("Color of the ledge detection sphere for debug")]
     public Color ledgeDetectionColor = Color.yellow;
 
@@ -353,6 +361,10 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentState = CharacterState.OnLedge;
                 currentLedgeNormal = hit.normal;
                 characterVelocity = Vector3.zero;
+                playerCamera.transform.position -= transform.up * ledgeCameraDownRatio * characterController.height
+                                                   + transform.forward * ledgeCameraBackRatio *
+                                                   characterController.radius;
+                ;
             }
         }
         else if (currentState == CharacterState.OnLedge)
@@ -360,6 +372,9 @@ public class PlayerCharacterControl : MonoBehaviour
             if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
+                playerCamera.transform.position += transform.up * ledgeCameraDownRatio * characterController.height
+                                                   + transform.forward * ledgeCameraBackRatio *
+                                                   characterController.radius;
             }
         }
     }
