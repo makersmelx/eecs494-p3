@@ -1596,6 +1596,10 @@ PrefabInstance:
       propertyPath: ledgeDetectionSphereRadiusRatio
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4794333982805640085, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
+      propertyPath: wallDetectionMaxDistanceForwardRatio
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6667860540029172929, guid: 06960a074670fd2468d42ed3049b3154, type: 3}
       propertyPath: maxHP
       value: 8

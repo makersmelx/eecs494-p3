@@ -57,6 +57,8 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
     public float wallDetectionSphereRadiusRatio = 0.6f;
 
+    [Tooltip("Wall Walk Audio")] public AudioClip wallWalkAudio;
+
     [Tooltip("Color of the wall detection sphere for debug")]
     public Color wallDetectionColor = Color.red;
 
@@ -92,6 +94,8 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip(
         "(Ratio to the character's radius) Describe how much the camera will move backward to see the ledge when climbing ledge")]
     public float ledgeCameraBackRatio = 0.5f;
+
+    [Tooltip("Ledge Audio")] public AudioClip ledgeClimbAudio;
 
     [Tooltip("Color of the ledge detection sphere for debug")]
     public Color ledgeDetectionColor = Color.yellow;
@@ -358,6 +362,8 @@ public class PlayerCharacterControl : MonoBehaviour
 
             characterVelocity -= currentGroundNormal * jumpForce -
                                  currentGroundNormal * Vector3.Dot(characterVelocity, currentGroundNormal);
+
+            AudioSource.PlayClipAtPoint(wallWalkAudio, transform.position);
         }
     }
 
@@ -379,6 +385,7 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentState = CharacterState.OnLedge;
                 currentLedgeNormal = hit.normal;
                 characterVelocity = Vector3.zero;
+                AudioSource.PlayClipAtPoint(ledgeClimbAudio, transform.position);
             }
         }
         else if (currentState == CharacterState.OnLedge)
