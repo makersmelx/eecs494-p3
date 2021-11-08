@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1415124, g: 0.03406339, b: 0.03217417, a: 1}
+  m_IndirectSpecularColor: {r: 0.14153662, g: 0.034152936, b: 0.032204755, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -349,6 +349,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6236660511843922588, guid: bdf04f6aaa8ef444288d51ded547ffc4, type: 3}
   m_PrefabInstance: {fileID: 835394808}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &231103624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1911277768}
+  m_Layer: 0
+  m_Name: CityMesh (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &415045126
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +794,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 213613637798548962, guid: 8c1b6bbd1a94da54786f99bb5b9e36e7, type: 3}
   m_PrefabInstance: {fileID: 651049315}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &784193083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1137104562}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1001 &835394808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -847,6 +879,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1277721334}
     m_Modifications:
+    - target: {fileID: 1225262328483942972, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
+      propertyPath: m_TagString
+      value: WinTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 2029453156970454239, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
+      propertyPath: m_TagString
+      value: WinTrigger
+      objectReference: {fileID: 0}
     - target: {fileID: 2262965483911233550, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
       propertyPath: m_Name
       value: Building20x20x18-Oasis
@@ -894,6 +934,10 @@ PrefabInstance:
     - target: {fileID: 5395758279613182823, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6433633044297993860, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
+      propertyPath: m_TagString
+      value: WinTrigger
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16f57b12e82754a818454e3aad282c01, type: 3}
@@ -1073,11 +1117,20 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!4 &1137104562 stripped
+--- !u!4 &1137104562
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7810eb6fb17b94923937bd90f0327e74, type: 3}
   m_PrefabInstance: {fileID: 1911277767}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784193083}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1842545704}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1189071719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,7 +1354,7 @@ Transform:
   m_LocalScale: {x: 28, y: 1, z: 28}
   m_Children: []
   m_Father: {fileID: 1842545704}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1259365708
 MeshCollider:
@@ -2057,6 +2110,7 @@ Transform:
   - {fileID: 438227144}
   - {fileID: 175949723}
   - {fileID: 1137104562}
+  - {fileID: 1911277768}
   - {fileID: 1259365707}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2138,6 +2192,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7810eb6fb17b94923937bd90f0327e74, type: 3}
+--- !u!4 &1911277768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231103624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1842545704}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1929010035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3853900314158141518, guid: f9ee8d97a946c4718919c1ddca578e65, type: 3}
