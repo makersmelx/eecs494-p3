@@ -29,14 +29,14 @@ public class PlayerDeath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -25f)
+        if (transform.position.y < -10f)
         {
             healthBar.Die();
         }
     }
     void Die()
     {
-        transform.position = initPos;
+        transform.position = initPos ;
         healthBar.HealToFull();
     }
 
