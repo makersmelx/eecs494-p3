@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f7ac55275dd204b9d1b3a19a3567ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene_name: MainMenu
+  sceneName: 
 --- !u!1 &3185247805310126572
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 400}
+  m_SizeDelta: {x: 800, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8744278919511513271
 CanvasRenderer:

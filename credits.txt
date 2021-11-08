@@ -1,5 +1,14 @@
 Fonts
-https://www.dafont.com/aliens-and-cows.font
+https://www.dafont.com/aliens-and-cows.font	// Menu buttons
+https://www.dafont.com/inversionz.font		// ZASE LOGO
+https://www.dafont.com/long-shot.font		// 1979
 
 Skybox
 https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
+
+3D Models
+https://www.turbosquid.com/
+https://www.cgtrader.com/
+
+Audio
+https://www.freesoundslibrary.com/city-street-ambience-sound-effect/
