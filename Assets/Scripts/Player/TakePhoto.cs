@@ -45,6 +45,7 @@ public class TakePhoto : MonoBehaviour
                 Debug.Log("Flash");
                 imageFlash.StartFlash(1f, 0.8f, Color.white);
                 flashCounter += Time.deltaTime;
+                Capture();
             }
             else if (flashCounter != 0f)
             {
@@ -53,6 +54,23 @@ public class TakePhoto : MonoBehaviour
                 {
                     flashCounter = 0f;
                 }
+
+            }
+        }
+    }
+
+    void Capture()
+    {
+        RaycastHit Hit;
+
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out Hit))
+        {
+            GameObject castObj = Hit.transform.gameObject;
+            if (castObj.CompareTag("WinTrigger"))
+            {
+                Debug.Log("Win Trigger Detected");
+                // TO DO: IMPLEMENT WIN TRIGGER HERE
+
             }
         }
     }
