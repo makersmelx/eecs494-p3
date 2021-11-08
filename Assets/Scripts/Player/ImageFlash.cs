@@ -16,10 +16,8 @@ public class ImageFlash : MonoBehaviour
         Img = GetComponent<Image>();
     }
 
-    // Update is called once per frame
     public void StartFlash(float seconds, float maxAlpha, Color color)
     {
-
         Img.color = color;
         maxAlpha = Mathf.Clamp(maxAlpha, 0, 1);
 

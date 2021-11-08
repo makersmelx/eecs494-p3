@@ -19,7 +19,7 @@ public class SpringShake : MonoBehaviour
     {
         initPos = transform.position;
     }
-
+   
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision Speed is " + collision.relativeVelocity);

@@ -15,9 +15,9 @@ TagManager:
   - UI
   - Player
   - Ground
-  - 
-  - 
-  - PostProcessing
+  - Wall
+  - Ledge
+  - Obstacle
   - 
   - 
   - 

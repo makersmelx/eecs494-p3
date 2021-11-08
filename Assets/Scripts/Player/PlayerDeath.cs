@@ -39,9 +39,10 @@ public class PlayerDeath : MonoBehaviour
         transform.position = initPos;
         healthBar.HealToFull();
     }
+
     void UpdateHealth(int amount = 0)
     {
-        //Debug.Log("We have update the health");
+        Debug.Log("We have update the health to " + healthBar.hp);
         healthText.text = "Health: " + healthBar.hp;
     }
 }

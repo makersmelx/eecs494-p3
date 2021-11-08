@@ -113,6 +113,9 @@ MonoBehaviour:
   hitBackMagnitude: 2
   startColor: {r: 0.9843137, g: 1, b: 0.4392157, a: 0}
   stopColor: {r: 0.5, g: 0.49188387, b: 0.24245283, a: 0}
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &710932595859266382
 GameObject:
   m_ObjectHideFlags: 0

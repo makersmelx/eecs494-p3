@@ -12,10 +12,13 @@ public class BillBoard : MonoBehaviour
     public Color stopColor;
     ParticleSystem spark;
     Material mat;
+
+    public LayerMask whatIsPlayer;
     void Start()
     {
         spark = transform.Find("Spark").GetComponent<ParticleSystem>();
         mat = GetComponent<Renderer>().material;
+        whatIsPlayer = ~whatIsPlayer;
         StartCoroutine(Blink());
     }
 
@@ -35,14 +38,16 @@ public class BillBoard : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnCollisionStay(Collision collision)
     {
+        Debug.Log("Is Touching...");
         if (!isOn) return;
         HasHealth healthBar = collision.gameObject.GetComponent<HasHealth>();
         Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
         if (healthBar == null) return;
         healthBar.TakeDamage(1);
         rb.velocity = Vector3.zero;
-        rb.AddForce(-hitBackMagnitude * collision.relativeVelocity,ForceMode.Impulse);
+        rb.AddForce(-hitBackMagnitude * collision.relativeVelocity, ForceMode.Impulse);
     }
 }

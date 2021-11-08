@@ -127,11 +127,13 @@ GameObject:
   - component: {fileID: 374256530334195806}
   - component: {fileID: 374256530334195807}
   - component: {fileID: 374256530334195804}
+  - component: {fileID: 768400383297061272}
   - component: {fileID: 1927879807907105828}
   - component: {fileID: 8158837502627113820}
   - component: {fileID: 4794333982805640085}
   - component: {fileID: 340988925640918788}
   - component: {fileID: 412608356228166722}
+  - component: {fileID: 2573189335866576909}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -203,6 +205,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &768400383297061272
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374256530334195802}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1927879807907105828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,3 +319,20 @@ MonoBehaviour:
   maxHP: 8
   hp: 0
   invincibleTime: 0.5
+--- !u!114 &2573189335866576909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374256530334195802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f3bc31b7cab2d439b0f0e7b0d0c349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 374256529656680466}
+  scopeImage: {fileID: 0}
+  zoomScale: 30
+  imageFlash: {fileID: 0}
+  flashDuration: 1
