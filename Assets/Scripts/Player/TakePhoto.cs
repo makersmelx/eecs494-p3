@@ -12,7 +12,7 @@ public class TakePhoto : MonoBehaviour
     private bool inUse = false;
 
     [Header("Camera Flashing")]
-    public GameObject flashImage;
+    public ImageFlash imageFlash;
     public float flashDuration = 1f;
     private float flashCounter = 0f;
 
@@ -27,24 +27,23 @@ public class TakePhoto : MonoBehaviour
         if ((Input.GetMouseButtonDown(1) && !inUse))
         {
             inUse = true;
-            scopeImage.SetActive(true);
+            //scopeImage.SetActive(true);
             playerCamera.fieldOfView = zoomScale;
         }
         else if (Input.GetMouseButtonDown(1) && inUse)
         {
             inUse = false;
-            scopeImage.SetActive(false);
+            //scopeImage.SetActive(false);
             playerCamera.fieldOfView = originalScale;
         }
 
         if (inUse)
         {
-            // Scope_Image.SetActive(true);
             // check for flashing
             if (Input.GetMouseButtonDown(0) && flashCounter == 0f)
             {
                 Debug.Log("Flash");
-                flashImage.GetComponent<ImageFlash>().StartFlash(1f, 0.8f, Color.white);
+                imageFlash.StartFlash(1f, 0.8f, Color.white);
                 flashCounter += Time.deltaTime;
             }
             else if (flashCounter != 0f)
@@ -54,7 +53,6 @@ public class TakePhoto : MonoBehaviour
                 {
                     flashCounter = 0f;
                 }
-               
             }
         }
     }

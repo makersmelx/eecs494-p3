@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GameConstants : MonoBehaviour
 {
-    public const string KeyboardAxisNameHorizontal = "Horizontal";
-    public const string KeyboardAxisNameVertical = "Vertical";
-    public const string MouseAxisNameHorizontal = "Mouse X";
-    public const string MouseAxisNameVertical = "Mouse Y";
-    public const string ButtonNameJump = "Jump";
+    public const string KeyboardAxisHorizontal = "Horizontal";
+    public const string KeyboardAxisVertical = "Vertical";
+    public const string MouseAxisHorizontal = "Mouse X";
+    public const string MouseAxisVertical = "Mouse Y";
+    public const string ButtonJump = "Jump";
 }

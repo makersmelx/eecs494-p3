@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class ToastManager : MonoBehaviour
 {
     Subscription<MessageSendEvent> sendSub;
     Subscription<MessageRemoveEvent> removeSub;
 
-    Text toastText;
+    TextMeshProUGUI toastText;
     RectTransform rect;
-    CanvasGroup cgroup;
+    CanvasGroup canvasGroup;
 
     string current_sender = "";
 
@@ -25,11 +25,12 @@ public class ToastManager : MonoBehaviour
     {
         sendSub = EventBus.Subscribe<MessageSendEvent>(_OnNewMessage);
         removeSub = EventBus.Subscribe<MessageRemoveEvent>(_OnMessageRemoval);
-        toastText = transform.Find("ToastText").GetComponent<Text>();
-        cgroup = GetComponent<CanvasGroup>();
-        Debug.Log(cgroup != null);
+        toastText = transform.Find("ToastText").GetComponent<TextMeshProUGUI>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        Debug.Log(canvasGroup != null);
         rect = gameObject.GetComponent<RectTransform>();
     }
+
     void _OnNewMessage(MessageSendEvent m)
     {
         if (isShowing) return;
@@ -37,6 +38,7 @@ public class ToastManager : MonoBehaviour
         current_sender = m.sender;
         StartCoroutine(Appear(m.message));
     }
+
     IEnumerator Appear(string message)
     {
         toastText.text = message;
@@ -45,10 +47,11 @@ public class ToastManager : MonoBehaviour
         while (progress <= 1.0f)
         {
             progress = (Time.time - initial_time) / fadeInTime;
-            cgroup.alpha = progress;
+            canvasGroup.alpha = progress;
             yield return null;
         }
     }
+
     void _OnMessageRemoval(MessageRemoveEvent m)
     {
         Debug.Log("Received!");
@@ -57,6 +60,7 @@ public class ToastManager : MonoBehaviour
         StartCoroutine(Disappear());
 
     }
+
     IEnumerator Disappear()
     {
         float initial_time = Time.time;
@@ -64,8 +68,8 @@ public class ToastManager : MonoBehaviour
         while (progress <= 1.0f)
         {
             progress = (Time.time - initial_time) / fadeOutTime;
-            cgroup.alpha = (1f-progress);
-            
+            canvasGroup.alpha = (1f - progress);
+
             yield return null;
         }
         isShowing = false;
@@ -83,10 +87,11 @@ public class MessageSendEvent
         sender = sender_in;
     }
 }
+
 public class MessageRemoveEvent
 {
     public string sender;
-    public MessageRemoveEvent( string sender_in)
+    public MessageRemoveEvent(string sender_in)
     {
         sender = sender_in;
     }

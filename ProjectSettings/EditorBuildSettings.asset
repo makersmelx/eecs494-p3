@@ -8,7 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 39df51eca527f4fbe8743f0421eddd13
-  - enabled: 1
-    path: Assets/Scenes/Dev/Bohan_LVL1_TEST.unity
-    guid: 9b8501252f1f3d646b1e6e902248f045
   m_configObjects: {}
