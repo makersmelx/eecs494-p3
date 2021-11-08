@@ -85,13 +85,21 @@ public class PlayerCharacterControl : MonoBehaviour
     [Tooltip("(Ratio to the character's radius) the radius of the ledge detection sphere")]
     public float ledgeDetectionSphereRadiusRatio = 0.6f;
 
+    [Tooltip(
+        "(Ratio to the character's height) Describe how much the camera will move downward to see the ledge when climbing ledge")]
+    public float ledgeCameraDownRatio = 0.4f;
+
+    [Tooltip(
+        "(Ratio to the character's radius) Describe how much the camera will move backward to see the ledge when climbing ledge")]
+    public float ledgeCameraBackRatio = 0.5f;
+
     [Tooltip("Color of the ledge detection sphere for debug")]
     public Color ledgeDetectionColor = Color.yellow;
 
     private Vector3 LedgeDetectionCastOrigin =>
         transform.position
         + transform.up * ledgeDetectionHeightRatio * characterController.height
-        + transform.forward * (characterController.radius - LedgeDetectionSphereRadius);
+        + transform.forward * (-LedgeDetectionSphereRadius);
 
     private float LedgeDetectionMaxDistance =>
         characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
@@ -280,10 +288,8 @@ public class PlayerCharacterControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        print(1);
         if (playerInputHandler.GetJumpInputIsHolding())
         {
-            print(2);
             // todo: if we need to clear the up vector of the velocity
             characterVelocity += currentJumpNormal * jumpForce;
             currentState = CharacterState.InAir;
@@ -355,29 +361,36 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentState = CharacterState.OnLedge;
                 currentLedgeNormal = hit.normal;
                 characterVelocity = Vector3.zero;
+                playerCamera.transform.position -= transform.up * ledgeCameraDownRatio * characterController.height
+                                                   + transform.forward * ledgeCameraBackRatio *
+                                                   characterController.radius;
+                ;
             }
         }
         else if (currentState == CharacterState.OnLedge)
         {
-            if (!characterVelocity.Equals(Vector3.zero) && !canClimbLedge)
+            if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
+                playerCamera.transform.position += transform.up * ledgeCameraDownRatio * characterController.height
+                                                   + transform.forward * ledgeCameraBackRatio *
+                                                   characterController.radius;
             }
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = wallDetectionColor;
-        Gizmos.DrawSphere(
-            WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
-            WallDetectionSphereRadius);
-    
-        Gizmos.color = ledgeDetectionColor;
-        Gizmos.DrawSphere(
-            LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
-            WallDetectionSphereRadius);
-    }
+    // private void OnDrawGizmosSelected()
+    // {
+    //     Gizmos.color = wallDetectionColor;
+    //     Gizmos.DrawSphere(
+    //         WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
+    //         WallDetectionSphereRadius);
+    //
+    //     Gizmos.color = ledgeDetectionColor;
+    //     Gizmos.DrawSphere(
+    //         LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
+    //         WallDetectionSphereRadius);
+    // }
 
     private Vector3 GetForwardVectorClimbingWall(Vector3 currentNormal, Vector3 nextNormal)
     {
