@@ -143,7 +143,10 @@ public class PlayerCharacterControl : MonoBehaviour
 
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
-    
+
+    private Vector3 initialCameraOffset;
+    private Vector3 cameraOffset = Vector3.zero;
+
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
@@ -152,6 +155,7 @@ public class PlayerCharacterControl : MonoBehaviour
         playerInputHandler = GetComponent<PlayerInputHandler>();
         characterController = GetComponent<CharacterController>();
         currentGroundNormal = Vector3.up;
+        initialCameraOffset = playerCamera.transform.position - transform.position;
     }
 
     private void Update()
@@ -195,6 +199,17 @@ public class PlayerCharacterControl : MonoBehaviour
             currentCameraAngleVertical = Mathf.Clamp(currentCameraAngleVertical, -89f, 89f);
             playerCamera.transform.localEulerAngles = new Vector3(currentCameraAngleVertical, 0, 0);
         }
+
+        if (currentState == CharacterState.OnLedge)
+        {
+            cameraOffset = -1f * transform.forward * ledgeCameraBackRatio + -1f * transform.up * ledgeCameraDownRatio;
+        }
+        else
+        {
+            cameraOffset = Vector3.zero;
+        }
+
+        playerCamera.transform.position = transform.position + initialCameraOffset + cameraOffset;
     }
 
     private void CheckGrounded()
