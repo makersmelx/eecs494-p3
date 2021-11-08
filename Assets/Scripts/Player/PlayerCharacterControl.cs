@@ -143,6 +143,9 @@ public class PlayerCharacterControl : MonoBehaviour
 
     // This should not change during one jump and its falling down
     private Vector3 currentJumpNormal;
+    
+    // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+    public bool isWin = false;
 
     private void Start()
     {

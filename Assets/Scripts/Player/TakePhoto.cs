@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class TakePhoto : MonoBehaviour
 {
-    [Header("Camera Zooming")]
-    public Camera playerCamera;
+    [Header("Camera Zooming")] public Camera playerCamera;
     public GameObject scopeImage;
     public float zoomScale = 30;
     private float originalScale;
     private bool inUse = false;
 
-    [Header("Camera Flashing")]
-    public ImageFlash imageFlash;
+    [Header("Camera Flashing")] public ImageFlash imageFlash;
     public float flashDuration = 1f;
     private float flashCounter = 0f;
 
     GameObject panelWin;
     Transform canvas;
+
     void Start()
     {
         originalScale = playerCamera.fieldOfView;
@@ -58,11 +57,19 @@ public class TakePhoto : MonoBehaviour
                 {
                     flashCounter = 0f;
                 }
-
             }
+        }
+        
+        // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            Instantiate(panelWin, canvas);
+            PlayerCharacterControl.Instance.isWin = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
+    // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     void Capture()
     {
         RaycastHit Hit;
@@ -74,7 +81,10 @@ public class TakePhoto : MonoBehaviour
             {
                 Debug.Log("Win Trigger Detected");
                 // TO DO: IMPLEMENT WIN TRIGGER HERE
-                Instantiate(panelWin,canvas);
+                // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+                Instantiate(panelWin, canvas);
+                PlayerCharacterControl.Instance.isWin = true;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }
