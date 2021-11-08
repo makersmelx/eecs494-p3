@@ -361,10 +361,6 @@ public class PlayerCharacterControl : MonoBehaviour
                 currentState = CharacterState.OnLedge;
                 currentLedgeNormal = hit.normal;
                 characterVelocity = Vector3.zero;
-                playerCamera.transform.position -= transform.up * ledgeCameraDownRatio * characterController.height
-                                                   + transform.forward * ledgeCameraBackRatio *
-                                                   characterController.radius;
-                ;
             }
         }
         else if (currentState == CharacterState.OnLedge)
@@ -372,9 +368,6 @@ public class PlayerCharacterControl : MonoBehaviour
             if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
-                playerCamera.transform.position += transform.up * ledgeCameraDownRatio * characterController.height
-                                                   + transform.forward * ledgeCameraBackRatio *
-                                                   characterController.radius;
             }
         }
     }
