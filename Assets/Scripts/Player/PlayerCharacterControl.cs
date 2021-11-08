@@ -91,7 +91,7 @@ public class PlayerCharacterControl : MonoBehaviour
     private Vector3 LedgeDetectionCastOrigin =>
         transform.position
         + transform.up * ledgeDetectionHeightRatio * characterController.height
-        + transform.forward * (characterController.radius - LedgeDetectionSphereRadius);
+        + transform.forward * (-LedgeDetectionSphereRadius);
 
     private float LedgeDetectionMaxDistance =>
         characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
@@ -280,10 +280,8 @@ public class PlayerCharacterControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        print(1);
         if (playerInputHandler.GetJumpInputIsHolding())
         {
-            print(2);
             // todo: if we need to clear the up vector of the velocity
             characterVelocity += currentJumpNormal * jumpForce;
             currentState = CharacterState.InAir;
@@ -359,25 +357,25 @@ public class PlayerCharacterControl : MonoBehaviour
         }
         else if (currentState == CharacterState.OnLedge)
         {
-            if (!characterVelocity.Equals(Vector3.zero) && !canClimbLedge)
+            if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
             {
                 currentState = CharacterState.InAir;
             }
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = wallDetectionColor;
-        Gizmos.DrawSphere(
-            WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
-            WallDetectionSphereRadius);
-    
-        Gizmos.color = ledgeDetectionColor;
-        Gizmos.DrawSphere(
-            LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
-            WallDetectionSphereRadius);
-    }
+    // private void OnDrawGizmosSelected()
+    // {
+    //     Gizmos.color = wallDetectionColor;
+    //     Gizmos.DrawSphere(
+    //         WallDetectionCastOrigin + transform.forward * WallDetectionMaxDistance,
+    //         WallDetectionSphereRadius);
+    //
+    //     Gizmos.color = ledgeDetectionColor;
+    //     Gizmos.DrawSphere(
+    //         LedgeDetectionCastOrigin + transform.forward * LedgeDetectionMaxDistance,
+    //         WallDetectionSphereRadius);
+    // }
 
     private Vector3 GetForwardVectorClimbingWall(Vector3 currentNormal, Vector3 nextNormal)
     {
