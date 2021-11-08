@@ -16,9 +16,13 @@ public class TakePhoto : MonoBehaviour
     public float flashDuration = 1f;
     private float flashCounter = 0f;
 
+    GameObject panelWin;
+    Transform canvas;
     void Start()
     {
         originalScale = playerCamera.fieldOfView;
+        panelWin = Resources.Load<GameObject>("prefabs/UI/PanelWin");
+        canvas = GameObject.Find("Canvas").transform;
     }
 
     // Update is called once per frame
@@ -70,7 +74,7 @@ public class TakePhoto : MonoBehaviour
             {
                 Debug.Log("Win Trigger Detected");
                 // TO DO: IMPLEMENT WIN TRIGGER HERE
-
+                Instantiate(panelWin,canvas);
             }
         }
     }
