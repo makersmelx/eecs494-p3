@@ -196,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraSensitivity: 1
   webGLCameraSensitivityMultiplier: 0.25
+  inGameMode: 0
 --- !u!114 &1592447911235533160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +252,8 @@ MonoBehaviour:
   scopeImage: {fileID: 0}
   zoomScale: 30
   imageFlash: {fileID: 41857809571056808, guid: 681bfb892970e9f46af5523bc37dfc59, type: 3}
-  flashDuration: 1
+  flashDuration: 0.2
+  flashAudio: {fileID: 8300000, guid: ffc7ad0be43404383ad2299e2a858eb5, type: 3}
 --- !u!1 &8508618597271406278
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,22 @@ public class PlayerInputHandler : MonoBehaviour
     private Vector2 mouseInput;
     private Vector2 movementInput;
     private bool jumping;
-    private bool crouching;
-    private bool canProcessMouseInput = false;
+    public bool inGameMode = false;
+
+    private static PlayerInputHandler _instance;
+    public static PlayerInputHandler Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Public methods
@@ -31,22 +45,37 @@ public class PlayerInputHandler : MonoBehaviour
     // Jump input
     public bool JumpKeyPressed() { return jumping; }
 
+    public void EnterGameMode()
+    {
+        inGameMode = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void ExitGameMode()
+    {
+        inGameMode = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 
     // -------------------------------------------------------------------------
     // Private methods
     // -------------------------------------------------------------------------
+    private void Start()
+    {
+        EnterGameMode();
+    }
+
     private void Update()
     {
-        if (!IsMouseOverGameWindow())
+        if (Input.GetKey(KeyCode.Escape))
         {
-            canProcessMouseInput = false;
-            return;
+            ExitGameMode();
         }
 
-        // Collect user input each frame
-        canProcessMouseInput = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        UpdateUserInput();
+        // Collect user input each frame if in game mode
+        if (inGameMode) UpdateUserInput();
     }
 
     private void UpdateUserInput()
@@ -58,7 +87,6 @@ public class PlayerInputHandler : MonoBehaviour
 
         // Update jump, crouch input
         jumping = Input.GetButton(GameConstants.ButtonJump);
-        crouching = Input.GetKey(KeyCode.LeftShift);
 
         // Update mouse input
         float mouseX = Input.GetAxisRaw(GameConstants.MouseAxisHorizontal);
