@@ -1,0 +1,16 @@
+[Issue: mouse]
+Since we use the mouse to control the user view, when the mouser moves out of the game window, the mouse will still control the game. Also when the player starts with the mouse outside the windows, the game beginning will be confusing
+We use the cursor lock state to enable and disable the mouse control when the mouse is out of the game window. And also when the game ends, the mouse will appear and can navigate through different game scenes.
+
+[Issue: movement]
+The movement in the gold spike is awkward and not smooth, making it hard for the player to perform accurate actions on the platform.
+We use character controller to handle the movement and the jump mechanic. Now the character can move accuratly and the movement will keep consistent with the keyboard input.
+
+[Issue: climb on the wall]
+When climbing on the wall, because the camera is too close to the wall and the wall is made of simple patterns, the player will get lost and also feel dizzy
+We add patterns to the wall prototype to make it able to be recoginized. This will be a temp solution only since the final wall will be modern buildings but will be avaiable on the next milestone.
+Also, we adjust the climbing ledge mechanic. The player can jump to climb the ledge, and the camera position is adjusted to help the player check his location
+
+[Issue: wall walk]
+The wall walk has a control mechanic that is confusing and not understanable by most players. Also there is a risk that players may go to the roof of the wall to trigger something unexpected.
+We rewrite the wall walk mechanics. Now the player will rotate themselves to stand on the wall. When the player reaches the end of the wall, he will fall down, with no possibility of going to the roof.
