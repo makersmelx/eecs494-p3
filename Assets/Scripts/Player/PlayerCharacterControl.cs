@@ -24,7 +24,13 @@ public class PlayerCharacterControl : MonoBehaviour
     public float maxSpeedOnGround = 10f;
 
     [Tooltip("How fast the player can change his speed")]
-    public float speedSharpnessOnGround = 300;
+    public float speedSharpnessOnGround = 200;
+
+    [Tooltip("Smallest ratio for a velocity to still be considered motion")]
+    public float lowVelocityThreshold = 0.01f;
+
+    [Tooltip("How much to correct for sliding")]
+    public float counterMovement = 0.175f;
 
 
     // ============================================= Jump =============================================
@@ -138,16 +144,10 @@ public class PlayerCharacterControl : MonoBehaviour
     // todo: make it not editable
     [Header("Runtime Value for Display")] public CharacterState currentState;
 
-    // record the current velocity
-    private Vector3 characterVelocity;
     private float currentCameraAngleVertical = 0f;
     private float lastJumpTime = 0f;
 
     private Vector3 currentGroundNormal;
-    private Vector3 currentLedgeNormal;
-
-    // This should not change during one jump and its falling down
-    private Vector3 currentJumpNormal;
 
     private Vector3 initialCameraOffset;
     private Vector3 cameraOffset = Vector3.zero;
@@ -180,8 +180,6 @@ public class PlayerCharacterControl : MonoBehaviour
     private void Update()
     {
         HandleCameraMove();
-        // HandleCharacterJumpOntoWall();
-        // HandleCharacterClimbLedge();
     }
 
     private void FixedUpdate()
@@ -189,9 +187,18 @@ public class PlayerCharacterControl : MonoBehaviour
         CheckGrounded();
         HandleCharacterMove();
         HandleCharacterJump();
+        HandleCharacterGravity();
+        HandleCharacterClimbLedge();
     }
 
+    // *******************************************************************************************
+    // ******                                  Api                                          ******
+    // *******************************************************************************************
 
+
+    // *******************************************************************************************
+    // ******                            Main Functions                                     ******
+    // *******************************************************************************************
     private void HandleCameraMove()
     {
         // horizontal character rotation
@@ -276,10 +283,35 @@ public class PlayerCharacterControl : MonoBehaviour
         Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient * speedSharpnessOnGround;
         // todo: if there is a crouch, reduce the speed by a ratio
         // todo: if there is a slope, adjust the velocity
-        rigidBody.AddForce(targetVelocity * Time.deltaTime);
-        Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, transform.up) * currentGroundNormal;
-        Vector3 horizonVelocity = rigidBody.velocity - upVelocity;
-        rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, maxSpeedOnGround) + upVelocity;
+
+        // Clamp the horizontal speed
+        {
+            Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, transform.up) * currentGroundNormal;
+            Vector3 horizonVelocity = rigidBody.velocity - upVelocity;
+            rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, maxSpeedOnGround) + upVelocity;
+            rigidBody.AddForce(targetVelocity * Time.deltaTime);
+        }
+
+        // Adjust the speed to zero when there is no input and the character is not in the air
+        {
+            if (currentState == CharacterState.DefaultGrounded
+                || currentState == CharacterState.OnLedge)
+            {
+                float forwardSpeed = Vector3.Dot(rigidBody.velocity, transform.forward);
+                float rightSpeed = Vector3.Dot(rigidBody.velocity, transform.right);
+                if (Math.Abs(rightSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().x) < 1)
+                {
+                    rigidBody.AddForce(-rightSpeed * counterMovement * speedSharpnessOnGround
+                                       * transform.right * Time.deltaTime);
+                }
+
+                if (Math.Abs(forwardSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().z) < 1)
+                {
+                    rigidBody.AddForce(-forwardSpeed * counterMovement * speedSharpnessOnGround
+                                       * transform.forward * Time.deltaTime);
+                }
+            }
+        }
     }
 
     // Jump Function will not check the character's current state
@@ -291,6 +323,18 @@ public class PlayerCharacterControl : MonoBehaviour
             currentState = CharacterState.InAir;
             currentGroundNormal = Vector3.up;
             lastJumpTime = Time.time;
+        }
+    }
+
+    private void HandleCharacterGravity()
+    {
+        if (currentState == CharacterState.InAir)
+        {
+            rigidBody.useGravity = true;
+        }
+        else if (currentState == CharacterState.OnLedge)
+        {
+            rigidBody.useGravity = false;
         }
     }
 
@@ -330,32 +374,7 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void HandleCharacterClimbLedge()
     {
-        bool canClimbLedge = Physics.SphereCast(
-            LedgeDetectionCastOrigin,
-            LedgeDetectionSphereRadius,
-            transform.forward,
-            out RaycastHit hit,
-            LedgeDetectionMaxDistance,
-            ledgeCheckLayers,
-            QueryTriggerInteraction.Ignore);
-
-        if (currentState == CharacterState.InAir)
-        {
-            if (canClimbLedge)
-            {
-                currentState = CharacterState.OnLedge;
-                currentLedgeNormal = hit.normal;
-                characterVelocity = Vector3.zero;
-                AudioSource.PlayClipAtPoint(ledgeClimbAudio, transform.position);
-            }
-        }
-        else if (currentState == CharacterState.OnLedge)
-        {
-            if (characterVelocity.magnitude > maxSpeedOnGround * 0.1 && !canClimbLedge)
-            {
-                currentState = CharacterState.InAir;
-            }
-        }
+        
     }
 
     // private void OnDrawGizmosSelected()
