@@ -297,12 +297,10 @@ MonoBehaviour:
   wallDetectionSphereRadiusRatio: 1.5
   wallWalkAudio: {fileID: 8300000, guid: b66087d867be13446a6c2926436389a1, type: 3}
   wallDetectionColor: {r: 1, g: 0, b: 0, a: 1}
-  ledgeCheckLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  ledgeDetectionHeightRatio: 0.3
-  ledgeDetectionMaxDistanceForwardRatio: 2
-  ledgeDetectionSphereRadiusRatio: 1.5
+  wallDetectRayHeightLower: 0.2
+  wallDetectRayHeightUpper: 0.8
+  ledgeClimbRayHeight: 0.5
+  rayCastDistance: 1.5
   ledgeCameraDownRatio: 0.5
   ledgeCameraBackRatio: 0.5
   ledgeClimbAudio: {fileID: 0}

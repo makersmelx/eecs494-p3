@@ -56,42 +56,21 @@ public class PlayerCharacterControl : MonoBehaviour
     [Header("Wall Walk")] [Tooltip("Physic layers checked to consider the player is close to a wall")]
     public LayerMask wallCheckLayers = -1;
 
-    [Tooltip(
-        "(Ratio to the character's radius) the max forward distance from the transform position to detect the wall")]
-    public float wallDetectionMaxDistanceForwardRatio = 0.5f;
-
-    [Tooltip("(Ratio to the character's radius) the radius of the wall detection sphere")]
-    public float wallDetectionSphereRadiusRatio = 0.6f;
-
-    [Tooltip("Wall Walk Audio")] public AudioClip wallWalkAudio;
-
-    [Tooltip("Color of the wall detection sphere for debug")]
-    public Color wallDetectionColor = Color.red;
-
-    private Vector3 WallDetectionCastOrigin => transform.position +
-                                               transform.forward *
-                                               (capsuleCollider.radius - WallDetectionSphereRadius);
-
-    private float WallDetectionMaxDistance =>
-        capsuleCollider.radius * wallDetectionMaxDistanceForwardRatio;
-
-    private float WallDetectionSphereRadius => capsuleCollider.radius * wallDetectionSphereRadiusRatio;
-
-
     // ============================================= Ledge Climb =============================================
-    [Header("Ledge Climb")] [Tooltip("Physic layers checked to consider the player is close to a ledge")]
-    public LayerMask ledgeCheckLayers = -1;
+    [Header("Ledge Climb")]
+    [Tooltip(
+        "(Ratio of the height) Height of the lower ray that detects the wall when the player is falling down")]
+    public float wallDetectChestRay = 0.2f;
 
     [Tooltip(
-        "(Ratio to the character's height) the height of the origin of the detection compared to the transform position")]
-    public float ledgeDetectionHeightRatio = 0.5f;
+        "(Ratio of the height) Height of the upper ray that detects the wall when the player is moving up")]
+    public float wallDetectHeadRay = 0.8f;
 
-    [Tooltip(
-        "(Ratio to the character's radius) the max forward distance from the origin position to detect the wall")]
-    public float ledgeDetectionMaxDistanceForwardRatio = 0.5f;
+    [Tooltip("(Ratio of the height) Height of the ray that judges a ledge climb")]
+    public float ledgeClimbHandRay = 0.5f;
 
-    [Tooltip("(Ratio to the character's radius) the radius of the ledge detection sphere")]
-    public float ledgeDetectionSphereRadiusRatio = 0.6f;
+    [Tooltip("(Ratio of the radius) The max distance for the ray cast, detecting walls and ledge climb")]
+    public float rayCastDistance = 1.5f;
 
     [Tooltip(
         "(Ratio to the character's height) Describe how much the camera will move downward to see the ledge when climbing ledge")]
@@ -102,19 +81,6 @@ public class PlayerCharacterControl : MonoBehaviour
     public float ledgeCameraBackRatio = 0.5f;
 
     [Tooltip("Ledge Audio")] public AudioClip ledgeClimbAudio;
-
-    [Tooltip("Color of the ledge detection sphere for debug")]
-    public Color ledgeDetectionColor = Color.yellow;
-
-    private Vector3 LedgeDetectionCastOrigin =>
-        transform.position
-        + transform.up * ledgeDetectionHeightRatio * capsuleCollider.height
-        + transform.forward * (-LedgeDetectionSphereRadius);
-
-    private float LedgeDetectionMaxDistance =>
-        capsuleCollider.radius * ledgeDetectionMaxDistanceForwardRatio;
-
-    private float LedgeDetectionSphereRadius => capsuleCollider.radius * ledgeDetectionSphereRadiusRatio;
 
 
     // ============================================= Component Reference ============================================= 
@@ -154,9 +120,11 @@ public class PlayerCharacterControl : MonoBehaviour
 
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
-    
+
     private bool isJumping = false;
 
+    // A count set to prevent multiple ledge climb check when the character is trying to leave the ledge
+    private int ledgeJudgeCount = 0;
 
     private void Awake()
     {
@@ -333,7 +301,6 @@ public class PlayerCharacterControl : MonoBehaviour
             {
                 isJumping = false;
             }
-            
         }
     }
 
@@ -385,7 +352,70 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private void HandleCharacterClimbLedge()
     {
-        
+        bool isUpperRayHit = Physics.Raycast(
+            transform.position + transform.up * wallDetectHeadRay * capsuleCollider.height,
+            transform.forward,
+            rayCastDistance * capsuleCollider.radius
+        );
+
+        bool isLowerRayHit = Physics.Raycast(
+            transform.position + transform.up * wallDetectChestRay * capsuleCollider.height,
+            transform.forward,
+            rayCastDistance * capsuleCollider.radius
+        );
+
+        bool canClimb = Physics.Raycast(
+            transform.position + transform.up * ledgeClimbHandRay * capsuleCollider.height,
+            transform.forward,
+            rayCastDistance * capsuleCollider.radius
+        );
+
+
+        bool isOnWall = isUpperRayHit || isLowerRayHit;
+        // enter the state
+        if (isOnWall)
+        {
+            if (canClimb && ledgeJudgeCount <= 1)
+            {
+                currentState = CharacterState.OnLedge;
+                rigidBody.velocity = Vector3.zero;
+                ledgeJudgeCount += 1;
+            }
+        }
+        else
+        {
+            ledgeJudgeCount = 0;
+        }
+
+        if (currentState == CharacterState.OnLedge)
+        {
+            if (rigidBody.velocity.magnitude > lowVelocityThreshold && !isOnWall)
+            {
+                currentState = CharacterState.InAir;
+            }
+        }
+
+        // For Debugging
+        {
+            Debug.DrawLine(
+                transform.position + transform.up * wallDetectHeadRay * capsuleCollider.height,
+                transform.position + transform.up * wallDetectHeadRay * capsuleCollider.height +
+                transform.forward * rayCastDistance * capsuleCollider.radius,
+                Color.red
+            );
+            Debug.DrawLine(
+                transform.position + transform.up * wallDetectChestRay * capsuleCollider.height,
+                transform.position + transform.up * wallDetectChestRay * capsuleCollider.height +
+                transform.forward * rayCastDistance * capsuleCollider.radius,
+                Color.green
+            );
+            Debug.DrawLine(
+                transform.position + transform.up * ledgeClimbHandRay * capsuleCollider.height,
+                transform.position + transform.up * ledgeClimbHandRay * capsuleCollider.height +
+                transform.forward * rayCastDistance * capsuleCollider.radius,
+                Color.yellow
+            );
+        }
     }
 
     // private void OnDrawGizmosSelected()
