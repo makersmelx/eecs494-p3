@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputHandler), typeof(CharacterController))]
+[RequireComponent(typeof(PlayerInputHandler))]
 public class PlayerCharacterControl : MonoBehaviour
 {
     // ============================================= General =============================================
@@ -24,12 +24,12 @@ public class PlayerCharacterControl : MonoBehaviour
     public float maxSpeedOnGround = 10f;
 
     [Tooltip("How fast the player can change his speed")]
-    public float speedSharpnessOnGround = 15;
+    public float speedSharpnessOnGround = 300;
 
 
     // ============================================= Jump =============================================
     [Header("Jump")] [Tooltip("Force applied upward when jumping")]
-    public float jumpForce = 9f;
+    public float jumpForce = 120f;
 
 
     // ============================================= Check Grounded =============================================
@@ -64,12 +64,12 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private Vector3 WallDetectionCastOrigin => transform.position +
                                                transform.forward *
-                                               (characterController.radius - WallDetectionSphereRadius);
+                                               (capsuleCollider.radius - WallDetectionSphereRadius);
 
     private float WallDetectionMaxDistance =>
-        characterController.radius * wallDetectionMaxDistanceForwardRatio;
+        capsuleCollider.radius * wallDetectionMaxDistanceForwardRatio;
 
-    private float WallDetectionSphereRadius => characterController.radius * wallDetectionSphereRadiusRatio;
+    private float WallDetectionSphereRadius => capsuleCollider.radius * wallDetectionSphereRadiusRatio;
 
 
     // ============================================= Ledge Climb =============================================
@@ -102,18 +102,19 @@ public class PlayerCharacterControl : MonoBehaviour
 
     private Vector3 LedgeDetectionCastOrigin =>
         transform.position
-        + transform.up * ledgeDetectionHeightRatio * characterController.height
+        + transform.up * ledgeDetectionHeightRatio * capsuleCollider.height
         + transform.forward * (-LedgeDetectionSphereRadius);
 
     private float LedgeDetectionMaxDistance =>
-        characterController.radius * ledgeDetectionMaxDistanceForwardRatio;
+        capsuleCollider.radius * ledgeDetectionMaxDistanceForwardRatio;
 
-    private float LedgeDetectionSphereRadius => characterController.radius * ledgeDetectionSphereRadiusRatio;
+    private float LedgeDetectionSphereRadius => capsuleCollider.radius * ledgeDetectionSphereRadiusRatio;
 
 
     // ============================================= Component Reference ============================================= 
     private PlayerInputHandler playerInputHandler;
-    private CharacterController characterController;
+    private Rigidbody rigidBody;
+    private CapsuleCollider capsuleCollider;
     public static PlayerCharacterControl Instance;
 
 
@@ -154,24 +155,6 @@ public class PlayerCharacterControl : MonoBehaviour
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
-    private void Start()
-    {
-        playerInputHandler = GetComponent<PlayerInputHandler>();
-        characterController = GetComponent<CharacterController>();
-        currentGroundNormal = Vector3.up;
-        initialCameraOffset = playerCamera.transform.position - transform.position;
-    }
-
-    private void Update()
-    {
-        HandleCameraMove();
-
-        CheckGrounded();
-
-        HandleCharacterMove();
-        HandleCharacterJumpOntoWall();
-        HandleCharacterClimbLedge();
-    }
 
     private void Awake()
     {
@@ -184,6 +167,30 @@ public class PlayerCharacterControl : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Start()
+    {
+        playerInputHandler = GetComponent<PlayerInputHandler>();
+        rigidBody = GetComponent<Rigidbody>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        currentGroundNormal = Vector3.up;
+        initialCameraOffset = playerCamera.transform.position - transform.position;
+    }
+
+    private void Update()
+    {
+        HandleCameraMove();
+        // HandleCharacterJumpOntoWall();
+        // HandleCharacterClimbLedge();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckGrounded();
+        HandleCharacterMove();
+        HandleCharacterJump();
+    }
+
 
     private void HandleCameraMove()
     {
@@ -221,53 +228,35 @@ public class PlayerCharacterControl : MonoBehaviour
         float finalCheckDistance =
             currentState == CharacterState.InAir
                 ? groundCheckDistanceInAir
-                : groundCheckDistance + characterController.skinWidth;
+                : groundCheckDistance;
 
         // reset
-        Vector3 toGroundDirection = -1f * currentGroundNormal;
+        Vector3 toGroundDirection = Vector3.down;
         // only try to detect ground if it's been a short amount of time since last jump;
         if (Time.time >= lastJumpTime + checkGroundedCooldownTime)
         {
-            // todo: when walking on the wall, the character now sticks half of the body inside the wall...So here is a tmp solution to make the detection work
-            Vector3 origin = transform.position +
-                             (currentState == CharacterState.WallWalk
-                                 ? Vector3.zero
-                                 : toGroundDirection * characterController.height / 2);
-
-            // True if the user is on the ground or on a wall
-            if (Physics.Raycast(
+            Vector3 origin = transform.position + toGroundDirection * capsuleCollider.height / 2;
+            bool isGrounded = Physics.Raycast(
                 origin,
                 toGroundDirection,
                 out RaycastHit hit,
                 finalCheckDistance,
                 groundCheckLayers,
                 QueryTriggerInteraction.Ignore
-            ))
+            );
+            Debug.DrawLine(origin, origin + toGroundDirection * finalCheckDistance, Color.red);
+            // True if the user is on the ground or on a wall
+            if (isGrounded)
             {
-                currentGroundNormal = hit.normal;
                 // Only consider this a valid ground hit if the ground normal goes in the same direction as the character up
                 // and if the slope angle is lower than the character controller's limit
                 if (Vector3.Dot(hit.normal, toGroundDirection * -1) > 0f)
                 {
-                    currentJumpNormal = currentGroundNormal;
                     if (currentState == CharacterState.InAir)
                     {
                         currentState = CharacterState.DefaultGrounded;
                     }
-
-                    if (hit.distance > characterController.skinWidth)
-                    {
-                        characterController.Move(toGroundDirection * hit.distance);
-                    }
                 }
-            }
-            // when the character reaches the end of a wall, he will fall
-            else if (currentState == CharacterState.WallWalk)
-            {
-                currentState = CharacterState.InAir;
-                Vector3 forwardHorizontal = GetForwardVectorClimbingWall(currentGroundNormal, Vector3.up);
-                currentGroundNormal = Vector3.up;
-                transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
             }
             else if (currentState == CharacterState.OnLedge)
             {
@@ -284,88 +273,60 @@ public class PlayerCharacterControl : MonoBehaviour
     {
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
-        Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient;
+        Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient * speedSharpnessOnGround;
         // todo: if there is a crouch, reduce the speed by a ratio
         // todo: if there is a slope, adjust the velocity
-        characterVelocity =
-            Vector3.Lerp(characterVelocity, targetVelocity, speedSharpnessOnGround * Time.deltaTime);
-
-        if (currentState == CharacterState.DefaultGrounded
-            || currentState == CharacterState.WallWalk)
-        {
-            HandleCharacterJump();
-        }
-        else if (currentState == CharacterState.InAir)
-        {
-            HandleCharacterGravity();
-        }
-        else if (currentState == CharacterState.OnLedge)
-        {
-            HandleCharacterJump();
-        }
-
-        characterController.Move(characterVelocity * Time.deltaTime);
+        rigidBody.AddForce(targetVelocity * Time.deltaTime);
+        Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, transform.up) * currentGroundNormal;
+        Vector3 horizonVelocity = rigidBody.velocity - upVelocity;
+        rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, maxSpeedOnGround) + upVelocity;
     }
 
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (playerInputHandler.GetJumpInputIsHolding())
+        if (playerInputHandler.GetJumpInputIsHolding() && currentState != CharacterState.InAir)
         {
-            // todo: if we need to clear the up vector of the velocity
-            characterVelocity += currentJumpNormal * jumpForce;
+            rigidBody.AddForce(jumpForce * Vector3.up);
             currentState = CharacterState.InAir;
             currentGroundNormal = Vector3.up;
-            // todo: add coroutine to make it not so dizzy
-            Vector3 forwardHorizontal = transform.forward;
-            forwardHorizontal.y = 0;
-            transform.rotation = Quaternion.LookRotation(forwardHorizontal, Vector3.up);
             lastJumpTime = Time.time;
         }
     }
 
-    private void HandleCharacterGravity()
-    {
-        if (currentState == CharacterState.InAir)
-        {
-            // Only apply the gravity to get the character down when he is in the air
-            characterVelocity += Vector3.down * gravityDownForce * Time.deltaTime;
-        }
-    }
-
-    private void HandleCharacterJumpOntoWall()
-    {
-        if (currentState == CharacterState.InAir
-            && Physics.SphereCast(
-                WallDetectionCastOrigin,
-                WallDetectionSphereRadius,
-                transform.forward,
-                out RaycastHit hit,
-                WallDetectionMaxDistance,
-                wallCheckLayers,
-                QueryTriggerInteraction.Ignore))
-        {
-            currentState = CharacterState.WallWalk;
-
-            // todo: add coroutine to make it not so dizzy
-            // When climbing the wall, the character will rotate during which the camera will always look at the forward direction
-
-            // A vector is a forward direction if it is a normal vector
-            // and current ground normal, wall normal and this vector are intersectional with each other
-
-            // This value is the forward direction that will not change when climbing to the wall
-            Vector3 forwardHorizontal = GetForwardVectorClimbingWall(currentGroundNormal, hit.normal);
-
-            transform.rotation = Quaternion.LookRotation(forwardHorizontal, hit.normal);
-            currentGroundNormal = hit.normal;
-            transform.position = hit.point + hit.normal * characterController.height;
-
-            characterVelocity -= currentGroundNormal * jumpForce -
-                                 currentGroundNormal * Vector3.Dot(characterVelocity, currentGroundNormal);
-
-            AudioSource.PlayClipAtPoint(wallWalkAudio, transform.position);
-        }
-    }
+    // private void HandleCharacterJumpOntoWall()
+    // {
+    //     if (currentState == CharacterState.InAir
+    //         && Physics.SphereCast(
+    //             WallDetectionCastOrigin,
+    //             WallDetectionSphereRadius,
+    //             transform.forward,
+    //             out RaycastHit hit,
+    //             WallDetectionMaxDistance,
+    //             wallCheckLayers,
+    //             QueryTriggerInteraction.Ignore))
+    //     {
+    //         currentState = CharacterState.WallWalk;
+    //
+    //         // todo: add coroutine to make it not so dizzy
+    //         // When climbing the wall, the character will rotate during which the camera will always look at the forward direction
+    //
+    //         // A vector is a forward direction if it is a normal vector
+    //         // and current ground normal, wall normal and this vector are intersectional with each other
+    //
+    //         // This value is the forward direction that will not change when climbing to the wall
+    //         Vector3 forwardHorizontal = GetForwardVectorClimbingWall(currentGroundNormal, hit.normal);
+    //
+    //         transform.rotation = Quaternion.LookRotation(forwardHorizontal, hit.normal);
+    //         currentGroundNormal = hit.normal;
+    //         transform.position = hit.point + hit.normal * characterController.height;
+    //
+    //         characterVelocity -= currentGroundNormal * jumpForce -
+    //                              currentGroundNormal * Vector3.Dot(characterVelocity, currentGroundNormal);
+    //
+    //         AudioSource.PlayClipAtPoint(wallWalkAudio, transform.position);
+    //     }
+    // }
 
     private void HandleCharacterClimbLedge()
     {

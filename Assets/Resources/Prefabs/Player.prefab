@@ -280,8 +280,8 @@ MonoBehaviour:
   playerCamera: {fileID: 374256529656680466}
   cameraMoveSpeed: 200
   maxSpeedOnGround: 13
-  speedSharpnessOnGround: 15
-  jumpForce: 80
+  speedSharpnessOnGround: 300
+  jumpForce: 900
   groundCheckLayers:
     serializedVersion: 2
     m_Bits: 1408
