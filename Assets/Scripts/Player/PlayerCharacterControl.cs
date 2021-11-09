@@ -84,7 +84,7 @@ public class PlayerCharacterControl : MonoBehaviour
 
     [Tooltip(
         "(Ratio to the character's height) the height of the origin of the detection compared to the transform position")]
-    public float ledgeDetectionHeightRatio = 0.3f;
+    public float ledgeDetectionHeightRatio = 0.5f;
 
     [Tooltip(
         "(Ratio to the character's radius) the max forward distance from the origin position to detect the wall")]
@@ -95,7 +95,7 @@ public class PlayerCharacterControl : MonoBehaviour
 
     [Tooltip(
         "(Ratio to the character's height) Describe how much the camera will move downward to see the ledge when climbing ledge")]
-    public float ledgeCameraDownRatio = 0.4f;
+    public float ledgeCameraDownRatio = 0.5f;
 
     [Tooltip(
         "(Ratio to the character's radius) Describe how much the camera will move backward to see the ledge when climbing ledge")]
@@ -154,6 +154,8 @@ public class PlayerCharacterControl : MonoBehaviour
 
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
+    
+    private bool isJumping = false;
 
 
     private void Awake()
@@ -317,12 +319,21 @@ public class PlayerCharacterControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (playerInputHandler.GetJumpInputIsHolding() && currentState != CharacterState.InAir)
+        if (currentState != CharacterState.InAir)
         {
-            rigidBody.AddForce(jumpForce * Vector3.up);
-            currentState = CharacterState.InAir;
-            currentGroundNormal = Vector3.up;
-            lastJumpTime = Time.time;
+            if (!isJumping && playerInputHandler.GetJumpInputIsHolding())
+            {
+                rigidBody.AddForce(jumpForce * Vector3.up);
+                currentState = CharacterState.InAir;
+                currentGroundNormal = Vector3.up;
+                lastJumpTime = Time.time;
+                isJumping = true;
+            }
+            else
+            {
+                isJumping = false;
+            }
+            
         }
     }
 

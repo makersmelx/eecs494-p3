@@ -289,7 +289,7 @@ MonoBehaviour:
     m_Bits: 1408
   groundCheckDistance: 1
   groundCheckDistanceInAir: 0.07
-  checkGroundedCooldownTime: 1
+  checkGroundedCooldownTime: 0.2
   wallCheckLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -301,8 +301,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   ledgeDetectionHeightRatio: 0.3
-  ledgeDetectionMaxDistanceForwardRatio: 3
-  ledgeDetectionSphereRadiusRatio: 2
+  ledgeDetectionMaxDistanceForwardRatio: 2
+  ledgeDetectionSphereRadiusRatio: 1.5
   ledgeCameraDownRatio: 0.5
   ledgeCameraBackRatio: 0.5
   ledgeClimbAudio: {fileID: 0}
