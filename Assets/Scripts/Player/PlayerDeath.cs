@@ -9,6 +9,7 @@ public class PlayerDeath : MonoBehaviour
     // Start is called before the first frame update
     //This is a test code that is temporary to automatically respawn the main player.
     Vector3 initPos;
+    private Quaternion initRotation;
     HasHealth healthBar;
 
     GameObject panelHealth;
@@ -16,6 +17,7 @@ public class PlayerDeath : MonoBehaviour
     void Start()
     {
         initPos = transform.position;
+        initRotation = transform.rotation;
         healthBar = GetComponent<HasHealth>();
         healthBar.ExecuteDeath += Die;
         panelHealth = Resources.Load<GameObject>("Prefabs/UI/PlayerStats");
@@ -37,6 +39,7 @@ public class PlayerDeath : MonoBehaviour
     void Die()
     {
         transform.position = initPos;
+        transform.rotation = initRotation;
         healthBar.HealToFull();
     }
 

@@ -217,9 +217,7 @@ public class PlayerCharacterControl : MonoBehaviour
                 origin,
                 toGroundDirection,
                 out RaycastHit hit,
-                finalCheckDistance,
-                groundCheckLayers,
-                QueryTriggerInteraction.Ignore
+                finalCheckDistance
             );
             Debug.DrawLine(origin, origin + toGroundDirection * finalCheckDistance, Color.red);
             // True if the user is on the ground or on a wall
