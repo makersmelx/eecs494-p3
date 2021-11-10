@@ -20,31 +20,34 @@ public class PlayerInputHandler : MonoBehaviour
     [Tooltip("Used to flip the horizontal input axis")]
     public bool invertXAxis = false;
 
+    public bool inGameMode = false;
     private bool canProcessMouseInput = false;
 
-    private void Update()
+    private static PlayerInputHandler _instance;
+    public static PlayerInputHandler Instance { get { return _instance; } }
+
+
+    // -------------------------------------------------------------------------
+    // Public methods
+    // -------------------------------------------------------------------------
+
+    // Hides cursor and locks it to the center of the screen
+    public void EnterGameMode()
     {
-        // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
-        if (IsMouseOverGameWindow && !PlayerCharacterControl.Instance.isWin)
-        {
-            canProcessMouseInput = true;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
-        {
-            canProcessMouseInput = false;
-        }
+        inGameMode = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    // todo: add condition that cannot control
-    public bool CanProcessInput()
+    // Returns cursor control to the player
+    public void ExitGameMode()
     {
-        return true;
+        inGameMode = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    /*
-     * return the normalized movement Vector3
-     */
+    // Return the normalized movement Vector3
     public Vector3 GetMoveInput()
     {
         if (CanProcessInput())
@@ -77,6 +80,42 @@ public class PlayerInputHandler : MonoBehaviour
         return CanProcessInput() && Input.GetButton(GameConstants.ButtonJump);
     }
 
+
+    // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
+    private void Start()
+    {
+        EnterGameMode();
+    }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this) Destroy(this.gameObject);
+        else _instance = this;
+    }
+
+    private void Update()
+    {
+        // Press 'ESC' to regain mouse control
+        if (Input.GetKey(KeyCode.Escape)) ExitGameMode();
+
+        // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+        if (IsMouseOverGameWindow && !PlayerCharacterControl.Instance.isWin)
+        {
+            canProcessMouseInput = true;
+        }
+        else
+        {
+            canProcessMouseInput = false;
+        }
+    }
+
+    // todo: add condition that cannot control
+    public bool CanProcessInput()
+    {
+        return true;
+    }
 
     private float GetMouseInputByAxis(string mouseInputName)
     {
