@@ -25,7 +25,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
-        if (IsMouseOverGameWindow && !PlayerCharacterControl.Instance.isWin)
+        if (IsMouseOverGameWindow && !PlayerMoveControl.Instance.isWin)
         {
             canProcessMouseInput = true;
             Cursor.lockState = CursorLockMode.Locked;
