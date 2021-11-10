@@ -26,6 +26,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         player.transform.position = playerStartPosition;
+        currentCheckpointPosition = playerStartPosition;
     }
 
     private void Update()

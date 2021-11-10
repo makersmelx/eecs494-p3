@@ -21,16 +21,27 @@ public class PlayerInputHandler : MonoBehaviour
     public bool invertXAxis = false;
 
     public bool inGameMode = false;
+
+    // -------------------------------------------------------------------------
+    // Internal state
+    // -------------------------------------------------------------------------
     private bool canProcessMouseInput = false;
 
+    // -------------------------------------------------------------------------
+    // Singleton
+    // -------------------------------------------------------------------------
     private static PlayerInputHandler _instance;
     public static PlayerInputHandler Instance { get { return _instance; } }
 
+    private void Awake()
+    {
+        if (_instance != null && _instance != this) Destroy(this.gameObject);
+        else _instance = this;
+    }
 
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-
     // Hides cursor and locks it to the center of the screen
     public void EnterGameMode()
     {
@@ -50,16 +61,13 @@ public class PlayerInputHandler : MonoBehaviour
     // Return the normalized movement Vector3
     public Vector3 GetMoveInput()
     {
-        if (CanProcessInput())
+        if (inGameMode && CanProcessInput())
         {
-            Vector3 move = new Vector3(
-                Input.GetAxisRaw(GameConstants.KeyboardAxisHorizontal),
-                0f,
-                Input.GetAxisRaw(GameConstants.KeyboardAxisVertical)
-            );
+            float horizontalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisHorizontal);
+            float verticalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisVertical);
 
-            move = Vector3.ClampMagnitude(move, 1);
-            return move;
+            Vector3 moveInput = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+            return moveInput;
         }
 
         return Vector3.zero;
@@ -67,17 +75,29 @@ public class PlayerInputHandler : MonoBehaviour
 
     public float GetCameraInputHorizontal()
     {
-        return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
+        if (inGameMode && CanProcessInput())
+        {
+            return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
+        }
+        return 0;
     }
 
     public float GetCameraInputVertical()
     {
-        return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
+        if (inGameMode && CanProcessInput())
+        {
+            return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
+        }
+        return 0;
     }
 
     public bool GetJumpInputIsHolding()
     {
-        return CanProcessInput() && Input.GetButton(GameConstants.ButtonJump);
+        if (inGameMode && CanProcessInput())
+        {
+            return Input.GetButton(GameConstants.ButtonJump);
+        }
+        return false;
     }
 
 
@@ -87,12 +107,6 @@ public class PlayerInputHandler : MonoBehaviour
     private void Start()
     {
         EnterGameMode();
-    }
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this) Destroy(this.gameObject);
-        else _instance = this;
     }
 
     private void Update()
@@ -109,6 +123,11 @@ public class PlayerInputHandler : MonoBehaviour
         {
             canProcessMouseInput = false;
         }
+    }
+
+    private void UpdateUserInput()
+    {
+
     }
 
     // todo: add condition that cannot control
