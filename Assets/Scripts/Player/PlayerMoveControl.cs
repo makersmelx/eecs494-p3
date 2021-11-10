@@ -63,6 +63,7 @@ public class PlayerMoveControl : MonoBehaviour
     public bool isWin = false;
 
     public bool IsGrounded { get; private set; }
+    public bool isWallRunning;
 
     private void Awake()
     {
@@ -129,6 +130,11 @@ public class PlayerMoveControl : MonoBehaviour
 
     private void HandleCharacterMove()
     {
+        if (isWallRunning)
+        {
+            return;
+        }
+
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
         Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient * speedSharpnessOnGround;

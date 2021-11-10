@@ -380,6 +380,9 @@ GameObject:
   - component: {fileID: 582867424584648112}
   - component: {fileID: 8779323787863558202}
   - component: {fileID: 4627177426649290360}
+  - component: {fileID: 2113906354705204784}
+  - component: {fileID: 6073173726923241376}
+  - component: {fileID: 3955071577839778461}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -480,6 +483,7 @@ MonoBehaviour:
   jumpForce: 8
   groundDetection: {fileID: 582867426029109500}
   isWin: 0
+  isWallRunning: 0
 --- !u!114 &8779323787863558202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,9 +506,11 @@ MonoBehaviour:
   leftWallDetection: {fileID: 582867424249923623}
   rightWallDetection: {fileID: 582867425243197169}
   wallRunUpForce: 4
-  wallRunUpForceChangeRate: 6
-  wallJumpVelocity: 7
+  wallRunUpForceChangeRate: 1
+  wallJumpUpVelocity: 7
   wallJumpForwardVelocity: 7
+  canWallRun: 1
+  isParkour: 0
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!23 &4627177426649290360
@@ -548,6 +554,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2113906354705204784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd170ac9e624f04bbbc4fee1723206b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 8
+  hp: 0
+  invincibleTime: 0.5
+--- !u!114 &6073173726923241376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae34a8787bed03c46ad1cc385a134dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3955071577839778461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f3bc31b7cab2d439b0f0e7b0d0c349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  scopeImage: {fileID: 0}
+  zoomScale: 30
+  imageFlash: {fileID: 0}
+  flashDuration: 1
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
