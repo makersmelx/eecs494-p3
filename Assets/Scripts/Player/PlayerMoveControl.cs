@@ -36,8 +36,7 @@ public class PlayerMoveControl : MonoBehaviour
 
 
     // ============================================= Check Grounded =============================================
-    [Header("Check Grounded")]  
-    public ObstructionDetection groundDetection;
+    [Header("Check Grounded")] public ObstructionDetection groundDetection;
 
 
     // ============================================= Component Reference ============================================= 
@@ -58,11 +57,12 @@ public class PlayerMoveControl : MonoBehaviour
     // todo: make it not editable
 
     private float currentCameraAngleVertical = 0f;
+    private float currentCameraAngleHorizontal;
 
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
-    private bool isGrounded = false;
+    public bool IsGrounded { get; private set; }
 
     private void Awake()
     {
@@ -124,7 +124,7 @@ public class PlayerMoveControl : MonoBehaviour
 
     private void CheckGrounded()
     {
-        isGrounded = groundDetection.isObstructed;
+        IsGrounded = groundDetection.isObstructed;
     }
 
     private void HandleCharacterMove()
@@ -145,7 +145,7 @@ public class PlayerMoveControl : MonoBehaviour
 
         // Adjust the speed to zero when there is no input and the character is not in the air
         {
-            if (isGrounded)
+            if (IsGrounded)
             {
                 float forwardSpeed = Vector3.Dot(rigidBody.velocity, transform.forward);
                 float rightSpeed = Vector3.Dot(rigidBody.velocity, transform.right);
@@ -167,11 +167,11 @@ public class PlayerMoveControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (isGrounded)
+        if (IsGrounded)
         {
             if (playerInputHandler.GetJumpInputIsHolding())
             {
-                rigidBody.AddForce(jumpForce * Vector3.up);
+                rigidBody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
             }
         }
     }

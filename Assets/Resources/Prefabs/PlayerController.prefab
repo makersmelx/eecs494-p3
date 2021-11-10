@@ -148,10 +148,10 @@ Animator:
   m_GameObject: {fileID: 582867424248714839}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2780438daa0db594b9231835ea10aa5e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7b9aa5ff19461624e8db59a22672c968, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -378,6 +378,8 @@ GameObject:
   - component: {fileID: 582867424584648113}
   - component: {fileID: 582867424584648115}
   - component: {fileID: 582867424584648112}
+  - component: {fileID: 8779323787863558202}
+  - component: {fileID: 4627177426649290360}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -417,7 +419,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582867424584648114}
-  m_Material: {fileID: 13400000, guid: c9b8843726994c64a8afa429bb1eaeb5, type: 2}
+  m_Material: {fileID: 13400000, guid: 00bf081bbfa6ea441924bb7d7bff10d5, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -474,10 +476,79 @@ MonoBehaviour:
   maxSpeedOnGround: 10
   speedSharpnessOnGround: 200
   lowVelocityThreshold: 0.01
-  counterMovement: 0.175
-  jumpForce: 120
+  counterMovement: 1
+  jumpForce: 10
   groundDetection: {fileID: 582867426029109500}
   isWin: 0
+--- !u!114 &8779323787863558202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65ab175671ae73e4387832bee1d5ff97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraAnimator: {fileID: 582867424248714837}
+  dragOnGround: 0
+  dragInAir: 0
+  vaultObjectDetection: {fileID: 582867424494746685}
+  vaultObstructionDetection: {fileID: 582867424288669640}
+  climbObjectDetection: {fileID: 582867425780118485}
+  climbObstructionDetection: {fileID: 582867424101790066}
+  leftWallDetection: {fileID: 582867424249923623}
+  rightWallDetection: {fileID: 582867425243197169}
+  wallRunUpForce: 4
+  wallRunUpForceChangeRate: 6
+  wallJumpVelocity: 7
+  wallJumpForwardVelocity: 7
+  dragWallRun: 0
+  climbTime: 0.6
+  climbEndPoint: {fileID: 582867426007039118}
+--- !u!23 &4627177426649290360
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 81f50f12fa638c04ba3580ed29b315fa, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
