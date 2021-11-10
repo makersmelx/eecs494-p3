@@ -509,8 +509,6 @@ MonoBehaviour:
   wallRunUpForceChangeRate: 1
   wallJumpUpVelocity: 7
   wallJumpForwardVelocity: 7
-  canWallRun: 1
-  isParkour: 0
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!23 &4627177426649290360
@@ -593,7 +591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f3bc31b7cab2d439b0f0e7b0d0c349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 582867426050836305}
   scopeImage: {fileID: 0}
   zoomScale: 30
   imageFlash: {fileID: 0}
