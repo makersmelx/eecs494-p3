@@ -87,12 +87,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424101790069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867424101790067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -207,12 +207,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424249923624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867424249923622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -276,12 +276,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424288669645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867424288669643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -345,12 +345,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424494746686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867424494746684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -438,7 +438,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 3
 --- !u!114 &582867424584648115
 MonoBehaviour:
@@ -449,31 +449,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424584648114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 350e8704c89103c49b231281fc573f13, type: 3}
+  m_Script: {fileID: 11500000, guid: 4844b1e490d9d3446b055b73f985fc97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canrotate: 0
-  cam: {fileID: 582867426050836305}
-  movementSettings:
-    ForwardSpeed: 2
-    BackwardSpeed: 2
-    StrafeSpeed: 2
-    SpeedInAir: 0.3
-    JumpForce: 10
-    CurrentTargetSpeed: 8
-  mouseLook:
-    XSensitivity: 2
-    YSensitivity: 2
-    clampVerticalRotation: 1
-    MinimumX: -90
-    MaximumX: 90
-    smooth: 0
-    smoothTime: 5
-    m_CharacterTargetRot: {x: 0, y: 0, z: 0, w: 0}
-    m_CameraTargetRot: {x: 0, y: 0, z: 0, w: 0}
-  relativevelocity: {x: 0, y: 0, z: 0}
-  detectGround: {fileID: 582867426029109500}
-  Wallrunning: 0
+  cameraSensitivity: 1
+  webGLCameraSensitivityMultiplier: 0.25
+  triggerAxisThreshold: 0.4
+  invertYAxis: 0
+  invertXAxis: 0
 --- !u!114 &582867424584648112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,31 +466,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424584648114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab1b05793d3a93e438a16878e35ecc0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 45c2d58a350df9f4482ce9c4cf727b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag_grounded: 5
-  drag_inair: 0.2
-  detectVaultObject: {fileID: 582867424494746685}
-  detectVaultObstruction: {fileID: 582867424288669640}
-  detectClimbObject: {fileID: 582867425780118485}
-  detectClimbObstruction: {fileID: 582867424101790066}
-  DetectWallL: {fileID: 582867424249923623}
-  DetectWallR: {fileID: 582867425243197169}
-  cameraAnimator: {fileID: 582867424248714837}
-  WallRunUpForce: 4
-  WallRunUpForce_DecreaseRate: 6
-  WallJumpUpVelocity: 7
-  WallJumpForwardVelocity: 7
-  drag_wallrun: 0
-  WallRunning: 0
-  WallrunningLeft: 0
-  WallrunningRight: 0
-  IsParkour: 0
-  VaultTime: 0.5
-  VaultEndPoint: {fileID: 582867424891310559}
-  ClimbTime: 0.6
-  ClimbEndPoint: {fileID: 582867426007039118}
+  playerCamera: {fileID: 582867426050836305}
+  cameraMoveSpeed: 200
+  maxSpeedOnGround: 10
+  speedSharpnessOnGround: 200
+  lowVelocityThreshold: 0.01
+  counterMovement: 0.175
+  jumpForce: 120
+  groundDetection: {fileID: 582867426029109500}
+  isWin: 0
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,12 +590,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867425243197170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867425243197168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -720,12 +690,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867425780118489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!65 &582867425780118487
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -833,12 +803,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867426029109503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc413d72204cd9848a2ec1cb5cafb1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e10961d4d61a9ea40baad524c07a079c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTagName: Wall
-  Obstruction: 0
-  Object: {fileID: 0}
+  targetTagName: 
+  isObstructed: 0
+  target: {fileID: 0}
 --- !u!1 &582867426050836306
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +820,7 @@ GameObject:
   - component: {fileID: 582867426050836307}
   - component: {fileID: 582867426050836305}
   - component: {fileID: 582867426050836304}
+  - component: {fileID: 8004089149212795357}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -922,3 +893,35 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582867426050836306}
   m_Enabled: 1
+--- !u!114 &8004089149212795357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867426050836306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
