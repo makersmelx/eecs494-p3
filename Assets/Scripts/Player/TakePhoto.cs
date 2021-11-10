@@ -41,7 +41,7 @@ public class TakePhoto : MonoBehaviour
         }
 
         // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
-        if (inUse && !PlayerCharacterControl.Instance.isWin)
+        if (inUse && !PlayerMoveControl.Instance.isWin)
         {
             // check for flashing
             if (Input.GetMouseButtonDown(0) && flashCounter == 0f)
@@ -65,7 +65,7 @@ public class TakePhoto : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Equals))
         {
             Instantiate(panelWin, canvas);
-            PlayerCharacterControl.Instance.isWin = true;
+            PlayerMoveControl.Instance.isWin = true;
             Cursor.lockState = CursorLockMode.None;
         }
     }
@@ -84,7 +84,7 @@ public class TakePhoto : MonoBehaviour
                 // TO DO: IMPLEMENT WIN TRIGGER HERE
                 // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
                 Instantiate(panelWin, canvas);
-                PlayerCharacterControl.Instance.isWin = true;
+                PlayerMoveControl.Instance.isWin = true;
                 Cursor.lockState = CursorLockMode.None;
             }
         }
