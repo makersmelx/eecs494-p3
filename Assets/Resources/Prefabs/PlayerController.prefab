@@ -381,7 +381,6 @@ GameObject:
   - component: {fileID: 582867424584648112}
   - component: {fileID: 8779323787863558202}
   - component: {fileID: 2113906354705204784}
-  - component: {fileID: 6073173726923241376}
   - component: {fileID: 3955071577839778461}
   m_Layer: 0
   m_Name: PlayerController
@@ -503,6 +502,7 @@ MonoBehaviour:
   triggerAxisThreshold: 0.4
   invertYAxis: 0
   invertXAxis: 0
+  inGameMode: 0
 --- !u!114 &582867424584648112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,18 +567,6 @@ MonoBehaviour:
   maxHP: 8
   hp: 0
   invincibleTime: 0.5
---- !u!114 &6073173726923241376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582867424584648114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae34a8787bed03c46ad1cc385a134dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3955071577839778461
 MonoBehaviour:
   m_ObjectHideFlags: 0
