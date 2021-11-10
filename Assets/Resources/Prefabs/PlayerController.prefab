@@ -477,7 +477,7 @@ MonoBehaviour:
   speedSharpnessOnGround: 200
   lowVelocityThreshold: 0.01
   counterMovement: 1
-  jumpForce: 10
+  jumpForce: 8
   groundDetection: {fileID: 582867426029109500}
   isWin: 0
 --- !u!114 &8779323787863558202
@@ -495,17 +495,16 @@ MonoBehaviour:
   cameraAnimator: {fileID: 582867424248714837}
   dragOnGround: 0
   dragInAir: 0
-  vaultObjectDetection: {fileID: 582867424494746685}
-  vaultObstructionDetection: {fileID: 582867424288669640}
   climbObjectDetection: {fileID: 582867425780118485}
   climbObstructionDetection: {fileID: 582867424101790066}
+  vaultObjectDetection: {fileID: 582867424494746685}
+  vaultObstructionDetection: {fileID: 582867424288669640}
   leftWallDetection: {fileID: 582867424249923623}
   rightWallDetection: {fileID: 582867425243197169}
   wallRunUpForce: 4
   wallRunUpForceChangeRate: 6
   wallJumpVelocity: 7
   wallJumpForwardVelocity: 7
-  dragWallRun: 0
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!23 &4627177426649290360
