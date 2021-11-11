@@ -10,7 +10,7 @@ public class PlayerMoveControl : MonoBehaviour
 
     // ============================================= Camera =============================================
     [Header("Camera")] [Tooltip("Reference to the main camera used for the player")]
-    public Camera playerCamera;
+    public GameObject playerCamera;
 
     [Tooltip("Rotation speed for moving the camera")]
     public float cameraMoveSpeed = 200f;
@@ -56,9 +56,8 @@ public class PlayerMoveControl : MonoBehaviour
     // ============================================= Runtime Value ============================================= 
     // todo: make it not editable
 
-    private float currentCameraAngleVertical = 0f;
-    private float currentCameraAngleHorizontal;
-
+    public float currentCameraAngleVertical = 0f;
+   
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 

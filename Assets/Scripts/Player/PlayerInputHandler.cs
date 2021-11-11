@@ -31,7 +31,11 @@ public class PlayerInputHandler : MonoBehaviour
     // Singleton
     // -------------------------------------------------------------------------
     private static PlayerInputHandler _instance;
-    public static PlayerInputHandler Instance { get { return _instance; } }
+
+    public static PlayerInputHandler Instance
+    {
+        get { return _instance; }
+    }
 
     private void Awake()
     {
@@ -79,6 +83,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
         }
+
         return 0;
     }
 
@@ -88,6 +93,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
         }
+
         return 0;
     }
 
@@ -97,7 +103,13 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return Input.GetButton(GameConstants.ButtonJump);
         }
+
         return false;
+    }
+
+    public bool GetMouseRightButton()
+    {
+        return inGameMode && CanProcessInput() && Input.GetMouseButton(1);
     }
 
 
@@ -127,7 +139,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void UpdateUserInput()
     {
-
     }
 
     // todo: add condition that cannot control
