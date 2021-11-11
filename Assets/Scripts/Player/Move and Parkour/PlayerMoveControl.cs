@@ -54,10 +54,8 @@ public class PlayerMoveControl : MonoBehaviour
 
 
     // ============================================= Runtime Value ============================================= 
-    // todo: make it not editable
-
     public float currentCameraAngleVertical = 0f;
-   
+
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
