@@ -20,57 +20,54 @@ public class PlayerInputHandler : MonoBehaviour
     [Tooltip("Used to flip the horizontal input axis")]
     public bool invertXAxis = false;
 
+    public bool inGameMode = false;
+
+    // -------------------------------------------------------------------------
+    // Internal state
+    // -------------------------------------------------------------------------
     private bool canProcessMouseInput = false;
 
-    public static PlayerInputHandler Instance;
+    // -------------------------------------------------------------------------
+    // Singleton
+    // -------------------------------------------------------------------------
+    private static PlayerInputHandler _instance;
+    public static PlayerInputHandler Instance { get { return _instance; } }
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
+        if (_instance != null && _instance != this) Destroy(this.gameObject);
+        else _instance = this;
     }
 
-    private void Update()
+    // -------------------------------------------------------------------------
+    // Public methods
+    // -------------------------------------------------------------------------
+    // Hides cursor and locks it to the center of the screen
+    public void EnterGameMode()
     {
-        // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
-        if (IsMouseOverGameWindow && !PlayerMoveControl.Instance.isWin)
-        {
-            canProcessMouseInput = true;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
-        {
-            canProcessMouseInput = false;
-        }
+        inGameMode = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    // todo: add condition that cannot control
-    public bool CanProcessInput()
+    // Returns cursor control to the player
+    public void ExitGameMode()
     {
-        return true;
+        inGameMode = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    /*
-     * return the normalized movement Vector3
-     */
+    // Return the normalized movement Vector3
     public Vector3 GetMoveInput()
     {
-        if (CanProcessInput())
+        if (inGameMode && CanProcessInput())
         {
-            Vector3 move = new Vector3(
-                Input.GetAxisRaw(GameConstants.KeyboardAxisHorizontal),
-                0f,
-                Input.GetAxisRaw(GameConstants.KeyboardAxisVertical)
-            );
+            float horizontalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisHorizontal);
+            float verticalInput = Input.GetAxisRaw(GameConstants.KeyboardAxisVertical);
 
-            move = Vector3.ClampMagnitude(move, 1);
-            return move;
+            Vector3 moveInput = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+            return moveInput;
         }
 
         return Vector3.zero;
@@ -78,19 +75,66 @@ public class PlayerInputHandler : MonoBehaviour
 
     public float GetCameraInputHorizontal()
     {
-        return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
+        if (inGameMode && CanProcessInput())
+        {
+            return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
+        }
+        return 0;
     }
 
     public float GetCameraInputVertical()
     {
-        return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
+        if (inGameMode && CanProcessInput())
+        {
+            return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
+        }
+        return 0;
     }
 
     public bool GetJumpInputIsHolding()
     {
-        return CanProcessInput() && Input.GetButton(GameConstants.ButtonJump);
+        if (inGameMode && CanProcessInput())
+        {
+            return Input.GetButton(GameConstants.ButtonJump);
+        }
+        return false;
     }
 
+
+    // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
+    private void Start()
+    {
+        EnterGameMode();
+    }
+
+    private void Update()
+    {
+        // Press 'ESC' to regain mouse control
+        if (Input.GetKey(KeyCode.Escape)) ExitGameMode();
+
+        // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
+        if (IsMouseOverGameWindow && !PlayerMoveControl.Instance.isWin)
+        {
+            canProcessMouseInput = true;
+        }
+        else
+        {
+            canProcessMouseInput = false;
+        }
+    }
+
+    private void UpdateUserInput()
+    {
+
+    }
+
+    // todo: add condition that cannot control
+    public bool CanProcessInput()
+    {
+        return true;
+    }
 
     private float GetMouseInputByAxis(string mouseInputName)
     {
