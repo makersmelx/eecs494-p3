@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerShieldManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject shield;
+    public ShieldControl shield;
 
     void Start()
     {
@@ -15,10 +15,20 @@ public class PlayerShieldManager : MonoBehaviour
     void Update()
     {
         SetActive();
+        ChangePlayerMaxSpeed();
+        print(PlayerMoveControl.Instance.CurrentMaxSpeed);
     }
 
     private void SetActive()
     {
-        shield.SetActive(PlayerInputHandler.Instance.GetMouseRightButton());
+        shield.gameObject.SetActive(PlayerInputHandler.Instance.GetMouseRightButton());
+    }
+
+    private void ChangePlayerMaxSpeed()
+    {
+        PlayerMoveControl.Instance.SetCurrentMaxSpeedThreshold(
+            shield.gameObject.activeInHierarchy
+                ? shield.shieldMaxSpeedThreshold
+                : 1f);
     }
 }

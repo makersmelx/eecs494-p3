@@ -18,7 +18,7 @@ public class PlayerMoveControl : MonoBehaviour
 
     // ============================================= Movement =============================================
     [Header("Movement")] [Tooltip("Max movement speed when grounded")]
-    public float maxSpeedOnGround = 10f;
+    public float initialMaxSpeed = 10f;
 
     [Tooltip("How fast the player can change his speed")]
     public float speedSharpnessOnGround = 200;
@@ -45,21 +45,15 @@ public class PlayerMoveControl : MonoBehaviour
     public static PlayerMoveControl Instance;
 
 
-    // todo: if a slower camera movement for aiming or taking photo is needed, modify here
-    // The coefficient of the camera speed, may be affected by aiming or other actions
-    public float CameraCoefficient
-    {
-        get { return 1f; }
-    }
-
-
     // ============================================= Runtime Value ============================================= 
     public float currentCameraAngleVertical = 0f;
+
+
+    [SerializeField] private float currentMaxSpeedThreshold = 1f;
 
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
-    public bool IsGrounded { get; private set; }
     public bool isWallRunning;
 
     private void Awake()
@@ -95,6 +89,21 @@ public class PlayerMoveControl : MonoBehaviour
     // *******************************************************************************************
     // ******                                  Api                                          ******
     // *******************************************************************************************
+    public void SetCurrentMaxSpeedThreshold(float value)
+    {
+        currentMaxSpeedThreshold = value;
+    }
+
+    public float CurrentMaxSpeed => initialMaxSpeed * currentMaxSpeedThreshold;
+
+    public bool IsGrounded { get; private set; }
+
+    // todo: if a slower camera movement for aiming or taking photo is needed, modify here
+    // The coefficient of the camera speed, may be affected by aiming or other actions
+    public float CameraCoefficient
+    {
+        get { return 1f; }
+    }
 
 
     // *******************************************************************************************
@@ -134,7 +143,7 @@ public class PlayerMoveControl : MonoBehaviour
 
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
-        Vector3 targetVelocity = globalMoveInput * maxSpeedOnGround * speedCoefficient * speedSharpnessOnGround;
+        Vector3 targetVelocity = globalMoveInput * CurrentMaxSpeed * speedCoefficient * speedSharpnessOnGround;
         // todo: if there is a crouch, reduce the speed by a ratio
         // todo: if there is a slope, adjust the velocity
 
@@ -142,7 +151,7 @@ public class PlayerMoveControl : MonoBehaviour
         {
             Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, transform.up) * Vector3.up;
             Vector3 horizonVelocity = rigidBody.velocity - upVelocity;
-            rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, maxSpeedOnGround) + upVelocity;
+            rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, CurrentMaxSpeed) + upVelocity;
             rigidBody.AddForce(targetVelocity * Time.deltaTime);
         }
 

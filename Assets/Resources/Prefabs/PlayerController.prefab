@@ -517,13 +517,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 5454500478240311781}
   cameraMoveSpeed: 200
-  maxSpeedOnGround: 10
+  maxSpeed: 10
   speedSharpnessOnGround: 200
   lowVelocityThreshold: 0.01
   counterMovement: 1
   jumpForce: 8
   groundDetection: {fileID: 582867426029109500}
   currentCameraAngleVertical: 0
+  currentMaxSpeedThreshold: 1
   isWin: 0
   isWallRunning: 0
 --- !u!114 &8779323787863558202
@@ -1127,6 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d16dc63eb9858a44a175a0e0fc57d95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldMaxSpeedThreshold: 0.8
 --- !u!65 &764296243847371325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1185,4 +1187,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effceeae22b7c7549997ab33257c2c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: {fileID: 1754889889593795304}
+  shield: {fileID: 2572566386148783455}
