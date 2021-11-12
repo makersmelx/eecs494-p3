@@ -169,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea1c7f9c43b4c34db68700bdd064ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeTextName: TimeText
+  timeModifiedTextName: TimeModifyText
   timeLimit: 25
   arbitraryTimeChangeWaitTime: 5
 --- !u!1 &6806670939314417953

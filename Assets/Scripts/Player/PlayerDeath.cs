@@ -10,13 +10,15 @@ public class PlayerDeath : MonoBehaviour
     Vector3 initPos;
     private Quaternion initRotation;
 
-    GameObject panelHealth;
-    Text healthText;
+    GameObject panelDie;
+    [SerializeField] string panelDiePrefabName = "PanelDie";
     void Start()
     {
         initPos = transform.position;
         initRotation = transform.rotation;
-        TimeManager.instance.TimeUpEffect += Die;
+        TimeManager.Instance.TimeUpEffect += Die;
+        panelDie = Resources.Load<GameObject>("prefabs/UI/" + panelDiePrefabName);
+        panelDie = Instantiate(panelDie, GameObject.Find("Canvas").transform);
     }
 
     // Update is called once per frame
@@ -31,13 +33,13 @@ public class PlayerDeath : MonoBehaviour
     {
         transform.position = initPos;
         transform.rotation = initRotation;
-        TimeManager.instance.ReduceTime(1f);
+        TimeManager.Instance.ReduceTime(1f);
     }
     public void Die()
     {
         transform.position = initPos;
         transform.rotation = initRotation;
-        TimeManager.instance.ResetTimer();
+        panelDie.SetActive(true);
+        //TimeManager.Instance.ResetTimer();
     }
-
 }

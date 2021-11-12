@@ -5,25 +5,34 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static TimeManager instance;
+    public static TimeManager Instance;
 
     public delegate void WhenTImeIsUpDo();
     //Register everything that is done when TimeUp here. 
     public WhenTImeIsUpDo TimeUpEffect;
+
+    [Header("UI Element Locations")]
+    [SerializeField] string timeTextName = "TimeText";
+    [SerializeField] string timeModifiedTextName = "TimeModifyText";
+
     [Header("Initial Settings")]
     [Tooltip("Time Limit that this level provides")]
     public float timeLimit;
 
 
-    int updatePeriod = 5;
     [Header("Value Changing")]
     [Tooltip("Wait Time before the value change text fade out")]
     public float arbitraryTimeChangeWaitTime = 8f;
 
+
+
     private Text timeText;
     private Text timeModifyText;
     private float currentTime;
+
+    //Use to reduce update rate and make your eyes feel better. 
     private int alternator = 0;
+    private int updatePeriod = 5;
 
     //Reset Modify Text;
     private IEnumerator currentModifyTimer;
@@ -31,11 +40,11 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance)
+        else if (Instance)
         {
             Destroy(gameObject);
         }
@@ -44,8 +53,8 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         currentTime = timeLimit;
-        timeText = transform.Find("TimeText").GetComponent<Text>();
-        timeModifyText = transform.Find("TimeModifyText").GetComponent<Text>();
+        timeText = transform.Find(timeTextName).GetComponent<Text>();
+        timeModifyText = transform.Find(timeModifiedTextName).GetComponent<Text>();
 
         currentModifyTimer = GradualResetModifyText();
 
@@ -90,8 +99,9 @@ public class TimeManager : MonoBehaviour
     private void ChangeTime(float value, char sign, Color color)
     {
         currentTime += value;
+
+        //UI Part.
         timeModifyText.text = sign + Mathf.Abs(value).ToString("N2") + "s";
-        Debug.Log(sign + value.ToString("N2") + "s");
         timeModifyText.color = color;
         StopCoroutine(currentModifyTimer);
         currentModifyTimer = GradualResetModifyText();
