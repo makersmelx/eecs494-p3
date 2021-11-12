@@ -19,5 +19,7 @@ public class WinCon : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
         Instantiate(panel, canvas.transform);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
