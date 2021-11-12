@@ -13,7 +13,7 @@ public class ShieldControl : MonoBehaviour
         if (other.CompareTag(GameConstants.BulletTag))
         {
             Destroy(other.gameObject);
-            // todo: add time
+            // todo: the function to modify the player's time
         }
     }
 }

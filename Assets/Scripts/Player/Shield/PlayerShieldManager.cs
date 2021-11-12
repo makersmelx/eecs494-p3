@@ -16,7 +16,6 @@ public class PlayerShieldManager : MonoBehaviour
     {
         SetActive();
         ChangePlayerMaxSpeed();
-        print(PlayerMoveControl.Instance.CurrentMaxSpeed);
     }
 
     private void SetActive()
