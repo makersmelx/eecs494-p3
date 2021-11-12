@@ -2,40 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class TimeManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public static TimeManager Instance;
 
-    public delegate void WhenTImeIsUpDo();
-    //Register everything that is done when TimeUp here. 
-    public WhenTImeIsUpDo TimeUpEffect;
+    public delegate void NormalUpdate();
+    //Register everything that is done at TimeUp, TimeFlow and TimeReset. 
+    public NormalUpdate TimeUpEffect;
+    public NormalUpdate TimeFlowEffect;
 
-    [Header("UI Element Locations")]
-    [SerializeField] string timeTextName = "TimeText";
-    [SerializeField] string timeModifiedTextName = "TimeModifyText";
+    //Register everything that is done when we arbitrarily changes the time. 
+    public delegate void ModifyUpdate(float value);
+    public ModifyUpdate TimeChangeEffect;
+
+    
 
     [Header("Initial Settings")]
     [Tooltip("Time Limit that this level provides")]
     public float timeLimit;
 
-
-    [Header("Value Changing")]
-    [Tooltip("Wait Time before the value change text fade out")]
-    public float arbitraryTimeChangeWaitTime = 8f;
-
-
-
-    private Text timeText;
-    private Text timeModifyText;
     private float currentTime;
 
     //Use to reduce update rate and make your eyes feel better. 
     private int alternator = 0;
     private int updatePeriod = 5;
 
-    //Reset Modify Text;
-    private IEnumerator currentModifyTimer;
+
 
 
     private void Awake()
@@ -53,12 +47,6 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         currentTime = timeLimit;
-        timeText = transform.Find(timeTextName).GetComponent<Text>();
-        timeModifyText = transform.Find(timeModifiedTextName).GetComponent<Text>();
-
-        currentModifyTimer = GradualResetModifyText();
-
-        timeText.text = "Time: " + currentTime.ToString("N2");
     }
     // Update is called once per frame
 
@@ -70,13 +58,12 @@ public class TimeManager : MonoBehaviour
         if (currentTime<0.01f)
         {
             currentTime = 0;
-            timeText.text = "Time: " + currentTime.ToString("N2");
             TimeUpEffect();
         }
 
         if (alternator == 0)
         {
-            timeText.text = "Time: " + currentTime.ToString("N2");
+            TimeFlowEffect();
         }
         alternator += 1; 
         if (alternator >= updatePeriod)
@@ -87,38 +74,29 @@ public class TimeManager : MonoBehaviour
 
     public void AddTime(float value)
     {
-        ChangeTime(value, '+', Color.green);
+        ChangeTime(value);
 
     }
 
     public void ReduceTime(float value)
     {
-        ChangeTime(-value, '-', Color.red);
+        ChangeTime(-value);
     }
 
-    private void ChangeTime(float value, char sign, Color color)
+    private void ChangeTime(float value)
     {
         currentTime += value;
 
+        TimeChangeEffect(value);
         //UI Part.
-        timeModifyText.text = sign + Mathf.Abs(value).ToString("N2") + "s";
-        timeModifyText.color = color;
-        StopCoroutine(currentModifyTimer);
-        currentModifyTimer = GradualResetModifyText();
-        StartCoroutine(currentModifyTimer);
     }
 
     public void ResetTimer()
     {
         currentTime = timeLimit;
-        timeModifyText.text = "";
     }
 
-    IEnumerator GradualResetModifyText()
-    {
-        yield return new WaitForSeconds(arbitraryTimeChangeWaitTime);
-        timeModifyText.text = "";
-    }
-
+    public float GetCurrentTime() { return currentTime; }
+   
 
 }
