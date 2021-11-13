@@ -3,6 +3,9 @@ https://www.dafont.com/aliens-and-cows.font	// Menu buttons
 https://www.dafont.com/inversionz.font		// ZASE LOGO
 https://www.dafont.com/long-shot.font		// 1979
 
+UI
+https://assetstore.unity.com/packages/2d/gui/icons/beautiful-progress-bar-free-194904
+
 Skybox
 https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
 
