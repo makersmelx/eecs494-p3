@@ -31,8 +31,7 @@ public class PlayerDeath : MonoBehaviour
     }
     void FallReset()
     {
-        transform.position = initPos;
-        transform.rotation = initRotation;
+        LevelManager.Instance.ResetAtCheckpoint();
         TimeManager.Instance.ReduceTime(1f);
     }
     public void Die()

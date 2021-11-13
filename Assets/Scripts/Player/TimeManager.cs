@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     public static TimeManager Instance;
 
     public delegate void NormalUpdate();

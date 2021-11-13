@@ -31,10 +31,10 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (player.transform.position.y <= fallResetHeight)
-        {
-            ResetAtCheckpoint();
-        }
+        //if (player.transform.position.y <= fallResetHeight)
+        //{
+        //    ResetAtCheckpoint();
+        //}
     }
 
     public void UpdateCheckpoint(Vector3 checkpointPosition)

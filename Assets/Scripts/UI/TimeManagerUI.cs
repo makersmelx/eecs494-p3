@@ -34,6 +34,11 @@ public class TimeManagerUI : MonoBehaviour
 
     void ChangeMainText()
     {
+        if (TimeManager.Instance.GetCurrentTime() > 10000f)
+        {
+            timeText.text = "A Lot";
+            return;
+        }
         timeText.text = "Time: " + TimeManager.Instance.GetCurrentTime().ToString("N2");
     }
 
