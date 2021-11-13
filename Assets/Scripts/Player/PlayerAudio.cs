@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
-    [SerializeField] AudioClip[] JumpClips;
+
+    [Header("Audio Sources")]
+    [SerializeField] AudioSource jumpAudioSource;
+    [SerializeField] AudioSource shieldAudioSource;
+
+    [Header("Audio Clips")]
+    [SerializeField] AudioClip[] jumpClips;
+    [SerializeField] AudioClip shieldActiveClip;
+    [SerializeField] AudioClip shieldDeactivateClip;
 
     private int jumpClipIndex = 0;
 
@@ -20,15 +28,28 @@ public class PlayerAudio : MonoBehaviour
         else _instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    // -------------------------------------------------------------------------
+    // Public methods
+    // -------------------------------------------------------------------------
+    public void PlayJumpSound()
     {
-        
+        if (jumpClips.Length == 0) return;
+        if (jumpAudioSource.isPlaying) return;
+
+        jumpAudioSource.clip = jumpClips[jumpClipIndex];
+        jumpAudioSource.Play();
+        jumpClipIndex = (jumpClipIndex + 1) % jumpClips.Length;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayShieldActiveSound()
     {
-        
+        shieldAudioSource.clip = shieldActiveClip;
+        shieldAudioSource.Play();
+    }
+
+    public void PlayShieldDeactiveSound()
+    {
+        shieldAudioSource.clip = shieldDeactivateClip;
+        shieldAudioSource.Play();
     }
 }

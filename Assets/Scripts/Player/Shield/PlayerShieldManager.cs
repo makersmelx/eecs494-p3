@@ -4,23 +4,56 @@ using UnityEngine;
 
 public class PlayerShieldManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public ShieldControl shield;
+    // -------------------------------------------------------------------------
+    // Component Reference
+    // -------------------------------------------------------------------------
+    [SerializeField] ShieldControl shield;
+    [SerializeField] PlayerAudio playerAudio;
 
-    void Start()
+
+    // -------------------------------------------------------------------------
+    // Internal State
+    // -------------------------------------------------------------------------
+    private bool isActive = false;
+
+
+    // -------------------------------------------------------------------------
+    // Update methods
+    // -------------------------------------------------------------------------
+    private void Start()
     {
+        shield.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         SetActive();
         ChangePlayerMaxSpeed();
     }
 
+
+    // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
     private void SetActive()
     {
-        shield.gameObject.SetActive(PlayerInputHandler.Instance.GetMouseRightButton());
+        bool buttonPressed = PlayerInputHandler.Instance.GetMouseRightButton();
+
+        // Activate
+        if (!isActive && buttonPressed)
+        {
+            shield.gameObject.SetActive(true);
+            playerAudio.PlayShieldActiveSound();
+            isActive = true;
+        }
+
+        // Deactivate
+        if (isActive && !buttonPressed)
+        {
+            shield.gameObject.SetActive(false);
+            playerAudio.PlayShieldDeactiveSound();
+            isActive = false;
+        }
     }
 
     private void ChangePlayerMaxSpeed()
