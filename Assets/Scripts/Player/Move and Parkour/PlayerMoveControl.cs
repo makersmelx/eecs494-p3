@@ -6,9 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputHandler))]
 public class PlayerMoveControl : MonoBehaviour
 {
-    // ============================================= General =============================================
-
-    // ============================================= Camera =============================================
+    // -------------------------------------------------------------------------
+    // Camera
+    // -------------------------------------------------------------------------
     [Header("Camera")] [Tooltip("Reference to the main camera used for the player")]
     public GameObject playerCamera;
 
@@ -16,7 +16,16 @@ public class PlayerMoveControl : MonoBehaviour
     public float cameraMoveSpeed = 200f;
 
 
-    // ============================================= Movement =============================================
+    // -------------------------------------------------------------------------
+    // Audio
+    // -------------------------------------------------------------------------
+    [Header("Audio")]
+    [SerializeField] PlayerAudio playerAudio;
+
+
+    // -------------------------------------------------------------------------
+    // Movement
+    // -------------------------------------------------------------------------
     [Header("Movement")] [Tooltip("Max movement speed when grounded")]
     public float initialMaxSpeed = 10f;
 
@@ -30,22 +39,31 @@ public class PlayerMoveControl : MonoBehaviour
     public float counterMovement = 0.175f;
 
 
-    // ============================================= Jump =============================================
+    // -------------------------------------------------------------------------
+    // Jump
+    // -------------------------------------------------------------------------
     [Header("Jump")] [Tooltip("Force applied upward when jumping")]
     public float jumpForce = 120f;
 
 
-    // ============================================= Check Grounded =============================================
+    // -------------------------------------------------------------------------
+    // Ground detection
+    // -------------------------------------------------------------------------
     [Header("Check Grounded")] public ObstructionDetection groundDetection;
 
 
-    // ============================================= Component Reference ============================================= 
+    // -------------------------------------------------------------------------
+    // Component reference
+    // -------------------------------------------------------------------------
+    
     private PlayerInputHandler playerInputHandler;
     private Rigidbody rigidBody;
     public static PlayerMoveControl Instance;
 
 
-    // ============================================= Runtime Value ============================================= 
+    // -------------------------------------------------------------------------
+    // Runtime values
+    // -------------------------------------------------------------------------
     public float currentCameraAngleVertical = 0f;
 
 
@@ -86,9 +104,9 @@ public class PlayerMoveControl : MonoBehaviour
         HandleCharacterJump();
     }
 
-    // *******************************************************************************************
-    // ******                                  Api                                          ******
-    // *******************************************************************************************
+    // -------------------------------------------------------------------------
+    // API
+    // -------------------------------------------------------------------------
     public void SetCurrentMaxSpeedThreshold(float value)
     {
         currentMaxSpeedThreshold = value;
@@ -106,9 +124,9 @@ public class PlayerMoveControl : MonoBehaviour
     }
 
 
-    // *******************************************************************************************
-    // ******                            Main Functions                                     ******
-    // *******************************************************************************************
+    // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
     private void HandleCameraMove()
     {
         // horizontal character rotation
@@ -179,12 +197,12 @@ public class PlayerMoveControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (IsGrounded)
+        if (!IsGrounded) return;
+
+        if (playerInputHandler.GetJumpInputIsHolding())
         {
-            if (playerInputHandler.GetJumpInputIsHolding())
-            {
-                rigidBody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
-            }
+            playerAudio.PlayJumpSound();
+            rigidBody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         }
     }
 }
