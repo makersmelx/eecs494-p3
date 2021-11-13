@@ -6,12 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class ShieldControl : MonoBehaviour
 {
+    [Tooltip("Factor that is applied to the player's move speed")]
     public float shieldMaxSpeedThreshold = 0.8f;
 
     [Tooltip("Time Bonus when the shield destroys a single bullet")]
     public float defendBonusTime = 1f;
 
-    // Start is called before the first frame update
+    // Destroy bullets on hit
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(GameConstants.BulletTag))
