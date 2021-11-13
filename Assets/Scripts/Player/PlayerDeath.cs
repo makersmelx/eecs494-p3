@@ -3,49 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(HasHealth))]
 public class PlayerDeath : MonoBehaviour
 {
     // Start is called before the first frame update
     //This is a test code that is temporary to automatically respawn the main player.
     Vector3 initPos;
     private Quaternion initRotation;
-    HasHealth healthBar;
 
-    GameObject panelHealth;
-    Text healthText;
+    GameObject panelDie;
+    [SerializeField] string panelDiePrefabName = "PanelDie";
     void Start()
     {
         initPos = transform.position;
         initRotation = transform.rotation;
-        healthBar = GetComponent<HasHealth>();
-        healthBar.ExecuteDeath += Die;
-        panelHealth = Resources.Load<GameObject>("Prefabs/UI/PlayerStats");
-        panelHealth = Instantiate(panelHealth);
-        healthBar.DamageExtra += UpdateHealth;
-        healthBar.HealExtra += UpdateHealth;
-        healthText = panelHealth.transform.Find("PanelPlayerStats").Find("healthText").GetComponent<Text>();
-        healthText.text = "Health: " + healthBar.hp;
+        TimeManager.Instance.TimeUpEffect += Die;
+        panelDie = Resources.Load<GameObject>("prefabs/UI/" + panelDiePrefabName);
+        panelDie = Instantiate(panelDie, GameObject.Find("Canvas").transform);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -25f)
+        if (transform.position.y < -10f)
         {
-            healthBar.Die();
+            FallReset();
         }
     }
-    void Die()
+    void FallReset()
     {
         transform.position = initPos;
         transform.rotation = initRotation;
-        healthBar.HealToFull();
+        TimeManager.Instance.ReduceTime(1f);
     }
-
-    void UpdateHealth(int amount = 0)
+    public void Die()
     {
-        Debug.Log("We have update the health to " + healthBar.hp);
-        healthText.text = "Health: " + healthBar.hp;
+        transform.position = initPos;
+        transform.rotation = initRotation;
+        panelDie.SetActive(true);
+        //TimeManager.Instance.ResetTimer();
     }
 }

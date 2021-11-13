@@ -380,8 +380,7 @@ GameObject:
   - component: {fileID: 582867424584648115}
   - component: {fileID: 582867424584648112}
   - component: {fileID: 8779323787863558202}
-  - component: {fileID: 2113906354705204784}
-  - component: {fileID: 3955071577839778461}
+  - component: {fileID: 4873441086245271055}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -554,7 +553,7 @@ MonoBehaviour:
   wallJumpForwardVelocity: 7
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
---- !u!114 &2113906354705204784
+--- !u!114 &4873441086245271055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -563,7 +562,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 582867424584648114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cd170ac9e624f04bbbc4fee1723206b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5267b6e23ed9d824bbe56eabfbc18b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 8
