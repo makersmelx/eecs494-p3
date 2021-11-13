@@ -1,61 +1,86 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class TimeManagerUI : MonoBehaviour
 {
-    [Header("UI Element Locations")]
+    [Tooltip("Main Slider displays the current time left")]
+    public Slider mainSlider;
 
-    [Header("Value Changing")]
-    [Tooltip("Wait Time before the value change text fade out")]
-    public float arbitraryTimeChangeWaitTime = 8f;
+    [Header("Arbitrary Change")] [Tooltip("Decrease Slider highlights the arbitrary time decrease")]
+    public Slider decreaseSlider;
 
-    public Text timeText;
-    public Text timeModifyText;
+    [Tooltip("Increase Slider highlights the arbitrary time decrease")]
+    public Slider increaseSlider;
 
-    //Reset Modify Text;
-    private IEnumerator currentModifyTimer;
-    // Start is called before the first frame update
-    void Start()
+    public Slider increaseHelperSlider;
+
+    public float changeDuration = 0.5f;
+
+    private Coroutine currentUIAnimation;
+
+    private void Start()
     {
-
-
-        TimeManager.Instance.TimeUpEffect += ChangeMainText;
-        TimeManager.Instance.TimeFlowEffect += ChangeMainText;
-
-        TimeManager.Instance.TimeChangeEffect += ChangeModifyText;
-
-        TimeManager.Instance.TimeUpEffect += ResetModifyText;
-        currentModifyTimer = GradualResetModifyText();
-
+        TimeManager.Instance.AddTimeChangeCallback(UpdateTimeChange);
+        ResetAllSubSlider();
     }
 
-    
-
-    void ChangeMainText()
+    private void Update()
     {
-        timeText.text = "Time: " + TimeManager.Instance.GetCurrentTime().ToString("N2");
+        mainSlider.value = TimeManager.Instance.GetCurrentTime() / TimeManager.Instance.timeLimit;
     }
 
-    void ChangeModifyText(float value)
+    private void UpdateTimeChange(float previous, float current, float change)
     {
-        char sign = value >= 0 ? '+' : '-';
-        Color color = value >= 0 ? Color.green : Color.red;
+        if (currentUIAnimation != null)
+        {
+            StopCoroutine(currentUIAnimation);
+        }
 
-        timeModifyText.text = sign + Mathf.Abs(value).ToString("N2") + "s";
-        timeModifyText.color = color;
-        StopCoroutine(currentModifyTimer);
-        currentModifyTimer = GradualResetModifyText();
-        StartCoroutine(currentModifyTimer);
+        ResetAllSubSlider();
+        currentUIAnimation = StartCoroutine(DisplayThenResetSlider(previous, current, change));
     }
 
-    void ResetModifyText()
+    private void ResetAllSubSlider()
     {
-        timeModifyText.text = "";
+        decreaseSlider.value = 0;
+        increaseSlider.value = 0;
+        increaseHelperSlider.value = 0;
     }
-    IEnumerator GradualResetModifyText()
+
+    private IEnumerator DisplayThenResetSlider(float previous, float current, float change)
     {
-        yield return new WaitForSeconds(arbitraryTimeChangeWaitTime);
-        timeModifyText.text = "";
+        if (change < 0f)
+        {
+            float count = 0;
+            decreaseSlider.value = previous / TimeManager.Instance.timeLimit;
+            while (count <= changeDuration)
+            {
+                decreaseSlider.value = mainSlider.value - change / TimeManager.Instance.timeLimit;
+                count += Time.deltaTime;
+                yield return null;
+            }
+
+            decreaseSlider.value = 0f;
+        }
+        else if (change > 0f)
+        {
+            float count = 0;
+            increaseHelperSlider.value = previous / TimeManager.Instance.timeLimit;
+            while (count <= changeDuration)
+            {
+                increaseSlider.value = mainSlider.value;
+                increaseHelperSlider.value = increaseSlider.value - change / TimeManager.Instance.timeLimit;
+                count += Time.deltaTime;
+                yield return null;
+            }
+
+            increaseSlider.value = 0f;
+            increaseHelperSlider.value = 0f;
+        }
+
+        ResetAllSubSlider();
     }
 }
