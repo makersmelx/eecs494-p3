@@ -9,18 +9,18 @@ public class TimeManager : MonoBehaviour
     public static TimeManager Instance;
 
     public delegate void NormalUpdate();
+
     //Register everything that is done at TimeUp, TimeFlow and TimeReset. 
     public NormalUpdate TimeUpEffect;
     public NormalUpdate TimeFlowEffect;
 
     //Register everything that is done when we arbitrarily changes the time. 
-    public delegate void ModifyUpdate(float value);
-    public ModifyUpdate TimeChangeEffect;
+    public delegate void ChangeTimeCallback(float previous, float current, float change);
 
-    
+    private List<ChangeTimeCallback> callbacks = new List<ChangeTimeCallback>();
 
-    [Header("Initial Settings")]
-    [Tooltip("Time Limit that this level provides")]
+
+    [Header("Initial Settings")] [Tooltip("Time Limit that this level provides")]
     public float timeLimit;
 
     private float currentTime;
@@ -28,8 +28,6 @@ public class TimeManager : MonoBehaviour
     //Use to reduce update rate and make your eyes feel better. 
     private int alternator = 0;
     private int updatePeriod = 5;
-
-
 
 
     private void Awake()
@@ -53,29 +51,19 @@ public class TimeManager : MonoBehaviour
 
     void Update()
     {
+        MockTimeChange();
         currentTime -= Time.deltaTime;
 
-        if (currentTime<0.01f)
+        if (currentTime < 0.01f)
         {
             currentTime = 0;
             TimeUpEffect();
-        }
-
-        if (alternator == 0)
-        {
-            TimeFlowEffect();
-        }
-        alternator += 1; 
-        if (alternator >= updatePeriod)
-        {
-            alternator = 0;
         }
     }
 
     public void AddTime(float value)
     {
         ChangeTime(value);
-
     }
 
     public void ReduceTime(float value)
@@ -85,9 +73,12 @@ public class TimeManager : MonoBehaviour
 
     private void ChangeTime(float value)
     {
-        currentTime += value;
+        foreach (ChangeTimeCallback callback in callbacks)
+        {
+            callback(currentTime, currentTime + value, value);
+        }
 
-        TimeChangeEffect(value);
+        currentTime += value;
         //UI Part.
     }
 
@@ -96,7 +87,24 @@ public class TimeManager : MonoBehaviour
         currentTime = timeLimit;
     }
 
-    public float GetCurrentTime() { return currentTime; }
-   
+    public float GetCurrentTime()
+    {
+        return currentTime;
+    }
 
+    public void AddTimeChangeCallback(ChangeTimeCallback func)
+    {
+        callbacks.Add(func);
+    }
+
+    private void MockTimeChange()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ReduceTime(1f);
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            AddTime(1f);
+        }
+    }
 }
