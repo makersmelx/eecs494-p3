@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26ba0690e287fa4995cd5e2569c5792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectThreshold: 5
+  detectThreshold: 12
   shakeTime: 3
   initVelocity: 0.15
   springConstant: 0.01
@@ -145,4 +145,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initPos: {x: 0, y: 0, z: 0}
   endPos: {x: 0, y: 0, z: 0}
+  isBackAndForth: 0
   travelRate: 0.33
