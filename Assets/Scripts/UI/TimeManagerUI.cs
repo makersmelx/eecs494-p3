@@ -5,23 +5,20 @@ using UnityEngine.UI;
 public class TimeManagerUI : MonoBehaviour
 {
     [Header("UI Element Locations")]
-    [SerializeField] string timeTextName = "TimeText";
-    [SerializeField] string timeModifiedTextName = "TimeModifyText";
 
     [Header("Value Changing")]
     [Tooltip("Wait Time before the value change text fade out")]
     public float arbitraryTimeChangeWaitTime = 8f;
 
-    private Text timeText;
-    private Text timeModifyText;
+    public Text timeText;
+    public Text timeModifyText;
 
     //Reset Modify Text;
     private IEnumerator currentModifyTimer;
     // Start is called before the first frame update
     void Start()
     {
-        timeText = transform.Find(timeTextName).GetComponent<Text>();
-        timeModifyText = transform.Find(timeModifiedTextName).GetComponent<Text>();
+
 
         TimeManager.Instance.TimeUpEffect += ChangeMainText;
         TimeManager.Instance.TimeFlowEffect += ChangeMainText;
