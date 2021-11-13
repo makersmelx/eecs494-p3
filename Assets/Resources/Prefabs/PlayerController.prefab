@@ -1055,3 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c26ca71982643e9a4afd3a54064774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JumpClips:
+  - {fileID: 8300000, guid: c6c150c59c89f4967884dcd9813b7357, type: 3}
+  - {fileID: 8300000, guid: 2fd56592b52fe4eedbcfee1763ca3339, type: 3}
+  - {fileID: 8300000, guid: f35e5152d24f34fbfb0f107ea1df14a9, type: 3}
