@@ -9,4 +9,5 @@ public class GameConstants : MonoBehaviour
     public const string MouseAxisHorizontal = "Mouse X";
     public const string MouseAxisVertical = "Mouse Y";
     public const string ButtonJump = "Jump";
+    public const string BulletTag = "Bullet";
 }

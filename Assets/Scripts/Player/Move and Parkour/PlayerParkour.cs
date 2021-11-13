@@ -122,6 +122,7 @@ public class PlayerParkour : MonoBehaviour
                 isParkour = false;
                 parkourProgress = 0f;
                 rigidbodyRef.isKinematic = false;
+                cameraAnimator.transform.localEulerAngles = Vector3.zero;
             }
         }
     }
@@ -149,7 +150,6 @@ public class PlayerParkour : MonoBehaviour
                 isWallRunningRight = true;
                 canWallRun = false;
                 upForce = wallRunUpForce;
-                print("there");
             }
         }
 
@@ -161,7 +161,6 @@ public class PlayerParkour : MonoBehaviour
         {
             isWallRunningLeft = false;
             isWallRunningRight = false;
-            print("not here");
         }
 
         if (isWallRunningRight
@@ -172,7 +171,6 @@ public class PlayerParkour : MonoBehaviour
         {
             isWallRunningLeft = false;
             isWallRunningRight = false;
-            print("not here");
         }
 
         isWallRunning = isWallRunningLeft || isWallRunningRight;
