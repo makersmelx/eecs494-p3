@@ -122,6 +122,7 @@ public class PlayerParkour : MonoBehaviour
                 isParkour = false;
                 parkourProgress = 0f;
                 rigidbodyRef.isKinematic = false;
+                cameraAnimator.transform.localEulerAngles = Vector3.zero;
             }
         }
     }
