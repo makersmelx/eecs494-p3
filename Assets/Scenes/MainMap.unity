@@ -255,10 +255,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerController
       objectReference: {fileID: 0}
+    - target: {fileID: 582867426050836305, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: field of view
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 3955071577839778461, guid: 7a862c3044b9ad649af4477072598580, type: 3}
       propertyPath: imageFlash
       value: 
       objectReference: {fileID: 438235732}
+    - target: {fileID: 8004089149212795357, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a862c3044b9ad649af4477072598580, type: 3}
 --- !u!4 &837123130 stripped
