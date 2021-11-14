@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,14 @@ using TMPro;
 
 public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField]
-    TextMeshProUGUI text;
+    [SerializeField] TextMeshProUGUI text;
+
+    public Color onBlur = Color.white;
+
+    private void Start()
+    {
+        text.color = onBlur;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -17,6 +24,6 @@ public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        text.color = Color.white;
+        text.color = onBlur;
     }
 }
