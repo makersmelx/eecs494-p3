@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 582867424023822220}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Detection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 582867424101790064}
   - component: {fileID: 582867424101790066}
   - component: {fileID: 582867424101790067}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectClimbObstruction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 582867424249923620}
   - component: {fileID: 582867424249923623}
   - component: {fileID: 582867424249923622}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectWallL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 582867424288669641}
   - component: {fileID: 582867424288669640}
   - component: {fileID: 582867424288669643}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectVaultObstruction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 582867424494746682}
   - component: {fileID: 582867424494746685}
   - component: {fileID: 582867424494746684}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectVaultObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 582867425243197134}
   - component: {fileID: 582867425243197169}
   - component: {fileID: 582867425243197168}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectWallR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 582867425780118484}
   - component: {fileID: 582867425780118485}
   - component: {fileID: 582867425780118487}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectClimbObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 582867426029109498}
   - component: {fileID: 582867426029109501}
   - component: {fileID: 582867426029109500}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DetectGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
