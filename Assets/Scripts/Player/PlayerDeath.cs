@@ -12,6 +12,9 @@ public class PlayerDeath : MonoBehaviour
 
     GameObject panelDie;
     [SerializeField] string panelDiePrefabName = "PanelDie";
+
+    // Record player death times
+    private int deathCount = 0;
     void Start()
     {
         initPos = transform.position;
@@ -27,6 +30,8 @@ public class PlayerDeath : MonoBehaviour
         if (transform.position.y < -10f)
         {
             FallReset();
+            deathCount += 1;
+            GetComponent<CustomAnalyticsEvent>().ReportEvent("Player Dead", "count", deathCount);
         }
     }
     void FallReset()

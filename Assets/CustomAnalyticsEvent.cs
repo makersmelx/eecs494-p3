@@ -11,16 +11,20 @@ public class CustomAnalyticsEvent : MonoBehaviour
 {
 
 
-    public string eventName = "Default Analytics Event Name";
-
-
-    public void ReportEvent(Dictionary<string, object> infoDictionary)
+  
+    public void ReportEvent(string eventName, string key, object value)
     {
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
-        Debug.Log("SENT INFORMATION TO ANALYTICS");
-        Analytics.CustomEvent(eventName, infoDictionary);
-#endif
+
+        #if ENABLE_CLOUD_SERVICES_ANALYTICS
+        Dictionary<string, object> eventDict = new Dictionary<string, object>{
+            {key , value}
+        };
+        Analytics.CustomEvent(eventName, eventDict);
+        #endif
+
     }
+
+   
 
 
     /*

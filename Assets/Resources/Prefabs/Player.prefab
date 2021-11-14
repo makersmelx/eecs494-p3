@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 4794333982805640085}
   - component: {fileID: 412608356228166722}
   - component: {fileID: 2573189335866576909}
+  - component: {fileID: -6668478558446530482}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -247,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5267b6e23ed9d824bbe56eabfbc18b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelDiePrefabName: PanelDie
 --- !u!114 &8158837502627113820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +266,7 @@ MonoBehaviour:
   triggerAxisThreshold: 0.4
   invertYAxis: 0
   invertXAxis: 0
+  inGameMode: 0
 --- !u!114 &4794333982805640085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,7 +279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c2d58a350df9f4482ce9c4cf727b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityDownForce: 20
   playerCamera: {fileID: 374256529656680466}
   cameraMoveSpeed: 200
   maxSpeedOnGround: 13
@@ -284,25 +286,9 @@ MonoBehaviour:
   lowVelocityThreshold: 0.01
   counterMovement: 1
   jumpForce: 600
-  groundCheckLayers:
-    serializedVersion: 2
-    m_Bits: 1408
-  groundCheckDistance: 1
-  groundCheckDistanceInAir: 0.07
-  checkGroundedCooldownTime: 0.2
-  wallDetectionMaxDistanceForwardRatio: 2
-  wallDetectionSphereRadiusRatio: 1
-  wallWalkAudio: {fileID: 0}
-  wallDetectionColor: {r: 1, g: 0, b: 0, a: 1}
-  wallDetectChestRay: 0.2
-  wallDetectHeadRay: 0.8
-  ledgeClimbHandRay: 0.5
-  rayCastDistance: 1.5
-  ledgeCameraDownRatio: 0.5
-  ledgeCameraBackRatio: 0.5
-  ledgeClimbAudio: {fileID: 0}
-  currentState: 0
+  groundDetection: {fileID: 0}
   isWin: 0
+  isWallRunning: 0
 --- !u!114 &412608356228166722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,3 +321,15 @@ MonoBehaviour:
   zoomScale: 30
   imageFlash: {fileID: 0}
   flashDuration: 1
+--- !u!114 &-6668478558446530482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374256530334195802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9432e123b67ae3845a93f70c19304453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

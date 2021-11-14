@@ -5,17 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    private int buttonClickTime = 0;
     public void Play()
     {
-        Debug.Log("MAIN MENU BUTTON PRESSED");
-        Dictionary<string, object> eventDict = new Dictionary<string, object>{
 
-            
-            {"start time" , Time.time}
-
-        };
-
-        GetComponent<CustomAnalyticsEvent>().ReportEvent(eventDict);
+        buttonClickTime += 1;
+        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Start", "count", buttonClickTime);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
