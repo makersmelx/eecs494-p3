@@ -10,8 +10,16 @@ using UnityEngine.Analytics;
 public class CustomAnalyticsEvent : MonoBehaviour
 {
 
-
-  
+    public static CustomAnalyticsEvent instance = null;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
     public void ReportEvent(string eventName, string key, object value)
     {
 

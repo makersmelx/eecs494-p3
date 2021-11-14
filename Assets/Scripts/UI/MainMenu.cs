@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     {
 
         // send info to Unity Analytics
-        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Start", "time", Time.time);
+        CustomAnalyticsEvent.instance.ReportEvent("Game Start", "time", Time.time);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -19,9 +19,9 @@ public class MainMenu : MonoBehaviour
     {
         
         Debug.Log("Quit");
-        
+
         // send info to Unity Analytics
-        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Quit", "time", Time.time);
+        CustomAnalyticsEvent.instance.ReportEvent("Game Quit", "time", Time.time);
 
         Application.Quit();
     }

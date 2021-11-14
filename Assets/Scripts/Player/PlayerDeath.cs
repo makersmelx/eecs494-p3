@@ -33,7 +33,7 @@ public class PlayerDeath : MonoBehaviour
 
             // send info to Unity Analytics
             deathCount += 1;
-            GetComponent<CustomAnalyticsEvent>().ReportEvent("Player Dead", "count", deathCount);
+            if (CustomAnalyticsEvent.instance != null) CustomAnalyticsEvent.instance.ReportEvent("Player Dead", "count", deathCount);
 
         }
     }
