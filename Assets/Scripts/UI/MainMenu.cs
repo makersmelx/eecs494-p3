@@ -6,20 +6,23 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
-    private int buttonClickTime = 0;
     public void Play()
     {
 
         // send info to Unity Analytics
-        buttonClickTime += 1;
-        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Start", "count", buttonClickTime);
+        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Start", "time", Time.time);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void Quit()
     {
+        
         Debug.Log("Quit");
+        
+        // send info to Unity Analytics
+        GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Quit", "time", Time.time);
+
         Application.Quit();
     }
 }
