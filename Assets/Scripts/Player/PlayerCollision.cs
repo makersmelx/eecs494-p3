@@ -85,15 +85,4 @@ public class PlayerCollision : MonoBehaviour
         pos = transform.position + transform.forward * LedgeGrabForwardPos + transform.up * LedgeGrabUpwardPos;
         Gizmos.DrawLine(pos, pos + transform.up);
     }
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
