@@ -9,7 +9,8 @@ public class TimeManagerUI : MonoBehaviour
     [Tooltip("Main Slider displays the current time left")]
     public Slider mainSlider;
 
-    [Header("Arbitrary Change")] [Tooltip("Decrease Slider highlights the arbitrary time decrease")]
+    [Header("Arbitrary Change")]
+    [Tooltip("Decrease Slider highlights the arbitrary time decrease")]
     public Slider decreaseSlider;
 
     [Tooltip("Increase Slider highlights the arbitrary time decrease")]
@@ -29,7 +30,7 @@ public class TimeManagerUI : MonoBehaviour
 
     private void Update()
     {
-        mainSlider.value = TimeManager.Instance.GetCurrentTime() / TimeManager.Instance.timeLimit;
+        mainSlider.value = TimeManager.Instance.GetCurrentTime() / TimeManager.Instance.maxTime;
     }
 
     private void UpdateTimeChange(float previous, float current, float change)
@@ -55,10 +56,10 @@ public class TimeManagerUI : MonoBehaviour
         if (change < 0f)
         {
             float count = 0;
-            decreaseSlider.value = previous / TimeManager.Instance.timeLimit;
+            decreaseSlider.value = previous / TimeManager.Instance.maxTime;
             while (count <= changeDuration)
             {
-                decreaseSlider.value = mainSlider.value - change / TimeManager.Instance.timeLimit;
+                decreaseSlider.value = mainSlider.value - change / TimeManager.Instance.maxTime;
                 count += Time.deltaTime;
                 yield return null;
             }
@@ -68,11 +69,11 @@ public class TimeManagerUI : MonoBehaviour
         else if (change > 0f)
         {
             float count = 0;
-            increaseHelperSlider.value = previous / TimeManager.Instance.timeLimit;
+            increaseHelperSlider.value = previous / TimeManager.Instance.maxTime;
             while (count <= changeDuration)
             {
                 increaseSlider.value = mainSlider.value;
-                increaseHelperSlider.value = increaseSlider.value - change / TimeManager.Instance.timeLimit;
+                increaseHelperSlider.value = increaseSlider.value - change / TimeManager.Instance.maxTime;
                 count += Time.deltaTime;
                 yield return null;
             }

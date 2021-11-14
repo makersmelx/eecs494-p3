@@ -17,7 +17,6 @@ public class ShieldControl : MonoBehaviour
     {
         if (other.CompareTag(GameConstants.BulletTag))
         {
-            Destroy(other.gameObject);
             TimeManager.Instance.AddTime(defendBonusTime);
         }
     }
