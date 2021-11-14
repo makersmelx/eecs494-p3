@@ -30,8 +30,11 @@ public class PlayerDeath : MonoBehaviour
         if (transform.position.y < -10f)
         {
             FallReset();
+
+            // send info to Unity Analytics
             deathCount += 1;
             GetComponent<CustomAnalyticsEvent>().ReportEvent("Player Dead", "count", deathCount);
+
         }
     }
     void FallReset()

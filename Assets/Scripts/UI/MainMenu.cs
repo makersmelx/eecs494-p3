@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public void Play()
     {
 
+        // send info to Unity Analytics
         buttonClickTime += 1;
         GetComponent<CustomAnalyticsEvent>().ReportEvent("Game Start", "count", buttonClickTime);
 
