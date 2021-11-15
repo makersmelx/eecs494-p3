@@ -12,7 +12,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] float velocity = 5f;
     [SerializeField] float maxLifetimeInSeconds = 10f;
     [SerializeField] AudioClip bulletFlyingSound;
-    [SerializeField] float timeReductionOnHit = 10f;
 
 
     // -------------------------------------------------------------------------
@@ -20,6 +19,7 @@ public class Bullet : MonoBehaviour
     // -------------------------------------------------------------------------
     private float timeOfInstantiation;
     private AudioSource audioSource;
+
 
     // -------------------------------------------------------------------------
     // Public methods
@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
         // Destroy if alive for too long
         if (Time.time - timeOfInstantiation > maxLifetimeInSeconds)
         {
-            DestroyObject(gameObject);
+            Destroy(gameObject);
             return;
         }
 

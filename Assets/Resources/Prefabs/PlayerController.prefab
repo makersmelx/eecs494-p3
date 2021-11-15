@@ -380,9 +380,7 @@ GameObject:
   - component: {fileID: 582867424584648115}
   - component: {fileID: 582867424584648112}
   - component: {fileID: 8779323787863558202}
-  - component: {fileID: 4873441086245271055}
   - component: {fileID: 3014851100786924751}
-  - component: {fileID: 3955071577839778461}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -558,19 +556,6 @@ MonoBehaviour:
   wallJumpForwardVelocity: 7
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
---- !u!114 &4873441086245271055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582867424584648114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5267b6e23ed9d824bbe56eabfbc18b25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelDiePrefabName: PanelDie
 --- !u!114 &3014851100786924751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,23 +569,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletHitTimeReduction: 10
---- !u!114 &3955071577839778461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582867424584648114}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52f3bc31b7cab2d439b0f0e7b0d0c349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 582867426050836305}
-  scopeImage: {fileID: 0}
-  zoomScale: 30
-  imageFlash: {fileID: 0}
-  flashDuration: 1
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0

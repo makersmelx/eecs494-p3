@@ -14,7 +14,6 @@ public class PlayerDeath : MonoBehaviour
     [SerializeField] string panelDiePrefabName = "PanelDie";
 
     // Record player death times
-    private int deathCount = 0;
     void Start()
     {
         initPos = transform.position;
@@ -30,11 +29,6 @@ public class PlayerDeath : MonoBehaviour
         if (transform.position.y < -10f)
         {
             FallReset();
-
-            // send info to Unity Analytics
-            deathCount += 1;
-            if (CustomAnalyticsEvent.instance != null) CustomAnalyticsEvent.instance.ReportEvent("Player Dead", "count", deathCount);
-
         }
     }
     void FallReset()
