@@ -27,7 +27,7 @@ public class ToastManager : MonoBehaviour
         removeSub = EventBus.Subscribe<MessageRemoveEvent>(_OnMessageRemoval);
         toastText = transform.Find("ToastText").GetComponent<TextMeshProUGUI>();
         canvasGroup = GetComponent<CanvasGroup>();
-        Debug.Log(canvasGroup != null);
+        // Debug.Log(canvasGroup != null);
         rect = gameObject.GetComponent<RectTransform>();
     }
 
