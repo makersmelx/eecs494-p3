@@ -226,7 +226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6865879573364326275, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6865879573364326275, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
       propertyPath: m_AnchorMax.x
@@ -304,6 +304,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 9031679871004655022, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031679871398228202, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
 --- !u!1001 &837123129
@@ -364,6 +372,10 @@ PrefabInstance:
     - target: {fileID: 582867426050836305, guid: 7a862c3044b9ad649af4477072598580, type: 3}
       propertyPath: field of view
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572566386148783455, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: defendBonusTime
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3955071577839778461, guid: 7a862c3044b9ad649af4477072598580, type: 3}
       propertyPath: imageFlash
@@ -458,7 +470,7 @@ PrefabInstance:
       objectReference: {fileID: 837123130}
     - target: {fileID: 6710863323731830199, guid: a01743c64cce04619a7938d41a2606a6, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6710863323731830199, guid: a01743c64cce04619a7938d41a2606a6, type: 3}
       propertyPath: m_LocalPosition.x
