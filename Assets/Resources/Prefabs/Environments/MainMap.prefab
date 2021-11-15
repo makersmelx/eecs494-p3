@@ -8029,7 +8029,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4907395697445972126, guid: 8c1b6bbd1a94da54786f99bb5b9e36e7, type: 3}
       propertyPath: message
-      value: WASD to move
+      value: 'Escape before the time bar is depleted!
+
+        WASD to move'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6bbd1a94da54786f99bb5b9e36e7, type: 3}

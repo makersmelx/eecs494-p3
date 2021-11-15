@@ -1270,7 +1270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d16dc63eb9858a44a175a0e0fc57d95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldMaxSpeedThreshold: 0.8
+  shieldMaxSpeedThreshold: 0.2
   defendBonusTime: 10
 --- !u!65 &764296243847371325
 BoxCollider:
