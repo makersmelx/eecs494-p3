@@ -6,7 +6,8 @@ public class MoveOneDirection : MonoBehaviour
 {
     public Vector3 initPos;
     public Vector3 endPos;
-    public bool isBackAndForth;
+    public bool isBackAndForth = true;
+    public bool isMoveWith = true;
     [Tooltip("How much percent of distance it travels per second from initPos to endPos")]
     public float travelRate= 0.33f;
 
@@ -38,5 +39,17 @@ public class MoveOneDirection : MonoBehaviour
                 transform.position = initPos;
             }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isMoveWith || !collision.gameObject.CompareTag("Player")) return;
+        collision.gameObject.transform.SetParent(transform);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (!isMoveWith || !collision.gameObject.CompareTag("Player")) return;
+        collision.gameObject.transform.SetParent(null);
     }
 }

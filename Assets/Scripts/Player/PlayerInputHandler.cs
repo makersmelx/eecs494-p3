@@ -31,7 +31,11 @@ public class PlayerInputHandler : MonoBehaviour
     // Singleton
     // -------------------------------------------------------------------------
     private static PlayerInputHandler _instance;
-    public static PlayerInputHandler Instance { get { return _instance; } }
+
+    public static PlayerInputHandler Instance
+    {
+        get { return _instance; }
+    }
 
     private void Awake()
     {
@@ -45,7 +49,9 @@ public class PlayerInputHandler : MonoBehaviour
     // Hides cursor and locks it to the center of the screen
     public void EnterGameMode()
     {
+        // todo(#49): refactor here as part of the pause mechanic
         inGameMode = true;
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -53,7 +59,9 @@ public class PlayerInputHandler : MonoBehaviour
     // Returns cursor control to the player
     public void ExitGameMode()
     {
+        // todo(#49): refactor here as part of the pause mechanic
         inGameMode = false;
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -79,6 +87,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return GetMouseInputByAxis(GameConstants.MouseAxisHorizontal);
         }
+
         return 0;
     }
 
@@ -88,6 +97,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return GetMouseInputByAxis(GameConstants.MouseAxisVertical);
         }
+
         return 0;
     }
 
@@ -97,7 +107,13 @@ public class PlayerInputHandler : MonoBehaviour
         {
             return Input.GetButton(GameConstants.ButtonJump);
         }
+
         return false;
+    }
+
+    public bool GetMouseRightButton()
+    {
+        return inGameMode && CanProcessInput() && Input.GetMouseButton(1);
     }
 
 
@@ -111,9 +127,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
+        print(Time.timeScale);
         // Press 'ESC' to regain mouse control
         if (Input.GetKey(KeyCode.Escape)) ExitGameMode();
 
+        // todo(#49): refactor here as part of the pause mechanic
         // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
         if (IsMouseOverGameWindow && !PlayerMoveControl.Instance.isWin)
         {
@@ -127,7 +145,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void UpdateUserInput()
     {
-
     }
 
     // todo: add condition that cannot control

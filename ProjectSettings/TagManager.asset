@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - WinTrigger
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,9 @@ TagManager:
   - Wall
   - Ledge
   - Obstacle
-  - 
-  - 
-  - 
+  - Shield
+  - Bullet
+  - Detection
   - 
   - 
   - 
