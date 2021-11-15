@@ -56,14 +56,9 @@ public class Bullet : MonoBehaviour
         transform.position += transform.forward * (Time.deltaTime * velocity);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Bullet collided with " + other.tag);
-        if (other.CompareTag("Player"))
-        {
-            TimeManager.Instance.ReduceTime(timeReductionOnHit);
-        }
-
+        Debug.Log("Bullet collided with " + collision.gameObject.tag);
         Destroy(gameObject, .1f);
     }
 }
