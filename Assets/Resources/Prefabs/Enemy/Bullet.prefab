@@ -127,7 +127,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.835
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a35025d0d9814129bbf6774f59868c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 5
+  velocity: 16
   maxLifetimeInSeconds: 10
   bulletFlyingSound: {fileID: 8300000, guid: bdd472cb46f9d448f841385905a791a2, type: 3}
   timeReductionOnHit: 10
