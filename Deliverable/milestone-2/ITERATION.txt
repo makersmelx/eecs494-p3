@@ -1,0 +1,23 @@
+----------------------------
+Issue: Player movement
+----------------------------
+We greatly improved the player's movement scripts to create a much more fluid and intuitive feel for the player's motion. Ledge climbing is now very consistent and juicy (camera animation during climb). The movement was changed to use acceleration for running and impulse force for jumping.
+
+
+----------------------------
+Issue: Player Shield
+----------------------------
+Our initial "Parkour and photography" idea was lacking in potential for a novel and fun play experience. We have pivoted to a game where the player has a shield device that can convert bullets into time. There is a meter that is continuously draining and the player must move quickly and absorb bullets to have enough time to complete the level.
+
+
+----------------------------
+Issue: Level Design
+----------------------------
+During p3-milestone, we had two levels. One that was much more fun to play, and another that was themed intuitively, but not very well developed. For this milestone, we spent a lot of time developing and testing the level to create a much more engaging experience for players. The level features "turrets" which track the player and fire when they are in a certain range.
+
+
+----------------------------
+Issue: Interesting Decisions
+----------------------------
+With the introduction of the shield, the player now must be much more engaged and cautious when navigating the level. They must use the shield block bullets while timing jumps. The addition of a time meter forces the player to move rapidly. However, because the shield slows down the player, they must be thoughtful about when is the right time to use the shield. 
+

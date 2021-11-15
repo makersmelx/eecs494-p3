@@ -522,7 +522,7 @@ MonoBehaviour:
   cameraMoveSpeed: 200
   playerAudio: {fileID: 1434578508761396555}
   initialMaxSpeed: 10
-  speedSharpnessOnGround: 200
+  speedSharpnessOnGround: 150
   lowVelocityThreshold: 0.01
   counterMovement: 1
   jumpForce: 8
@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 962cc710c5cd14c52bdfdb07696b0667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletHitTimeReduction: 10
+  bulletHitTimeReduction: 2
 --- !u!114 &3955071577839778461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d16dc63eb9858a44a175a0e0fc57d95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldMaxSpeedThreshold: 0.8
+  shieldMaxSpeedThreshold: 0.2
   defendBonusTime: 10
 --- !u!65 &764296243847371325
 BoxCollider:
@@ -1328,7 +1328,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.8
+  m_Volume: 0.475
   m_Pitch: 1
   Loop: 0
   Mute: 0
