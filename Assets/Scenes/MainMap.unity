@@ -520,6 +520,14 @@ PrefabInstance:
       propertyPath: trackingCenter
       value: 
       objectReference: {fileID: 837123130}
+    - target: {fileID: 6710863324003581711, guid: a01743c64cce04619a7938d41a2606a6, type: 3}
+      propertyPath: m_Volume
+      value: 0.675
+      objectReference: {fileID: 0}
+    - target: {fileID: 6710863324003581713, guid: a01743c64cce04619a7938d41a2606a6, type: 3}
+      propertyPath: m_Volume
+      value: 0.495
+      objectReference: {fileID: 0}
     - target: {fileID: 6710863324263724127, guid: a01743c64cce04619a7938d41a2606a6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
