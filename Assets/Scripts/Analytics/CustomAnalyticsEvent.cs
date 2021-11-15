@@ -31,10 +31,10 @@ public class CustomAnalyticsEvent : MonoBehaviour
         ReportEvent("Game Start", "Time", time);
     }
 
-    public void GameOverEvent(Vector3 position, float time)
+    public void LevelFailedEvent(Vector3 position, float time)
     {
-        ReportEvent("Game Over", "Position", position);
-        ReportEvent("Game Over", "Time", time);
+        ReportEvent("Level Failed", "Position", position);
+        ReportEvent("Level Failed", "Time", time);
     }
 
     public void GameQuitEvent(float time)

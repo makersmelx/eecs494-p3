@@ -65,8 +65,6 @@ public class LevelManager : MonoBehaviour
     // -------------------------------------------------------------------------
     void Start()
     {
-        // Send data to Unity Analytics
-        CustomAnalyticsEvent.instance.GameStartEvent(Time.time);
         player.transform.position = playerStartPosition;
         currentCheckpointPosition = playerStartPosition;
     }
