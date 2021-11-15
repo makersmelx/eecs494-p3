@@ -21,22 +21,9 @@ public class PlayerDeath : MonoBehaviour
         panelDie = Instantiate(panelDie, GameObject.Find("Canvas").transform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (transform.position.y < -10f)
-        {
-            FallReset();
-        }
-    }
-    void FallReset()
-    {
-        transform.position = initPos;
-        transform.rotation = initRotation;
-        TimeManager.Instance.ReduceTime(1f);
-    }
     public void Die()
     {
+        LevelManager.Instance.UpdateCheckpoint(initPos);
         transform.position = initPos;
         transform.rotation = initRotation;
         panelDie.SetActive(true);
