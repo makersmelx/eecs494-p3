@@ -30,7 +30,10 @@ public class PlayerMoveControl : MonoBehaviour
     public float initialMaxSpeed = 10f;
 
     [Tooltip("How fast the player can change his speed")]
-    public float speedSharpnessOnGround = 200;
+    public float speedAcceleration = 200;
+
+    [Tooltip("How fast the player can change his speed")]
+    public float speedDeceleration = 120;
 
     [Tooltip("Smallest ratio for a velocity to still be considered motion")]
     public float lowVelocityThreshold = 0.01f;
@@ -55,7 +58,7 @@ public class PlayerMoveControl : MonoBehaviour
     // -------------------------------------------------------------------------
     // Component reference
     // -------------------------------------------------------------------------
-    
+
     private PlayerInputHandler playerInputHandler;
     private Rigidbody rigidBody;
     public static PlayerMoveControl Instance;
@@ -161,7 +164,7 @@ public class PlayerMoveControl : MonoBehaviour
 
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
-        Vector3 targetVelocity = globalMoveInput * CurrentMaxSpeed * speedCoefficient * speedSharpnessOnGround;
+        Vector3 targetVelocity = globalMoveInput * CurrentMaxSpeed * speedCoefficient * speedAcceleration;
         // todo: if there is a crouch, reduce the speed by a ratio
         // todo: if there is a slope, adjust the velocity
 
@@ -181,13 +184,13 @@ public class PlayerMoveControl : MonoBehaviour
                 float rightSpeed = Vector3.Dot(rigidBody.velocity, transform.right);
                 if (Math.Abs(rightSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().x) < 1)
                 {
-                    rigidBody.AddForce(-rightSpeed * counterMovement * speedSharpnessOnGround
+                    rigidBody.AddForce(-rightSpeed * counterMovement * speedDeceleration
                                        * transform.right * Time.deltaTime);
                 }
 
                 if (Math.Abs(forwardSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().z) < 1)
                 {
-                    rigidBody.AddForce(-forwardSpeed * counterMovement * speedSharpnessOnGround
+                    rigidBody.AddForce(-forwardSpeed * counterMovement * speedDeceleration
                                        * transform.forward * Time.deltaTime);
                 }
             }
