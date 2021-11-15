@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6806670938763871308}
   - component: {fileID: 6806670938763871305}
   - component: {fileID: 6806670938763871306}
-  - component: {fileID: 6806670938763871307}
+  - component: {fileID: 6862953557088762142}
   m_Layer: 0
   m_Name: TimeManager
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6806670938763871307
+--- !u!114 &6862953557088762142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6806670938763871309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ea1c7f9c43b4c34db68700bdd064ca6, type: 3}
+  m_Script: {fileID: 11500000, guid: b03e8fd86485b4b22b265e650b6b155a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 25
+  maxTime: 120
