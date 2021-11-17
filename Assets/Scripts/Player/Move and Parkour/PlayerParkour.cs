@@ -37,6 +37,9 @@ public class PlayerParkour : MonoBehaviour
 
     public float wallJumpUpVelocity = 7f;
     public float wallJumpForwardVelocity = 7f;
+    
+    [Tooltip("How long it takes to rotate the camera")]
+    public float cameraAnimationDuration = 0.25f;
 
     private bool isWallRunning;
     private bool isWallRunningLeft;
@@ -67,6 +70,7 @@ public class PlayerParkour : MonoBehaviour
     // ============================================= Runtime =============================================
     private Vector3 recordedMoveDestination;
     private Vector3 recordedMoveStart;
+    private Coroutine currentCameraAnimation;
 
     private void Start()
     {
@@ -130,6 +134,9 @@ public class PlayerParkour : MonoBehaviour
 
     private void WallRun()
     {
+        bool previousIsRunningLeft = isWallRunningLeft;
+        bool previousIsRunningRight = isWallRunningRight;
+        bool previousIsWallRunning = isWallRunning;
         if (playerMoveControl.IsGrounded)
         {
             canWallRun = true;
@@ -177,8 +184,28 @@ public class PlayerParkour : MonoBehaviour
         isWallRunning = isWallRunningLeft || isWallRunningRight;
         playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
         
-        cameraAnimator.SetBool("WallLeft", isWallRunningLeft);
-        cameraAnimator.SetBool("WallRight", isWallRunningRight);
+        
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetCameraWallRun(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SetCameraWallRun(false);
+        }
+
+        if (!previousIsRunningLeft && isWallRunningLeft)
+        {
+            SetCameraWallRun(true);
+        }
+        else if (!previousIsRunningRight && isWallRunningRight)
+        {
+            SetCameraWallRun(false);
+        }
+        else if (previousIsWallRunning && !isWallRunning)
+        {
+            ResetCamera();
+        }
 
         if (isWallRunning)
         {
@@ -200,5 +227,53 @@ public class PlayerParkour : MonoBehaviour
                 isWallRunningRight = false;
             }
         }
+    }
+
+    private void SetCameraWallRun(bool isLeft)
+    {
+        if (currentCameraAnimation != null)
+        {
+            StopCoroutine(currentCameraAnimation);
+        }
+
+        float sign = isLeft ? -1 : 1;
+        currentCameraAnimation = StartCoroutine(
+            MoveCameraToPosition(
+                new Vector3(0, 0, 30f * sign)
+            ));
+    }
+
+    private void ResetCamera()
+    {
+        if (currentCameraAnimation != null)
+        {
+            StopCoroutine(currentCameraAnimation);
+        }
+
+        currentCameraAnimation = StartCoroutine(
+            MoveCameraToPosition(
+                Vector3.zero
+            ));
+    }
+
+    private IEnumerator MoveCameraToPosition(Vector3 dest)
+    {
+        float init = Time.time;
+        float duration = cameraAnimationDuration;
+        Vector3 start = cameraAnimator.transform.localEulerAngles;
+        if (start.z > 180f)
+        {
+            start += Vector3.back * 360f;
+        }
+
+        float progress = 0;
+        while (progress < 1f)
+        {
+            progress = (Time.time - init) / duration;
+            cameraAnimator.transform.localEulerAngles = Vector3.Lerp(start, dest, progress);
+            yield return null;
+        }
+
+        cameraAnimator.transform.localEulerAngles = dest;
     }
 }
