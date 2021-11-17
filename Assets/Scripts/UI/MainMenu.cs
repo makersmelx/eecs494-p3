@@ -7,9 +7,10 @@ public class MainMenu : MonoBehaviour
 {
     public void Play()
     {
+
         // Send data to Unity Analytics
         CustomAnalyticsEvent.instance.GameStartEvent(Time.time);
-
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
