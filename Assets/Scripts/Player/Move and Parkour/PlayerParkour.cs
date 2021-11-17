@@ -9,14 +9,12 @@ public class PlayerParkour : MonoBehaviour
     public Animator cameraAnimator;
 
     // ============================================= Drag and Friction =============================================
-    [Header("Drag and Friction")]
-    public float dragOnGround = 5f;
+    [Header("Drag and Friction")] public float dragOnGround = 5f;
     public float dragInAir = 0.2f;
 
     // ============================================= Detection =============================================
     // Detection Reference
-    [Header("Detection")]
-    public ObstructionDetection climbObjectDetection; //checks for climb object
+    [Header("Detection")] public ObstructionDetection climbObjectDetection; //checks for climb object
 
     public ObstructionDetection
         climbObstructionDetection; //checks if theres somthing in front of the object e.g walls that will not allow the player to climb
@@ -31,13 +29,15 @@ public class PlayerParkour : MonoBehaviour
     public ObstructionDetection rightWallDetection;
 
     // ============================================= Wall Run =============================================
-    [Header("Wall Run")][Tooltip("The force that players moves up on the wall")]
+    [Header("Wall Run")] [Tooltip("The force that players moves up on the wall")]
     public float wallRunUpForce = 4f;
+
     [Tooltip("How fast the force changes")]
     public float wallRunUpForceChangeRate = 6f;
+
     public float wallJumpUpVelocity = 7f;
     public float wallJumpForwardVelocity = 7f;
-    
+
     private bool isWallRunning;
     private bool isWallRunningLeft;
     private bool isWallRunningRight;
@@ -54,8 +54,9 @@ public class PlayerParkour : MonoBehaviour
 
     // ============================================= Climb =============================================
     private bool canClimb;
-    [Header("Climb")][Tooltip("how long the vault takes")]
-    public float climbTime; 
+
+    [Header("Climb")] [Tooltip("how long the vault takes")]
+    public float climbTime;
 
     public Transform climbEndPoint;
 

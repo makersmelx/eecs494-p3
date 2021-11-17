@@ -127,7 +127,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
-        print(Time.timeScale);
         // Press 'ESC' to regain mouse control
         if (Input.GetKey(KeyCode.Escape)) ExitGameMode();
 
