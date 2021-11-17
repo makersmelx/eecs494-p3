@@ -35,9 +35,9 @@ public class PlayerParkour : MonoBehaviour
     [Tooltip("How fast the force changes")]
     public float wallRunUpForceChangeRate = 6f;
 
-    public float wallJumpUpVelocity = 7f;
-    public float wallJumpForwardVelocity = 7f;
-    
+    public float wallJumpUpForce = 7f;
+    public float wallJumpGroundForce = 7f;
+
     [Tooltip("How long it takes to rotate the camera")]
     public float cameraAnimationDuration = 0.25f;
 
@@ -183,16 +183,6 @@ public class PlayerParkour : MonoBehaviour
 
         isWallRunning = isWallRunningLeft || isWallRunningRight;
         playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
-        
-        
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SetCameraWallRun(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SetCameraWallRun(false);
-        }
 
         if (!previousIsRunningLeft && isWallRunningLeft)
         {
@@ -216,7 +206,17 @@ public class PlayerParkour : MonoBehaviour
 
             if (PlayerInputHandler.Instance.GetJumpInputIsHolding())
             {
-                rigidbodyRef.velocity = transform.forward * wallJumpForwardVelocity + transform.up * wallJumpUpVelocity;
+                Vector3 horizonForce = Vector3.zero;
+                if (isWallRunningLeft)
+                {
+                    horizonForce = Vector3.right * wallJumpGroundForce;
+                }
+                else if (isWallRunningRight)
+                {
+                    horizonForce = Vector3.left * wallJumpGroundForce;
+                }
+
+                rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce);
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
             }

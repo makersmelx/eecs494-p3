@@ -553,10 +553,11 @@ MonoBehaviour:
   vaultObstructionDetection: {fileID: 582867424288669640}
   leftWallDetection: {fileID: 582867424249923623}
   rightWallDetection: {fileID: 582867425243197169}
-  wallRunUpForce: 4
-  wallRunUpForceChangeRate: 1
-  wallJumpUpVelocity: 7
-  wallJumpForwardVelocity: 7
+  wallRunUpForce: 6
+  wallRunUpForceChangeRate: 2
+  wallJumpUpForce: 100
+  wallJumpGroundForce: 100
+  cameraAnimationDuration: 0.25
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!114 &4873441086245271055
