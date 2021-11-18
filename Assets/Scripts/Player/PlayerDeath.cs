@@ -28,5 +28,6 @@ public class PlayerDeath : MonoBehaviour
         transform.rotation = initRotation;
         panelDie.SetActive(true);
         //TimeManager.Instance.ResetTimer();
+        CustomAnalyticsEvent.instance.LevelFailedEvent(transform.position, Time.time);
     }
 }

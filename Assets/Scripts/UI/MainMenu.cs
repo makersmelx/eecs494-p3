@@ -7,12 +7,20 @@ public class MainMenu : MonoBehaviour
 {
     public void Play()
     {
+
+        // Send data to Unity Analytics
+        CustomAnalyticsEvent.instance.GameStartEvent(Time.time);
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void Quit()
     {
         Debug.Log("Quit");
+
+        // Send data to Unity Analytics
+        CustomAnalyticsEvent.instance.GameQuitEvent(Time.time);
+
         Application.Quit();
     }
 }

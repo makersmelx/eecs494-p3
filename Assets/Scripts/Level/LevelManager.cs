@@ -45,6 +45,8 @@ public class LevelManager : MonoBehaviour
     public void ResetAtCheckpoint()
     {
         player.transform.position = currentCheckpointPosition;
+        // Send data to Unity Analytics
+        CustomAnalyticsEvent.instance.CheckpointResetEvent(player.transform.position, Time.time);
     }
 
     public void OpenMainMenu()
