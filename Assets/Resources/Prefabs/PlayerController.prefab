@@ -526,7 +526,9 @@ MonoBehaviour:
   speedDeceleration: 500
   lowVelocityThreshold: 0.01
   counterMovement: 1
-  jumpForce: 8
+  jumpForce: 100
+  jumpForgivingTime: 0.4
+  maxJumpDuration: 0.12
   groundDetection: {fileID: 582867426029109500}
   currentCameraAngleVertical: 0
   currentMaxSpeedThreshold: 1

@@ -19,8 +19,7 @@ public class PlayerMoveControl : MonoBehaviour
     // -------------------------------------------------------------------------
     // Audio
     // -------------------------------------------------------------------------
-    [Header("Audio")]
-    [SerializeField] PlayerAudio playerAudio;
+    [Header("Audio")] [SerializeField] PlayerAudio playerAudio;
 
 
     // -------------------------------------------------------------------------
@@ -48,6 +47,12 @@ public class PlayerMoveControl : MonoBehaviour
     [Header("Jump")] [Tooltip("Force applied upward when jumping")]
     public float jumpForce = 120f;
 
+    [Tooltip("the time after the player leaves the ground when player still can jump")]
+    public float jumpForgivingTime = 2f;
+
+    [Tooltip("the time when holding the space can jump higher")]
+    public float maxJumpDuration = 0.1f;
+
 
     // -------------------------------------------------------------------------
     // Ground detection
@@ -68,6 +73,9 @@ public class PlayerMoveControl : MonoBehaviour
     // Runtime values
     // -------------------------------------------------------------------------
     public float currentCameraAngleVertical = 0f;
+    private float lastGroundedTime = 0f;
+    private float lastJumpTime = 0f;
+    private bool isJumping = false;
 
 
     [SerializeField] private float currentMaxSpeedThreshold = 1f;
@@ -152,7 +160,17 @@ public class PlayerMoveControl : MonoBehaviour
 
     private void CheckGrounded()
     {
+        bool oldIsGrounded = IsGrounded;
         IsGrounded = groundDetection.isObstructed;
+        if (oldIsGrounded && !IsGrounded)
+        {
+            lastGroundedTime = Time.time;
+        }
+
+        if (IsGrounded)
+        {
+            isJumping = false;
+        }
     }
 
     private void HandleCharacterMove()
@@ -200,12 +218,22 @@ public class PlayerMoveControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (!IsGrounded) return;
-
-        if (playerInputHandler.GetJumpInputIsHolding())
+        if (IsGrounded || Time.time - lastGroundedTime <= jumpForgivingTime)
         {
-            playerAudio.PlayJumpSound();
-            rigidBody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
+            if (playerInputHandler.GetJumpInputIsHolding())
+            {
+                if (!isJumping)
+                {
+                    isJumping = true;
+                    lastJumpTime = Time.time;
+                }
+
+                if (isJumping && Time.time - lastJumpTime <= maxJumpDuration)
+                {
+                    playerAudio.PlayJumpSound();
+                    rigidBody.AddForce(jumpForce * Vector3.up * Time.deltaTime, ForceMode.Impulse);
+                }
+            }
         }
     }
 }
