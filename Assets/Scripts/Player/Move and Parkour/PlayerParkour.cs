@@ -9,14 +9,12 @@ public class PlayerParkour : MonoBehaviour
     public Animator cameraAnimator;
 
     // ============================================= Drag and Friction =============================================
-    [Header("Drag and Friction")]
-    public float dragOnGround = 5f;
+    [Header("Drag and Friction")] public float dragOnGround = 5f;
     public float dragInAir = 0.2f;
 
     // ============================================= Detection =============================================
     // Detection Reference
-    [Header("Detection")]
-    public ObstructionDetection climbObjectDetection; //checks for climb object
+    [Header("Detection")] public ObstructionDetection climbObjectDetection; //checks for climb object
 
     public ObstructionDetection
         climbObstructionDetection; //checks if theres somthing in front of the object e.g walls that will not allow the player to climb
@@ -31,13 +29,18 @@ public class PlayerParkour : MonoBehaviour
     public ObstructionDetection rightWallDetection;
 
     // ============================================= Wall Run =============================================
-    [Header("Wall Run")][Tooltip("The force that players moves up on the wall")]
+    [Header("Wall Run")] [Tooltip("The force that players moves up on the wall")]
     public float wallRunUpForce = 4f;
+
     [Tooltip("How fast the force changes")]
     public float wallRunUpForceChangeRate = 6f;
-    public float wallJumpUpVelocity = 7f;
-    public float wallJumpForwardVelocity = 7f;
-    
+
+    public float wallJumpUpForce = 7f;
+    public float wallJumpGroundForce = 7f;
+
+    [Tooltip("How long it takes to rotate the camera")]
+    public float cameraAnimationDuration = 0.25f;
+
     private bool isWallRunning;
     private bool isWallRunningLeft;
     private bool isWallRunningRight;
@@ -54,8 +57,9 @@ public class PlayerParkour : MonoBehaviour
 
     // ============================================= Climb =============================================
     private bool canClimb;
-    [Header("Climb")][Tooltip("how long the vault takes")]
-    public float climbTime; 
+
+    [Header("Climb")] [Tooltip("how long the vault takes")]
+    public float climbTime;
 
     public Transform climbEndPoint;
 
@@ -66,6 +70,7 @@ public class PlayerParkour : MonoBehaviour
     // ============================================= Runtime =============================================
     private Vector3 recordedMoveDestination;
     private Vector3 recordedMoveStart;
+    private Coroutine currentCameraAnimation;
 
     private void Start()
     {
@@ -129,6 +134,9 @@ public class PlayerParkour : MonoBehaviour
 
     private void WallRun()
     {
+        bool previousIsRunningLeft = isWallRunningLeft;
+        bool previousIsRunningRight = isWallRunningRight;
+        bool previousIsWallRunning = isWallRunning;
         if (playerMoveControl.IsGrounded)
         {
             canWallRun = true;
@@ -175,9 +183,19 @@ public class PlayerParkour : MonoBehaviour
 
         isWallRunning = isWallRunningLeft || isWallRunningRight;
         playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
-        
-        cameraAnimator.SetBool("WallLeft", isWallRunningLeft);
-        cameraAnimator.SetBool("WallRight", isWallRunningRight);
+
+        if (!previousIsRunningLeft && isWallRunningLeft)
+        {
+            SetCameraWallRun(true);
+        }
+        else if (!previousIsRunningRight && isWallRunningRight)
+        {
+            SetCameraWallRun(false);
+        }
+        else if (previousIsWallRunning && !isWallRunning)
+        {
+            ResetCamera();
+        }
 
         if (isWallRunning)
         {
@@ -188,7 +206,17 @@ public class PlayerParkour : MonoBehaviour
 
             if (PlayerInputHandler.Instance.GetJumpInputIsHolding())
             {
-                rigidbodyRef.velocity = transform.forward * wallJumpForwardVelocity + transform.up * wallJumpUpVelocity;
+                Vector3 horizonForce = Vector3.zero;
+                if (isWallRunningLeft)
+                {
+                    horizonForce = Vector3.right * wallJumpGroundForce;
+                }
+                else if (isWallRunningRight)
+                {
+                    horizonForce = Vector3.left * wallJumpGroundForce;
+                }
+
+                rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce);
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
             }
@@ -199,5 +227,53 @@ public class PlayerParkour : MonoBehaviour
                 isWallRunningRight = false;
             }
         }
+    }
+
+    private void SetCameraWallRun(bool isLeft)
+    {
+        if (currentCameraAnimation != null)
+        {
+            StopCoroutine(currentCameraAnimation);
+        }
+
+        float sign = isLeft ? -1 : 1;
+        currentCameraAnimation = StartCoroutine(
+            MoveCameraToPosition(
+                new Vector3(0, 0, 30f * sign)
+            ));
+    }
+
+    private void ResetCamera()
+    {
+        if (currentCameraAnimation != null)
+        {
+            StopCoroutine(currentCameraAnimation);
+        }
+
+        currentCameraAnimation = StartCoroutine(
+            MoveCameraToPosition(
+                Vector3.zero
+            ));
+    }
+
+    private IEnumerator MoveCameraToPosition(Vector3 dest)
+    {
+        float init = Time.time;
+        float duration = cameraAnimationDuration;
+        Vector3 start = cameraAnimator.transform.localEulerAngles;
+        if (start.z > 180f)
+        {
+            start += Vector3.back * 360f;
+        }
+
+        float progress = 0;
+        while (progress < 1f)
+        {
+            progress = (Time.time - init) / duration;
+            cameraAnimator.transform.localEulerAngles = Vector3.Lerp(start, dest, progress);
+            yield return null;
+        }
+
+        cameraAnimator.transform.localEulerAngles = dest;
     }
 }
