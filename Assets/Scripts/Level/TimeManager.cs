@@ -96,11 +96,8 @@ public class TimeManager : MonoBehaviour
         MockTimeChange();
         timeRemaining -= Time.deltaTime * velocity;
         timeSpent += Time.deltaTime;
-        
-        if (timeSpent>=maxTime* fastFlowThreshold)
-        {
-            velocity += increaseFactor * Time.deltaTime;
-        }
+
+        UpdateVelocity();
 
         if (timeRemaining < 0.001f)
         {
@@ -122,6 +119,15 @@ public class TimeManager : MonoBehaviour
         timeRemaining = newTimeRemaining;
     }
 
+    // Change velocity above threshold. 
+    private void UpdateVelocity()
+    {
+
+        if (timeSpent >= maxTime * fastFlowThreshold)
+        {
+            velocity += increaseFactor * Time.deltaTime;
+        }
+    }
     private void MockTimeChange()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
