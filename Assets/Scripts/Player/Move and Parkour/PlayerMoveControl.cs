@@ -200,16 +200,19 @@ public class PlayerMoveControl : MonoBehaviour
             {
                 float forwardSpeed = Vector3.Dot(rigidBody.velocity, transform.forward);
                 float rightSpeed = Vector3.Dot(rigidBody.velocity, transform.right);
-                if (Math.Abs(rightSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().x) < 1)
+                if (playerInputHandler.GetMoveInput().magnitude < 1)
                 {
-                    rigidBody.AddForce(-rightSpeed * counterMovement * speedDeceleration
-                                       * transform.right * Time.deltaTime);
-                }
+                    if (Math.Abs(rightSpeed) > lowVelocityThreshold)
+                    {
+                        rigidBody.AddForce(-rightSpeed * counterMovement * speedDeceleration
+                                           * transform.right * Time.deltaTime);
+                    }
 
-                if (Math.Abs(forwardSpeed) > lowVelocityThreshold && Math.Abs(playerInputHandler.GetMoveInput().z) < 1)
-                {
-                    rigidBody.AddForce(-forwardSpeed * counterMovement * speedDeceleration
-                                       * transform.forward * Time.deltaTime);
+                    if (Math.Abs(forwardSpeed) > lowVelocityThreshold)
+                    {
+                        rigidBody.AddForce(-forwardSpeed * counterMovement * speedDeceleration
+                                           * transform.forward * Time.deltaTime);
+                    }
                 }
             }
         }
