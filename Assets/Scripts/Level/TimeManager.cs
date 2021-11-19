@@ -19,11 +19,17 @@ public class TimeManager : MonoBehaviour
     [Tooltip("Time limit that this level provides")]
     public float maxTime = 20f;
 
+    //After fastFlowThreshold * maxtime has spent in a level, the time flow would accelerate increaseFactor
+    // per second (time losing becomes squared).
+    public float fastFlowThreshold = 1.4f;
+    public float increaseFactor = 0.5f;
+    
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
     private float timeRemaining;
-
+    private float velocity = 1f;
+    private float timeSpent = 0f;
     ////Use to reduce update rate and make your eyes feel better. 
     //private int alternator = 0;
     //private int updatePeriod = 5;
@@ -63,6 +69,8 @@ public class TimeManager : MonoBehaviour
     public void ResetTimer()
     {
         timeRemaining = maxTime;
+        timeSpent = 0;
+        velocity = 1;
     }
 
     public float GetCurrentTime()
@@ -86,9 +94,15 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         MockTimeChange();
-        timeRemaining -= Time.deltaTime;
+        timeRemaining -= Time.deltaTime * velocity;
+        timeSpent += Time.deltaTime;
+        
+        if (timeSpent>=maxTime* fastFlowThreshold)
+        {
+            velocity += increaseFactor * Time.deltaTime;
+        }
 
-        if (timeRemaining < 0.01f)
+        if (timeRemaining < 0.001f)
         {
             timeRemaining = 0;
             TimeUpEffect();
