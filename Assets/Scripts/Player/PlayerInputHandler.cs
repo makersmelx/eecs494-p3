@@ -149,7 +149,7 @@ public class PlayerInputHandler : MonoBehaviour
     // todo: add condition that cannot control
     public bool CanProcessInput()
     {
-        return true;
+        return !LevelManager.Instance.isDead;
     }
 
     private float GetMouseInputByAxis(string mouseInputName)
