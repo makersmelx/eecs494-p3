@@ -68,6 +68,6 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Bullet collided with " + collision.gameObject.tag);
-        Destroy(gameObject, .1f);
+        Destroy(gameObject);
     }
 }

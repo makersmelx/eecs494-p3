@@ -39,7 +39,7 @@ public class Turret : MonoBehaviour
     private bool playerInRange = false;
     private Vector3 playerPosition;
     private float timeOfLastFire;
-
+    IEnumerator currentShot;
     void Start()
     {
         // Set references
@@ -81,7 +81,11 @@ public class Turret : MonoBehaviour
     {
         if (Time.time - timeOfLastFire < actualCD) return;
         GenerateNextCD();
-        StartCoroutine(ConsecutiveShoot());
+        
+        // Not try to debug for overlap. If overlap, the designer should review if they enter the wrong time interval for bullets. 
+        currentShot = ConsecutiveShoot();
+        StartCoroutine(currentShot);
+
         timeOfLastFire = Time.time;
     }
     void GenerateNextCD()
