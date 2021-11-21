@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 26ea37ce4fcfd4f908d69e3d51376ac8
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Finador
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 29fb58816163b4c3b9c1bb60fd861f15, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
