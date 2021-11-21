@@ -9,8 +9,6 @@ public class ShieldControl : MonoBehaviour
     [Tooltip("Factor that is applied to the player's move speed")]
     public float shieldMaxSpeedThreshold = 0.8f;
 
-    [Tooltip("Time Bonus when the shield destroys a single bullet")]
-    public float defendBonusTime = 10f;
 
     // Destroy bullets on hit
     private void OnTriggerEnter(Collider other)
@@ -18,7 +16,8 @@ public class ShieldControl : MonoBehaviour
         Debug.Log("Shield detected collision with " + other.tag);
         if (other.CompareTag(GameConstants.BulletTag))
         {
-            TimeManager.Instance.AddTime(defendBonusTime);
+            Bullet bullet = other.gameObject.GetComponent<Bullet>();
+            TimeManager.Instance.AddTime(bullet.timeIncreaseOnHit);
             Destroy(other.gameObject);
         }
     }

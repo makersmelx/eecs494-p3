@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4648575473811594057}
   - component: {fileID: 6560865644326908769}
   m_Layer: 12
-  m_Name: Bullet
+  m_Name: StandardBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a35025d0d9814129bbf6774f59868c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 20
-  maxLifetimeInSeconds: 10
+  velocity: 15
+  maxLifetimeInSeconds: 4
   bulletFlyingSound: {fileID: 8300000, guid: bdd472cb46f9d448f841385905a791a2, type: 3}
-  timeReductionOnHit: 10
+  timeReductionOnHit: 4
+  timeIncreaseOnHit: 4
+  isAccelerate: 1
+  accelerationParameter: 7.5

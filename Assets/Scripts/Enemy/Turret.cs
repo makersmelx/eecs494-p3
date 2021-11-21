@@ -20,18 +20,26 @@ public class Turret : MonoBehaviour
     // Configurable params
     // -------------------------------------------------------------------------
     [Header("Turret configuration")]
+    [SerializeField] bool isTurnable = true;
     [SerializeField] float cooldownTime = 2f;
+    [SerializeField] float cdNoisePercent = 0.2f;
     [SerializeField] float rotationRate = 4f;
-
+    
+    [Header("Consecutive Shoot configuration")]
+    [SerializeField] int numBullet = 1;
+    [SerializeField] float timeInBetweenBullet = 0.25f;
+    
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
+    private float actualCD;
+
     private SphereCollider sphereCollider;
     private AudioSource audioSource;
     private bool playerInRange = false;
     private Vector3 playerPosition;
     private float timeOfLastFire;
-
+    IEnumerator currentShot;
     void Start()
     {
         // Set references
@@ -43,6 +51,14 @@ public class Turret : MonoBehaviour
 
         // Set time of last fire
         timeOfLastFire = Time.time + cooldownTime;
+
+        //Set actual CD to cooldownTime
+        actualCD = cooldownTime;
+        //Prevent noise that is too large. 
+        cdNoisePercent = cdNoisePercent > 1 ? 1 : cdNoisePercent;
+
+        currentShot = ConsecutiveShoot();
+
     }
 
     // Update is called once per frame
@@ -51,7 +67,10 @@ public class Turret : MonoBehaviour
         if (!playerInRange) return;
 
         // Point and shoot
-        PointAtPlayer();
+        if (isTurnable)
+        {
+            PointAtPlayer();
+        }
         Shoot();
     }
 
@@ -63,21 +82,43 @@ public class Turret : MonoBehaviour
 
     private void Shoot()
     {
-        if (Time.time - timeOfLastFire < cooldownTime) return;
+        if (Time.time - timeOfLastFire < actualCD) return;
+        GenerateNextCD();
 
-        // Create bullet instance, set rotation
-        Bullet bulletRef = Instantiate(bulletPrefab, gunHeadTransform.position, transform.rotation);
-        bulletRef.SetBulletRotation(gunTransform.rotation);
+        // Not try to debug for overlap. If overlap, the designer should review if they enter the wrong time interval for bullets. 
+        currentShot = ConsecutiveShoot();
+        StartCoroutine(currentShot);
+
         timeOfLastFire = Time.time;
+    }
+    void GenerateNextCD()
+    {
+        //We add a small noise around 
+        actualCD = cooldownTime + (Random.value - 0.5f) * 2 * cdNoisePercent;
 
-        // Play shoot sound
-        audioSource.Play();
     }
 
+    IEnumerator ConsecutiveShoot()
+    {
+        // Create bullet instance, set rotation
+        for (int i = 0; i < numBullet; i++)
+        {
+            Bullet bulletRef = Instantiate(bulletPrefab, gunHeadTransform.position, transform.rotation);
+            bulletRef.SetBulletRotation(gunTransform.rotation);
+
+            // Play shoot sound
+            audioSource.Play();
+            yield return new WaitForSeconds(timeInBetweenBullet);
+        }
+    }
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            if (!playerInRange)
+            {
+                timeOfLastFire -= actualCD;
+            }
             playerInRange = true;
             playerPosition = other.transform.position;
         }
