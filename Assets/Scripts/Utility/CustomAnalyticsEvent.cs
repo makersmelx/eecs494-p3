@@ -12,6 +12,7 @@ public class CustomAnalyticsEvent : MonoBehaviour
     // Singleton
     // -------------------------------------------------------------------------
     public static CustomAnalyticsEvent instance = null;
+    public static bool willEnableAnalytic = true;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class CustomAnalyticsEvent : MonoBehaviour
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
+
     public void GameStartEvent(float time)
     {
         ReportEvent("Game Start", "Time", time);
@@ -55,61 +57,34 @@ public class CustomAnalyticsEvent : MonoBehaviour
     private void ReportEvent(string eventName, string key, object value)
     {
 #if ENABLE_CLOUD_SERVICES_ANALYTICS
-        Dictionary<string, object> eventDict = new Dictionary<string, object>{
-            {key , value}
+        Dictionary<string, object> eventDict = new Dictionary<string, object>
+        {
+            {key, value}
         };
         Analytics.CustomEvent(eventName, eventDict);
 #endif
-
     }
 
-
-
-
-
-    // Public methods for allowing and disallowing analytics
-
-    /*
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void InitStepOne()
+    static void DisableAnalyticByDefault()
     {
         // default allowing data collection
         Analytics.initializeOnStartup = false;
     }
 
-    public void EnableAnonymizingData()
+    public void ConfigureAnalyticAtGameStart()
     {
-        Analytics.limitUserTracking = true;
+        SetEnabledAnalytic();
+        if (willEnableAnalytic)
+        {
+            Analytics.ResumeInitialization();
+        }
     }
 
-    // Call this when the user has given permission to collect data
-    public void UserHasOptedIntoDataCollection_LetsResumeAnalyticsInitialization()
+    public void SetEnabledAnalytic()
     {
-        Analytics.ResumeInitialization();
+        Analytics.enabled = willEnableAnalytic;
+        Analytics.deviceStatsEnabled = willEnableAnalytic;
+        PerformanceReporting.enabled = willEnableAnalytic;
     }
-
-    // Call this when the user has given limited data collection permission
-    public void UserHasOptedIntoLimitedDataCollection_LetsResumeAnalyticsInitialization()
-    {
-        EnableAnonymizingData();
-        Analytics.ResumeInitialization();
-    }
-
-    // Call this when the user doesn't want any data collection.
-    public void UserHasOptedOutOfAllDataCollection()
-    {
-        // Don't call ResumeInitialization
-        // But disable Analytics so the code knows to shutdown
-        DisableAnalyticsCompletely();
-    }
-
-    // If you want to disable Analytics completely during runtime
-    public void DisableAnalyticsCompletely()
-    {
-        Analytics.enabled = false;
-        Analytics.deviceStatsEnabled = false;
-        PerformanceReporting.enabled = false;
-    }
-
-   */
 }
