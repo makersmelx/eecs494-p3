@@ -785,10 +785,11 @@ MonoBehaviour:
   gunHeadTransform: {fileID: 8201296275676957383}
   bulletPrefab: {fileID: 6560865644326908769, guid: b2eda0d33a8f24e429fb906cc8c470b3, type: 3}
   turretShootSound: {fileID: 8300000, guid: 1f69b3f9631684711b749c7df3e37417, type: 3}
+  isTurnable: 1
   cooldownTime: 2
   cdNoisePercent: 0.2
   rotationRate: 48
-  numBullet: 1
+  numBullet: 3
   timeInBetweenBullet: 0.25
 --- !u!135 &8201296276464800951
 SphereCollider:

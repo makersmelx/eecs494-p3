@@ -65,6 +65,7 @@ public class Bullet : MonoBehaviour
     {
         velocity += accelerationParameter * Time.deltaTime;
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Bullet collided with " + collision.gameObject.tag);

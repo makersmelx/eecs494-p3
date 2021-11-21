@@ -56,6 +56,9 @@ public class Turret : MonoBehaviour
         actualCD = cooldownTime;
         //Prevent noise that is too large. 
         cdNoisePercent = cdNoisePercent > 1 ? 1 : cdNoisePercent;
+
+        currentShot = ConsecutiveShoot();
+
     }
 
     // Update is called once per frame
@@ -81,7 +84,7 @@ public class Turret : MonoBehaviour
     {
         if (Time.time - timeOfLastFire < actualCD) return;
         GenerateNextCD();
-        
+
         // Not try to debug for overlap. If overlap, the designer should review if they enter the wrong time interval for bullets. 
         currentShot = ConsecutiveShoot();
         StartCoroutine(currentShot);
@@ -112,6 +115,10 @@ public class Turret : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (!playerInRange)
+            {
+                timeOfLastFire -= actualCD;
+            }
             playerInRange = true;
             playerPosition = other.transform.position;
         }
