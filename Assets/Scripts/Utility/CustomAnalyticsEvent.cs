@@ -28,11 +28,6 @@ public class CustomAnalyticsEvent : MonoBehaviour
     // Public methods
     // -------------------------------------------------------------------------
 
-    private void Update()
-    {
-        print(Analytics.enabled);
-    }
-
     public void GameStartEvent(float time)
     {
         ReportEvent("Game Start", "Time", time);
