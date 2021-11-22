@@ -132,12 +132,12 @@ public class TimeManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            ReduceTime(1f);
+            ReduceTime(10f);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            AddTime(1f);
+            AddTime(10f);
         }
     }
 }

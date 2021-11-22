@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 [RequireComponent(typeof(SphereCollider))]
@@ -10,8 +12,9 @@ public class Turret : MonoBehaviour
     // -------------------------------------------------------------------------
     // Component / Game Object Reference
     // -------------------------------------------------------------------------
-    [Header("Component references")]
-    [SerializeField] Transform gunTransform;
+    [Header("Component references")] [SerializeField]
+    Transform gunTransform;
+
     [SerializeField] Transform gunHeadTransform;
     [SerializeField] Bullet bulletPrefab;
     [SerializeField] AudioClip turretShootSound;
@@ -19,16 +22,21 @@ public class Turret : MonoBehaviour
     // -------------------------------------------------------------------------
     // Configurable params
     // -------------------------------------------------------------------------
-    [Header("Turret configuration")]
-    [SerializeField] bool isTurnable = true;
+    [Header("Turret configuration")] [SerializeField]
+    bool isTurnable = true;
+
     [SerializeField] float cooldownTime = 2f;
     [SerializeField] float cdNoisePercent = 0.2f;
     [SerializeField] float rotationRate = 4f;
-    
-    [Header("Consecutive Shoot configuration")]
-    [SerializeField] int numBullet = 1;
+
+    [Header("Consecutive Shoot configuration")] [SerializeField]
+    int numBullet = 1;
+
     [SerializeField] float timeInBetweenBullet = 0.25f;
-    
+
+    [Header("In which range around the player will the turret aim at randomly")]
+    public float randomAimRange = 4f;
+
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
@@ -40,6 +48,7 @@ public class Turret : MonoBehaviour
     private Vector3 playerPosition;
     private float timeOfLastFire;
     IEnumerator currentShot;
+
     void Start()
     {
         // Set references
@@ -58,7 +67,6 @@ public class Turret : MonoBehaviour
         cdNoisePercent = cdNoisePercent > 1 ? 1 : cdNoisePercent;
 
         currentShot = ConsecutiveShoot();
-
     }
 
     // Update is called once per frame
@@ -71,6 +79,7 @@ public class Turret : MonoBehaviour
         {
             PointAtPlayer();
         }
+
         Shoot();
     }
 
@@ -91,11 +100,11 @@ public class Turret : MonoBehaviour
 
         timeOfLastFire = Time.time;
     }
+
     void GenerateNextCD()
     {
         //We add a small noise around 
         actualCD = cooldownTime + (Random.value - 0.5f) * 2 * cdNoisePercent;
-
     }
 
     IEnumerator ConsecutiveShoot()
@@ -103,14 +112,21 @@ public class Turret : MonoBehaviour
         // Create bullet instance, set rotation
         for (int i = 0; i < numBullet; i++)
         {
-            Bullet bulletRef = Instantiate(bulletPrefab, gunHeadTransform.position, transform.rotation);
+            Bullet bulletRef = Instantiate(
+                bulletPrefab,
+                gunHeadTransform.position + gunHeadTransform.forward * 1f,
+                transform.rotation
+            );
+            Vector3 noise = Random.insideUnitSphere * randomAimRange;
+            Quaternion bulletRotation = Quaternion.LookRotation(playerPosition + noise - gunTransform.position);
+            //bulletRef.SetBulletRotation(bulletRotation);
             bulletRef.SetBulletRotation(gunTransform.rotation);
-
             // Play shoot sound
             audioSource.Play();
             yield return new WaitForSeconds(timeInBetweenBullet);
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -119,6 +135,7 @@ public class Turret : MonoBehaviour
             {
                 timeOfLastFire -= actualCD;
             }
+
             playerInRange = true;
             playerPosition = other.transform.position;
         }
@@ -126,6 +143,6 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player")) playerInRange = false;
+        if (other.CompareTag("Player")) playerInRange = false;
     }
 }

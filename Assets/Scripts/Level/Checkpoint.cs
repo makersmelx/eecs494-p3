@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private bool activated = false;
+    private int activatedTrial = -1;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (activated) return;
+        if (activatedTrial == LevelManager.Instance.currentTrial)
+            return;
 
         if (other.CompareTag("Player"))
         {
             LevelManager.Instance.UpdateCheckpoint(transform.position);
-            activated = true;
+            activatedTrial = LevelManager.Instance.currentTrial;
         }
     }
 }
