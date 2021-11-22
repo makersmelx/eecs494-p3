@@ -9,7 +9,8 @@ public class PlayerBulletDetection : MonoBehaviour
         if (collision.gameObject.CompareTag(GameConstants.BulletTag))
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            TimeManager.Instance.ReduceTime(bullet.timeReductionOnHit) ;
+            TimeManager.Instance.ReduceTime(bullet.timeReductionOnHit);
+            PlayerAudio.Instance.PlayPlayerHitByBulletSound();
         }
     }
 }
