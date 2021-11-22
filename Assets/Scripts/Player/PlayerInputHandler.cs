@@ -128,7 +128,8 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         // Press 'ESC' to regain mouse control
-        if (Input.GetKey(KeyCode.Escape)) ExitGameMode();
+        if (Input.GetKey(KeyCode.Escape) && CanProcessInput())
+            ExitGameMode();
 
         // todo(#49): refactor here as part of the pause mechanic
         // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
