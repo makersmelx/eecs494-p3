@@ -12,6 +12,7 @@ public class PlayerDeath : MonoBehaviour
 
     GameObject panelDie;
     [SerializeField] string panelDiePrefabName = "PanelDie";
+
     void Start()
     {
         initPos = transform.position;
@@ -24,6 +25,7 @@ public class PlayerDeath : MonoBehaviour
     public void Die()
     {
         LevelManager.Instance.UpdateCheckpoint(initPos);
+        LevelManager.Instance.currentTrial += 1;
         transform.position = initPos;
         transform.rotation = initRotation;
         panelDie.SetActive(true);
