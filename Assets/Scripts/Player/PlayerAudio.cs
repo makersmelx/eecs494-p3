@@ -8,13 +8,17 @@ public class PlayerAudio : MonoBehaviour
     [Header("Audio Sources")]
     [SerializeField] AudioSource jumpAudioSource;
     [SerializeField] AudioSource shieldAudioSource;
+    [SerializeField] AudioSource playerHitSource;
 
     [Header("Audio Clips")]
     [SerializeField] AudioClip[] jumpClips;
     [SerializeField] AudioClip shieldActiveClip;
     [SerializeField] AudioClip shieldDeactivateClip;
+    [SerializeField] AudioClip[] playerHitByBulletClips;
+    [SerializeField] AudioClip shieldAbsorbBulletClip;
 
     private int jumpClipIndex = 0;
+    private int playerHitByBulletIndex = 0;
 
     // -------------------------------------------------------------------------
     // Singleton
@@ -51,5 +55,20 @@ public class PlayerAudio : MonoBehaviour
     {
         shieldAudioSource.clip = shieldDeactivateClip;
         shieldAudioSource.Play();
+    }
+
+    public void PlayPlayerHitByBulletSound()
+    {
+        if (playerHitByBulletClips.Length == 0) return;
+
+        playerHitSource.clip = playerHitByBulletClips[playerHitByBulletIndex];
+        playerHitSource.Play();
+        playerHitByBulletIndex = (playerHitByBulletIndex + 1) % playerHitByBulletClips.Length;
+    }
+
+    public void PlayPlayerShieldAbsorbBulletSound()
+    {
+        playerHitSource.clip = shieldAbsorbBulletClip;
+        playerHitSource.Play();
     }
 }
