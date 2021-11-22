@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 [RequireComponent(typeof(SphereCollider))]
@@ -31,6 +33,9 @@ public class Turret : MonoBehaviour
     int numBullet = 1;
 
     [SerializeField] float timeInBetweenBullet = 0.25f;
+
+    [Header("In which range around the player will the turret aim at randomly")]
+    public float randomAimRange = 4f;
 
     // -------------------------------------------------------------------------
     // Internal State
@@ -112,8 +117,10 @@ public class Turret : MonoBehaviour
                 gunHeadTransform.position + gunHeadTransform.forward * 1f,
                 transform.rotation
             );
+            Vector3 noise = Random.insideUnitSphere * randomAimRange;
+            Quaternion bulletRotation = Quaternion.LookRotation(playerPosition + noise - gunTransform.position);
+            //bulletRef.SetBulletRotation(bulletRotation);
             bulletRef.SetBulletRotation(gunTransform.rotation);
-
             // Play shoot sound
             audioSource.Play();
             yield return new WaitForSeconds(timeInBetweenBullet);
