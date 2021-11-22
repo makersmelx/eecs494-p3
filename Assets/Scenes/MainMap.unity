@@ -273,6 +273,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Time Manager UI
       objectReference: {fileID: 0}
+    - target: {fileID: 2869779374699134846, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869779374699134846, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6865879573364326275, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -369,6 +377,14 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 9103458553726287719, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9103458553726287719, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
 --- !u!1001 &837123129
@@ -425,6 +441,22 @@ PrefabInstance:
     - target: {fileID: 582867424584648114, guid: 7a862c3044b9ad649af4477072598580, type: 3}
       propertyPath: m_Name
       value: PlayerController
+      objectReference: {fileID: 0}
+    - target: {fileID: 5381693675783003900, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: sliderUI
+      value: 
+      objectReference: {fileID: 1577366700}
+    - target: {fileID: 5381693675783003900, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: powerCapacity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5381693675783003900, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: powerRestoreRate
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5381693675783003900, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: powerDecreaseRate
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a862c3044b9ad649af4477072598580, type: 3}
@@ -487,6 +519,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1577366700 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2869779374801169785, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+  m_PrefabInstance: {fileID: 639996592}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1803533596 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 582867424584648114, guid: 7a862c3044b9ad649af4477072598580, type: 3}

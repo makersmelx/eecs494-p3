@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerShieldManager : MonoBehaviour
 {
@@ -9,13 +11,17 @@ public class PlayerShieldManager : MonoBehaviour
     // -------------------------------------------------------------------------
     [SerializeField] ShieldControl shield;
     [SerializeField] PlayerAudio playerAudio;
+    public Slider sliderUI;
+    public float powerCapacity = 100f;
+    public float powerDecreaseRate = 20f;
+    public float powerRestoreRate = 15f;
 
 
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
     private bool isActive = false;
-
+    private float currentPower;
 
     // -------------------------------------------------------------------------
     // Update methods
@@ -23,12 +29,17 @@ public class PlayerShieldManager : MonoBehaviour
     private void Start()
     {
         shield.gameObject.SetActive(false);
+        currentPower = powerCapacity;
     }
 
     void Update()
     {
         SetActive();
-        ChangePlayerMaxSpeed();
+        HandlePower();
+        if (sliderUI != null)
+        {
+            sliderUI.value = currentPower / powerCapacity;
+        }
     }
 
 
@@ -40,27 +51,50 @@ public class PlayerShieldManager : MonoBehaviour
         bool buttonPressed = PlayerInputHandler.Instance.GetMouseRightButton();
 
         // Activate
-        if (!isActive && buttonPressed)
+        if (!isActive && buttonPressed && currentPower > 0f)
         {
-            shield.gameObject.SetActive(true);
-            playerAudio.PlayShieldActiveSound();
-            isActive = true;
+            ActivateShield();
         }
 
         // Deactivate
         if (isActive && !buttonPressed)
         {
-            shield.gameObject.SetActive(false);
-            playerAudio.PlayShieldDeactiveSound();
-            isActive = false;
+            DeactivateShield();
         }
     }
 
-    private void ChangePlayerMaxSpeed()
+    private void ActivateShield()
     {
-        PlayerMoveControl.Instance.SetCurrentMaxSpeedThreshold(
-            shield.gameObject.activeInHierarchy
-                ? shield.shieldMaxSpeedThreshold
-                : 1f);
+        shield.gameObject.SetActive(true);
+        playerAudio.PlayShieldActiveSound();
+        isActive = true;
+    }
+
+    private void DeactivateShield()
+    {
+        shield.gameObject.SetActive(false);
+        playerAudio.PlayShieldDeactiveSound();
+        isActive = false;
+    }
+
+    private void HandlePower()
+    {
+        if (isActive)
+        {
+            currentPower -= powerDecreaseRate * Time.deltaTime;
+            if (currentPower <= 0.001f)
+            {
+                currentPower = 0f;
+                DeactivateShield();
+            }
+        }
+        else
+        {
+            if (currentPower < powerCapacity)
+            {
+                currentPower += powerRestoreRate * Time.deltaTime;
+                currentPower = Math.Min(currentPower, powerCapacity);
+            }
+        }
     }
 }
