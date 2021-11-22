@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class NewMonoBehaviour : MonoBehaviour
+public class VideoManager : MonoBehaviour
 {
-    // Use this for initialization
-    void Start()
+    public void SkipScene()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
