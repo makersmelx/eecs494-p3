@@ -10,4 +10,5 @@ public class GameConstants : MonoBehaviour
     public const string MouseAxisVertical = "Mouse Y";
     public const string ButtonJump = "Jump";
     public const string BulletTag = "Bullet";
+    public static int playCutScene = 0;
 }

@@ -5,6 +5,7 @@ https://www.dafont.com/long-shot.font		// 1979
 
 UI
 https://assetstore.unity.com/packages/2d/gui/icons/beautiful-progress-bar-free-194904
+https://assetstore.unity.com/packages/2d/gui/icons/animated-loading-icons-47844
 
 Skybox
 https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633

@@ -5188,6 +5188,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5899908419691631625, guid: 9c87e45aeddb6c04d8c9c3a792f72bd1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6710863323568650964, guid: 9c87e45aeddb6c04d8c9c3a792f72bd1, type: 3}
       propertyPath: trackingCenter
       value: 
@@ -15716,6 +15720,7 @@ MonoBehaviour:
   fallResetHeight: 20
   isDead: 0
   resetPanelPrefab: {fileID: 2922705586810113020, guid: 40f9e3ff7b049c74ab09cd0b0cbac9bd, type: 3}
+  currentTrial: 0
 --- !u!4 &1189071721
 Transform:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class VideoManager : MonoBehaviour
 
     private void Start()
     {
+        GameConstants.playCutScene += 1;
         videoPlayer.loopPointReached += (vp) => SkipScene();
     }
 

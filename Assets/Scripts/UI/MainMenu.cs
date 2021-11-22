@@ -11,7 +11,14 @@ public class MainMenu : MonoBehaviour
         // Send data to Unity Analytics
         CustomAnalyticsEvent.instance.GameStartEvent(Time.time);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (GameConstants.playCutScene >= 1)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     public void Quit()
