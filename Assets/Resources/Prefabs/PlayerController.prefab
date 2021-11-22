@@ -587,7 +587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 962cc710c5cd14c52bdfdb07696b0667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletHitTimeReduction: 2
 --- !u!114 &3955071577839778461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,7 +1274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shieldMaxSpeedThreshold: 0.2
-  defendBonusTime: 10
 --- !u!65 &764296243847371325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1463,6 +1461,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shield: {fileID: 2572566386148783455}
   playerAudio: {fileID: 1434578508761396555}
+  sliderUI: {fileID: 0}
+  powerCapacity: 100
+  powerDecreaseRate: 40
+  powerRestoreRate: 15
 --- !u!1 &5772625069114169104
 GameObject:
   m_ObjectHideFlags: 0

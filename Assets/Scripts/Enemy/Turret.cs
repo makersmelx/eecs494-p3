@@ -119,8 +119,8 @@ public class Turret : MonoBehaviour
             );
             Vector3 noise = Random.insideUnitSphere * randomAimRange;
             Quaternion bulletRotation = Quaternion.LookRotation(playerPosition + noise - gunTransform.position);
-            bulletRef.SetBulletRotation(bulletRotation);
-
+            //bulletRef.SetBulletRotation(bulletRotation);
+            bulletRef.SetBulletRotation(gunTransform.rotation);
             // Play shoot sound
             audioSource.Play();
             yield return new WaitForSeconds(timeInBetweenBullet);
