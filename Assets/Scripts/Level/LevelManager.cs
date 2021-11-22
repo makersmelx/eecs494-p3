@@ -20,6 +20,9 @@ public class LevelManager : MonoBehaviour
 
     private static LevelManager _instance;
 
+    // Record the times of trial, also the number of the current trial
+    public int currentTrial = 0;
+
     public static LevelManager Instance
     {
         get { return _instance; }
@@ -84,7 +87,7 @@ public class LevelManager : MonoBehaviour
         player.transform.position = currentCheckpointPosition;
         PlayerInputHandler.Instance.EnterGameMode();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         yield return CameraFade(false, 0.7f);
 
