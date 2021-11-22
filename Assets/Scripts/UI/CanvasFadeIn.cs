@@ -13,6 +13,11 @@ public class CanvasFadeIn : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
+    public void SkipScene()
+    {
+
+    }
+
     IEnumerator FadeIn()
     {
         // Begin fade in
