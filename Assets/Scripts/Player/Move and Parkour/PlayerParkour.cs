@@ -220,12 +220,14 @@ public class PlayerParkour : MonoBehaviour
                 rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce, ForceMode.Impulse);
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
+                canWallRun = true;
             }
 
             if (playerMoveControl.IsGrounded)
             {
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
+                canWallRun = true;
             }
         }
     }
