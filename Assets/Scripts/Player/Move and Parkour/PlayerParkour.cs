@@ -36,8 +36,9 @@ public class PlayerParkour : MonoBehaviour
     [Tooltip("How fast the force changes")]
     public float wallRunUpForceChangeRate = 6f;
 
-    public float wallJumpHorizonForce = 7f;
-    public float wallJumpUpForce = 7f;
+    public float wallJumpHorizonForce = 500f;
+    public float wallJumpUpForce = 10f;
+    public float wallJumpMaxDuration = 1f;
 
     [Tooltip("How long it takes to rotate the camera")]
     public float cameraAnimationDuration = 0.25f;
@@ -72,6 +73,7 @@ public class PlayerParkour : MonoBehaviour
     private Vector3 recordedMoveDestination;
     private Vector3 recordedMoveStart;
     private Coroutine currentCameraAnimation;
+    private Coroutine currentWallJumpCoroutine;
 
     private void Start()
     {
@@ -210,14 +212,22 @@ public class PlayerParkour : MonoBehaviour
                 Vector3 horizonForce = Vector3.zero;
                 if (isWallRunningLeft)
                 {
-                    horizonForce = Vector3.right * wallJumpHorizonForce;
+                    horizonForce = Vector3.right * wallJumpHorizonForce *
+                                   Vector3.Dot(transform.forward, Vector3.forward);
                 }
                 else if (isWallRunningRight)
                 {
-                    horizonForce = Vector3.left * wallJumpHorizonForce;
+                    horizonForce = Vector3.left * wallJumpHorizonForce *
+                                   Vector3.Dot(transform.forward, Vector3.forward);
                 }
 
-                rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce, ForceMode.Impulse);
+                rigidbodyRef.AddForce(transform.up * wallJumpUpForce, ForceMode.VelocityChange);
+                if (currentWallJumpCoroutine != null)
+                {
+                    StopCoroutine(currentWallJumpCoroutine);
+                }
+
+                currentWallJumpCoroutine = StartCoroutine(WallJump(horizonForce));
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
                 canWallRun = true;
@@ -229,6 +239,20 @@ public class PlayerParkour : MonoBehaviour
                 isWallRunningRight = false;
                 canWallRun = true;
             }
+        }
+    }
+
+    private IEnumerator WallJump(Vector3 horizonForce)
+    {
+        print(1);
+        print(horizonForce);
+        float start = Time.time;
+        float progress = (Time.time - start) / wallJumpMaxDuration;
+        while (progress < 1f)
+        {
+            progress = (Time.time - start) / wallJumpMaxDuration;
+            rigidbodyRef.AddForce(horizonForce * Time.deltaTime, ForceMode.VelocityChange);
+            yield return null;
         }
     }
 
