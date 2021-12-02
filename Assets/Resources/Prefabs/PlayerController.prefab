@@ -521,12 +521,12 @@ MonoBehaviour:
   playerCamera: {fileID: 5454500478240311781}
   cameraMoveSpeed: 200
   playerAudio: {fileID: 1434578508761396555}
-  initialMaxSpeed: 10
+  initialMaxSpeed: 8
   speedAcceleration: 200
   speedDeceleration: 500
   lowVelocityThreshold: 0.01
   counterMovement: 1
-  jumpForce: 100
+  jumpForce: 90
   jumpForgivingTime: 0.4
   maxJumpDuration: 0.12
   groundDetection: {fileID: 582867426029109500}
@@ -555,10 +555,10 @@ MonoBehaviour:
   vaultObstructionDetection: {fileID: 582867424288669640}
   leftWallDetection: {fileID: 582867424249923623}
   rightWallDetection: {fileID: 582867425243197169}
-  wallRunUpForce: 6
-  wallRunUpForceChangeRate: 2
-  wallJumpHorizonForce: 450
-  wallJumpUpForce: 100
+  wallRunUpForce: 2
+  wallRunUpForceChangeRate: 0.8
+  wallJumpHorizonForce: 300
+  wallJumpUpForce: 10
   cameraAnimationDuration: 0.25
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}

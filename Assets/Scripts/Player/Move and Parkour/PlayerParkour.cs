@@ -217,7 +217,7 @@ public class PlayerParkour : MonoBehaviour
                     horizonForce = Vector3.left * wallJumpHorizonForce;
                 }
 
-                rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce);
+                rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce, ForceMode.Impulse);
                 isWallRunningLeft = false;
                 isWallRunningRight = false;
             }
