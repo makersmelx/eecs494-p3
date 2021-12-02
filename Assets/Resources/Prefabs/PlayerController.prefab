@@ -559,7 +559,7 @@ MonoBehaviour:
   wallRunUpForceChangeRate: 0.8
   wallJumpHorizonForce: 300
   wallJumpUpForce: 100
-  wallJumpMaxDuration: 0.8
+  wallJumpMaxDuration: 1
   cameraAnimationDuration: 0.25
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
