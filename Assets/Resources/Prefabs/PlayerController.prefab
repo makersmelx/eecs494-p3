@@ -557,8 +557,8 @@ MonoBehaviour:
   rightWallDetection: {fileID: 582867425243197169}
   wallRunUpForce: 6
   wallRunUpForceChangeRate: 2
+  wallJumpHorizonForce: 450
   wallJumpUpForce: 100
-  wallJumpGroundForce: 100
   cameraAnimationDuration: 0.25
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}

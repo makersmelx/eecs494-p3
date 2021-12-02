@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerParkour : MonoBehaviour
 {
@@ -35,8 +36,8 @@ public class PlayerParkour : MonoBehaviour
     [Tooltip("How fast the force changes")]
     public float wallRunUpForceChangeRate = 6f;
 
+    public float wallJumpHorizonForce = 7f;
     public float wallJumpUpForce = 7f;
-    public float wallJumpGroundForce = 7f;
 
     [Tooltip("How long it takes to rotate the camera")]
     public float cameraAnimationDuration = 0.25f;
@@ -204,16 +205,16 @@ public class PlayerParkour : MonoBehaviour
                 rigidbodyRef.velocity.z);
             upForce -= wallRunUpForceChangeRate * Time.deltaTime;
 
-            if (PlayerInputHandler.Instance.GetJumpInputIsHolding())
+            if (PlayerInputHandler.Instance.GetJumpKeyDown())
             {
                 Vector3 horizonForce = Vector3.zero;
                 if (isWallRunningLeft)
                 {
-                    horizonForce = Vector3.right * wallJumpGroundForce;
+                    horizonForce = Vector3.right * wallJumpHorizonForce;
                 }
                 else if (isWallRunningRight)
                 {
-                    horizonForce = Vector3.left * wallJumpGroundForce;
+                    horizonForce = Vector3.left * wallJumpHorizonForce;
                 }
 
                 rigidbodyRef.AddForce(horizonForce + transform.up * wallJumpUpForce);
