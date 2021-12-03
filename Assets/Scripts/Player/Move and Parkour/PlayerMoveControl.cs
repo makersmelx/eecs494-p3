@@ -175,11 +175,6 @@ public class PlayerMoveControl : MonoBehaviour
 
     private void HandleCharacterMove()
     {
-        if (isWallRunning)
-        {
-            return;
-        }
-
         float speedCoefficient = 1f;
         Vector3 globalMoveInput = transform.TransformVector(playerInputHandler.GetMoveInput());
         Vector3 targetVelocity = globalMoveInput * CurrentMaxSpeed * speedCoefficient * speedAcceleration;
@@ -188,7 +183,7 @@ public class PlayerMoveControl : MonoBehaviour
 
         // Clamp the horizontal speed
         {
-            Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, transform.up) * Vector3.up;
+            Vector3 upVelocity = Vector3.Dot(rigidBody.velocity, Vector3.up) * Vector3.up;
             Vector3 horizonVelocity = rigidBody.velocity - upVelocity;
             rigidBody.velocity = Vector3.ClampMagnitude(horizonVelocity, CurrentMaxSpeed) + upVelocity;
             rigidBody.AddForce(targetVelocity * Time.deltaTime);

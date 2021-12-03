@@ -111,6 +111,16 @@ public class PlayerInputHandler : MonoBehaviour
         return false;
     }
 
+    public bool GetJumpKeyDown()
+    {
+        if (inGameMode && CanProcessInput())
+        {
+            return Input.GetKeyDown(KeyCode.Space);
+        }
+
+        return false;
+    }
+
     public bool GetMouseRightButton()
     {
         return inGameMode && CanProcessInput() && Input.GetMouseButton(1);
