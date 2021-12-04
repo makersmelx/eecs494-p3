@@ -222,15 +222,13 @@ public class PlayerParkour : MonoBehaviour
                 }
 
                 rigidbodyRef.AddForce(transform.up * wallJumpUpForce, ForceMode.VelocityChange);
+
                 if (currentWallJumpCoroutine != null)
                 {
                     StopCoroutine(currentWallJumpCoroutine);
                 }
 
                 currentWallJumpCoroutine = StartCoroutine(WallJump(horizonForce));
-                isWallRunningLeft = false;
-                isWallRunningRight = false;
-                canWallRun = true;
             }
 
             if (playerMoveControl.IsGrounded)
@@ -244,14 +242,19 @@ public class PlayerParkour : MonoBehaviour
 
     private IEnumerator WallJump(Vector3 horizonForce)
     {
-        print(1);
-        print(horizonForce);
         float start = Time.time;
         float progress = (Time.time - start) / wallJumpMaxDuration;
         while (progress < 1f)
         {
             progress = (Time.time - start) / wallJumpMaxDuration;
             rigidbodyRef.AddForce(horizonForce * Time.deltaTime, ForceMode.VelocityChange);
+            if (!leftWallDetection.isObstructed && !rightWallDetection.isObstructed)
+            {
+                isWallRunningLeft = false;
+                isWallRunningRight = false;
+                canWallRun = true;
+            }
+
             yield return null;
         }
     }
