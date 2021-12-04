@@ -293,7 +293,7 @@ public class PlayerParkour : MonoBehaviour
 
         float sign = isLeft ? -1 : 1;
         currentCameraAnimation = StartCoroutine(
-            MoveCameraToPosition(
+            MoveCameraWithRotation(
                 new Vector3(0, 0, 30f * sign)
             ));
     }
@@ -305,6 +305,7 @@ public class PlayerParkour : MonoBehaviour
             StopCoroutine(currentCameraAnimation);
         }
 
+        Vector3 rotation = Vector3.zero - cameraAnimator.transform.localEulerAngles;
         currentCameraAnimation = StartCoroutine(
             MoveCameraToPosition(
                 Vector3.zero
@@ -318,7 +319,7 @@ public class PlayerParkour : MonoBehaviour
         Vector3 start = cameraAnimator.transform.localEulerAngles;
         if (start.z > 180f)
         {
-            start += Vector3.back * 360f;
+            dest += Vector3.forward * 360f;
         }
 
         float progress = 0;
@@ -330,5 +331,19 @@ public class PlayerParkour : MonoBehaviour
         }
 
         cameraAnimator.transform.localEulerAngles = dest;
+    }
+
+    private IEnumerator MoveCameraWithRotation(Vector3 rotation)
+    {
+        float init = Time.time;
+        float duration = cameraAnimationDuration;
+
+        float progress = 0;
+        while (progress < 1f)
+        {
+            progress = (Time.time - init) / duration;
+            cameraAnimator.transform.Rotate(rotation / duration * Time.deltaTime);
+            yield return null;
+        }
     }
 }
