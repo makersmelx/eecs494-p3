@@ -187,6 +187,13 @@ public class PlayerParkour : MonoBehaviour
         isWallRunning = isWallRunningLeft || isWallRunningRight;
         playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
 
+        if (isWallRunning)
+        {
+            Vector3 normal = (transform.position - leftWallDetection.currentCollider.ClosestPoint(transform.position))
+                .normalized;
+            print(normal);
+        }
+
         if (!previousIsRunningLeft && isWallRunningLeft)
         {
             SetCameraWallRun(true);
@@ -202,9 +209,27 @@ public class PlayerParkour : MonoBehaviour
 
         if (isWallRunning)
         {
-            rigidbodyRef.velocity = new Vector3(rigidbodyRef.velocity.x,
-                upForce,
-                rigidbodyRef.velocity.z);
+            Vector3 lastVelocity = rigidbodyRef.velocity;
+            Vector3 finalVelocity = new Vector3(lastVelocity.x,
+                0f,
+                lastVelocity.z);
+            float finalSpeed = finalVelocity.magnitude;
+            Vector3 normal = Vector3.zero;
+            if (isWallRunningLeft)
+            {
+                normal = (transform.position - leftWallDetection.currentCollider.ClosestPoint(transform.position))
+                    .normalized;
+            }
+            else if (isWallRunningRight)
+            {
+                normal = (transform.position - rightWallDetection.currentCollider.ClosestPoint(transform.position))
+                    .normalized;
+            }
+
+            Vector3 wallVelocity = Vector3.Dot(finalVelocity, normal) * normal;
+            finalVelocity -= wallVelocity;
+            rigidbodyRef.velocity = finalVelocity.normalized * finalSpeed + upForce * Vector3.up;
+
             upForce -= wallRunUpForceChangeRate * Time.deltaTime;
 
             if (PlayerInputHandler.Instance.GetJumpKeyDown())

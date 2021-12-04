@@ -8,7 +8,7 @@ public class ObstructionDetection : MonoBehaviour
     public string targetTagName = "";
     public bool isObstructed;
     public GameObject target;
-    private Collider currentCollider;
+    public Collider currentCollider;
 
     private void OnTriggerStay(Collider other)
     {
