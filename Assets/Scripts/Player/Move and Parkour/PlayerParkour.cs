@@ -72,6 +72,9 @@ public class PlayerParkour : MonoBehaviour
     // ============================================= Runtime =============================================
     private Vector3 recordedMoveDestination;
     private Vector3 recordedMoveStart;
+
+    private Vector3 currentNormal = Vector3.zero;
+
     private Coroutine currentCameraAnimation;
     private Coroutine currentWallJumpCoroutine;
 
@@ -166,8 +169,6 @@ public class PlayerParkour : MonoBehaviour
 
         if (isWallRunningLeft
             && !leftWallDetection.isObstructed
-            || PlayerInputHandler.Instance.GetMoveInput().z <= 0f
-            || rigidbodyRef.velocity.magnitude < 1f
         )
         {
             isWallRunningLeft = false;
@@ -176,8 +177,6 @@ public class PlayerParkour : MonoBehaviour
 
         if (isWallRunningRight
             && !rightWallDetection.isObstructed
-            || PlayerInputHandler.Instance.GetMoveInput().z <= 0f
-            || rigidbodyRef.velocity.magnitude < 1f
         )
         {
             isWallRunningLeft = false;
@@ -187,11 +186,36 @@ public class PlayerParkour : MonoBehaviour
         isWallRunning = isWallRunningLeft || isWallRunningRight;
         playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
 
+
+        // Detect that whether the player is wall running on current face of a wall. If the player reaches the end of a face, it will end wall running
         if (isWallRunning)
         {
-            Vector3 normal = (transform.position - leftWallDetection.currentCollider.ClosestPoint(transform.position))
-                .normalized;
-            print(normal);
+            Vector3 normal = Vector3.zero;
+            if (isWallRunningLeft)
+            {
+                normal = (transform.position - leftWallDetection.currentCollider.ClosestPoint(transform.position))
+                    .normalized;
+            }
+            else if (isWallRunningRight)
+            {
+                normal = (transform.position - rightWallDetection.currentCollider.ClosestPoint(transform.position))
+                    .normalized;
+            }
+
+            if (currentNormal.Equals(Vector3.zero))
+            {
+                currentNormal = normal;
+            }
+            else if (!currentNormal.Equals(normal))
+            {
+                isWallRunning = false;
+                isWallRunningLeft = false;
+                isWallRunningRight = false;
+            }
+        }
+        else
+        {
+            currentNormal = Vector3.zero;
         }
 
         if (!previousIsRunningLeft && isWallRunningLeft)
@@ -209,26 +233,20 @@ public class PlayerParkour : MonoBehaviour
 
         if (isWallRunning)
         {
-            Vector3 lastVelocity = rigidbodyRef.velocity;
-            Vector3 finalVelocity = new Vector3(lastVelocity.x,
-                0f,
-                lastVelocity.z);
-            float finalSpeed = finalVelocity.magnitude;
-            Vector3 normal = Vector3.zero;
+            Vector3 finalVelocity = Vector3.zero;
+            float finalSpeed = playerMoveControl.CurrentMaxSpeed;
             if (isWallRunningLeft)
             {
-                normal = (transform.position - leftWallDetection.currentCollider.ClosestPoint(transform.position))
-                    .normalized;
+                finalVelocity = Vector3.Cross(currentNormal, Vector3.up) * finalSpeed;
             }
             else if (isWallRunningRight)
             {
-                normal = (transform.position - rightWallDetection.currentCollider.ClosestPoint(transform.position))
-                    .normalized;
+                finalVelocity = Vector3.Cross(Vector3.up, currentNormal) * finalSpeed;
             }
 
-            Vector3 wallVelocity = Vector3.Dot(finalVelocity, normal) * normal;
+            Vector3 wallVelocity = Vector3.Dot(finalVelocity, currentNormal) * currentNormal;
             finalVelocity -= wallVelocity;
-            rigidbodyRef.velocity = finalVelocity.normalized * finalSpeed + upForce * Vector3.up;
+            rigidbodyRef.velocity = finalVelocity + upForce * Vector3.up;
 
             upForce -= wallRunUpForceChangeRate * Time.deltaTime;
 
