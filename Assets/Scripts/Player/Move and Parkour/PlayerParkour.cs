@@ -206,7 +206,7 @@ public class PlayerParkour : MonoBehaviour
             {
                 currentNormal = normal;
             }
-            else if (!currentNormal.Equals(normal))
+            else if (currentNormal != normal)
             {
                 isWallRunning = false;
                 isWallRunningLeft = false;
