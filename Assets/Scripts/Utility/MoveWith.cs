@@ -15,6 +15,7 @@ public class MoveWith : MonoBehaviour
 
 
     // Update is called once per frame
+
     void Update()
     {
         transform.position = new Vector3(followX ? target.position.x + xOffset : transform.position.x,
