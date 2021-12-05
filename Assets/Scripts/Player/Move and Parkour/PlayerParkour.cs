@@ -43,7 +43,7 @@ public class PlayerParkour : MonoBehaviour
     [Tooltip("How long it takes to rotate the camera")]
     public float cameraAnimationDuration = 0.25f;
 
-    private bool isWallRunning;
+    public bool isWallRunning;
     private bool isWallRunningLeft;
     private bool isWallRunningRight;
     private bool canWallRun = true;
@@ -51,7 +51,7 @@ public class PlayerParkour : MonoBehaviour
 
 
     // ============================================= Parkour =============================================
-    private bool isParkour;
+    public bool isParkour;
     private float parkourProgress;
     private float currentParkourMoveTime;
 
@@ -184,7 +184,6 @@ public class PlayerParkour : MonoBehaviour
         }
 
         isWallRunning = isWallRunningLeft || isWallRunningRight;
-        playerMoveControl.isWallRunning = isWallRunningLeft || isWallRunningRight;
 
 
         // Detect that whether the player is wall running on current face of a wall. If the player reaches the end of a face, it will end wall running

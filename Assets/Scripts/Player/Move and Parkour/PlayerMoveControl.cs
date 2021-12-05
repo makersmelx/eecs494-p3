@@ -15,6 +15,16 @@ public class PlayerMoveControl : MonoBehaviour
     [Tooltip("Rotation speed for moving the camera")]
     public float cameraMoveSpeed = 200f;
 
+    /// <summary>
+    /// Camera Bobbing
+    /// </summary>
+    public GameObject playerCameraAnimator;
+
+    public float bobFrequency = 5f;
+    public float bobHorizontalAmplitude = 0.1f;
+    public float bobVerticalAmplitude = 0.1f;
+    [Range(0, 1)] public float headBobSmoothing = 0.1f;
+
 
     // -------------------------------------------------------------------------
     // Audio
@@ -65,6 +75,7 @@ public class PlayerMoveControl : MonoBehaviour
     // -------------------------------------------------------------------------
 
     private PlayerInputHandler playerInputHandler;
+    private PlayerParkour playerParkour;
     private Rigidbody rigidBody;
     public static PlayerMoveControl Instance;
 
@@ -83,7 +94,7 @@ public class PlayerMoveControl : MonoBehaviour
     // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
     public bool isWin = false;
 
-    public bool isWallRunning;
+    private float bobTimer;
 
     private void Awake()
     {
@@ -101,6 +112,7 @@ public class PlayerMoveControl : MonoBehaviour
     {
         playerInputHandler = GetComponent<PlayerInputHandler>();
         rigidBody = GetComponent<Rigidbody>();
+        playerParkour = GetComponent<PlayerParkour>();
     }
 
     private void Update()
@@ -156,6 +168,46 @@ public class PlayerMoveControl : MonoBehaviour
             currentCameraAngleVertical = Mathf.Clamp(currentCameraAngleVertical, -89f, 89f);
             playerCamera.transform.localEulerAngles = new Vector3(currentCameraAngleVertical, 0, 0);
         }
+
+        // head bob
+        {
+            bool willBob = !playerParkour.isParkour
+                           && !isJumping
+                           && (IsGrounded || playerParkour.isWallRunning)
+                           && rigidBody.velocity.magnitude > 1f;
+
+            if (willBob)
+            {
+                bobTimer += Time.deltaTime;
+            }
+            else
+            {
+                bobTimer = 0;
+            }
+
+            Vector3 targetCameraPosition = playerCameraAnimator.transform.position + CalculateBobOffset(bobTimer);
+
+            playerCamera.transform.position =
+                Vector3.Lerp(playerCamera.transform.position, targetCameraPosition, headBobSmoothing);
+            if ((playerCamera.transform.position - targetCameraPosition).magnitude <= 0.001f)
+            {
+                playerCamera.transform.position = targetCameraPosition;
+            }
+        }
+    }
+
+    private Vector3 CalculateBobOffset(float timer)
+    {
+        Vector3 offset = Vector3.zero;
+
+        if (timer > 0)
+        {
+            float horizon = Mathf.Cos(timer * bobFrequency) * bobHorizontalAmplitude;
+            float vertical = Mathf.Sin(timer * bobFrequency * 2) * bobVerticalAmplitude;
+            offset = playerCameraAnimator.transform.right * horizon + playerCameraAnimator.transform.up * vertical;
+        }
+
+        return offset;
     }
 
     private void CheckGrounded()
