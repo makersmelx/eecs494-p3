@@ -7,6 +7,7 @@ public class InGameOverlay : MonoBehaviour
 {
     [SerializeField] GameObject toastManager;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject settingsMenu;
 
     // -------------------------------------------------------------------------
     // Public methods
@@ -14,17 +15,31 @@ public class InGameOverlay : MonoBehaviour
 
     public void ResumeGame()
     {
+        // Hide menus, activate toast
         PlayerInputHandler.Instance.EnterGameMode();
+        pauseMenu.gameObject.SetActive(false);
+        settingsMenu.gameObject.SetActive(false);
+        toastManager.gameObject.SetActive(true);
     }
 
     public void PauseGame()
     {
+        // Show pause menu
         PlayerInputHandler.Instance.ExitGameMode();
+        pauseMenu.gameObject.SetActive(true);
+        settingsMenu.gameObject.SetActive(false);
+        toastManager.gameObject.SetActive(false);
     }
 
     public void OpenMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ToggleSettings()
+    {
+        bool isActive = settingsMenu.activeSelf;
+        settingsMenu.SetActive(!isActive);
     }
 
     // -------------------------------------------------------------------------
@@ -36,33 +51,16 @@ public class InGameOverlay : MonoBehaviour
     {
         if (toastManager == null) Debug.LogError("Assign the toast manager in the InGameOverlay component");
         if (pauseMenu == null) Debug.LogError("Assign the pause menu in the InGameOverlay component");
+        if (settingsMenu == null) Debug.LogError("Assign the settings menu in the InGameOverlay component");
+
+        ResumeGame();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!ReferencesSet()) return;
-
-        // Player is playing game
-        if (PlayerInputHandler.Instance.inGameMode)
+        if (Input.GetKey(KeyCode.Escape))
         {
-            pauseMenu.gameObject.SetActive(false);      // Hide pause menu
-            toastManager.gameObject.SetActive(true);    // Show toast manager
+            PauseGame();
         }
-
-        // Pause menu is open
-        if (!PlayerInputHandler.Instance.inGameMode)
-        {
-            pauseMenu.gameObject.SetActive(true);       // Show pause menu 
-            toastManager.gameObject.SetActive(false);   // Hide toast manager
-        }
-    }
-
-    private bool ReferencesSet()
-    {
-        bool referencesSet = true;
-        if (toastManager == null) referencesSet = false;
-        if (pauseMenu == null) referencesSet = false;
-        return referencesSet;
     }
 }
