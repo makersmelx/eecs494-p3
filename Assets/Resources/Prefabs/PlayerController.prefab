@@ -520,6 +520,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 5454500478240311781}
   cameraMoveSpeed: 200
+  playerCameraAnimator: {fileID: 582867424248714839}
+  bobFrequency: 7
+  bobHorizontalAmplitude: 0.05
+  bobVerticalAmplitude: 0.06
+  headBobSmoothing: 0.07
   playerAudio: {fileID: 1434578508761396555}
   initialMaxSpeed: 8
   speedAcceleration: 200
@@ -533,7 +538,6 @@ MonoBehaviour:
   currentCameraAngleVertical: 0
   currentMaxSpeedThreshold: 1
   isWin: 0
-  isWallRunning: 0
 --- !u!114 &8779323787863558202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +565,8 @@ MonoBehaviour:
   wallJumpUpForce: 100
   wallJumpMaxDuration: 1
   cameraAnimationDuration: 0.25
+  isWallRunning: 0
+  isParkour: 0
   climbTime: 0.6
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!114 &4873441086245271055
@@ -605,6 +611,23 @@ MonoBehaviour:
   zoomScale: 30
   imageFlash: {fileID: 0}
   flashDuration: 1
+--- !u!114 &490179817679046307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsBeforeBonus: 3
+  bonusTime: 14
+  coinUI: {fileID: 0}
+  totalCoins: 0
+  coinBonusCount: 0
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
