@@ -24,7 +24,7 @@ public class PlayerDeath : MonoBehaviour
 
     public void Die()
     {
-        LevelManager.Instance.UpdateCheckpoint(initPos);
+        LevelManager.Instance.UpdateCheckpoint(initPos,Quaternion.identity);
         LevelManager.Instance.currentTrial += 1;
         transform.position = initPos;
         transform.rotation = initRotation;

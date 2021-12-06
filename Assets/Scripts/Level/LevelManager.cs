@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] Vector3 playerStartPosition;
     [SerializeField] Vector3 currentCheckpointPosition;
+    [SerializeField] Quaternion currentPlayerRotation;
+
     [SerializeField] float fallResetHeight = 20f;
     public bool isDead = false;
     public GameObject resetPanelPrefab;
@@ -55,9 +57,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void UpdateCheckpoint(Vector3 checkpointPosition)
+    public void UpdateCheckpoint(Vector3 checkpointPosition, Quaternion playerRotation)
     {
         currentCheckpointPosition = checkpointPosition;
+        currentPlayerRotation = playerRotation;
     }
 
     public void ResetAtCheckpoint()
@@ -85,6 +88,7 @@ public class LevelManager : MonoBehaviour
         yield return CameraFade(true, 0.7f);
 
         player.transform.position = currentCheckpointPosition;
+        player.transform.rotation = currentPlayerRotation;
         PlayerInputHandler.Instance.EnterGameMode();
 
         yield return new WaitForSeconds(1f);
