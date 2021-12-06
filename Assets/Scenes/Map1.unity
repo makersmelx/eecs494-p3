@@ -2204,9 +2204,9 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2869779374801169791, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -18.000122
+    - target: {fileID: 2869779374801169790, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4288139002667137516, guid: 7f0b5ef3de4604c95b9cf9a5cec44c64, type: 3}
       propertyPath: m_fontAsset

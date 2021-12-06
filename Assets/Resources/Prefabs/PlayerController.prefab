@@ -93,6 +93,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424101790067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,6 +214,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424249923622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +284,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424288669643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +354,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424494746684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -563,8 +567,8 @@ MonoBehaviour:
   wallRunUpForceChangeRate: 0.8
   wallJumpHorizonForce: 300
   wallJumpUpForce: 100
-
-  cameraAnimationDuration: 0.25
+  wallJumpMaxDuration: 1
+  cameraAnimationDuration: 0.15
   isWallRunning: 0
   isParkour: 0
   climbTime: 0.6
@@ -611,23 +615,6 @@ MonoBehaviour:
   zoomScale: 30
   imageFlash: {fileID: 0}
   flashDuration: 1
---- !u!114 &490179817679046307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582867424584648114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinsBeforeBonus: 3
-  bonusTime: 14
-  coinUI: {fileID: 0}
-  totalCoins: 0
-  coinBonusCount: 0
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +733,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425243197168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -846,6 +834,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425780118487
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -959,6 +948,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!1 &582867426050836306
 GameObject:
   m_ObjectHideFlags: 0
