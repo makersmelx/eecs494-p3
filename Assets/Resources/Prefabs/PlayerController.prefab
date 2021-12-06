@@ -93,6 +93,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424101790067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,6 +214,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424249923622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +284,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424288669643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +354,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424494746684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -565,7 +569,7 @@ MonoBehaviour:
   wallJumpHorizonForce: 300
   wallJumpUpForce: 100
   wallJumpMaxDuration: 1
-  cameraAnimationDuration: 0.25
+  cameraAnimationDuration: 0.15
   isWallRunning: 0
   isParkour: 0
   climbTime: 0.6
@@ -747,6 +751,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425243197168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -847,6 +852,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425780118487
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -960,6 +966,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!1 &582867426050836306
 GameObject:
   m_ObjectHideFlags: 0
@@ -1231,8 +1238,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1754889889593795304}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 1.65}
-  m_LocalScale: {x: 2.5, y: 0.1, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 2.5, y: 0.1, z: 1.35}
   m_Children: []
   m_Father: {fileID: 2935207116322931890}
   m_RootOrder: 0
