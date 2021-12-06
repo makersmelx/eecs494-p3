@@ -125,7 +125,7 @@ AudioSource:
   m_GameObject: {fileID: 4292419665566623347}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.835
@@ -237,13 +237,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a35025d0d9814129bbf6774f59868c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 15
-  maxLifetimeInSeconds: 4
+  velocity: 20
+  maxLifetimeInSeconds: 2
   bulletFlyingSound: {fileID: 8300000, guid: bdd472cb46f9d448f841385905a791a2, type: 3}
-  timeReductionOnHit: 4
-  timeIncreaseOnHit: 4
+  timeReductionOnHit: 15
+  timeIncreaseOnHit: 20
   isAccelerate: 1
-  accelerationParameter: 7.5
+  accelerationParameter: 100
 --- !u!54 &5501414586078049247
 Rigidbody:
   m_ObjectHideFlags: 0

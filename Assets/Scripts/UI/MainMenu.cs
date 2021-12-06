@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] GameObject settingsMenu;
+
     public void Play()
     {
         CustomAnalyticsEvent.instance.ConfigureAnalyticAtGameStart();
@@ -19,6 +21,12 @@ public class MainMenu : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+    }
+
+    public void ToggleSettings()
+    {
+        bool isActive = settingsMenu.activeSelf;
+        settingsMenu.SetActive(!isActive);
     }
 
     public void Quit()

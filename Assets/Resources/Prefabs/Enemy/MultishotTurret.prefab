@@ -682,7 +682,7 @@ AudioSource:
   m_GameObject: {fileID: 8201296276464800952}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.957
@@ -791,6 +791,7 @@ MonoBehaviour:
   rotationRate: 48
   numBullet: 3
   timeInBetweenBullet: 0.25
+  randomAimRange: 4
 --- !u!135 &8201296276464800951
 SphereCollider:
   m_ObjectHideFlags: 0
