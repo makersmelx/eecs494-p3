@@ -64,6 +64,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9021194777629564947}
     m_Modifications:
+    - target: {fileID: 4523594725607507959, guid: e3f84470e7cb54c74bfcca4a1b8e1983, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4523594725855355478, guid: e3f84470e7cb54c74bfcca4a1b8e1983, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -253,6 +257,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.98999023
       objectReference: {fileID: 0}
+    - target: {fileID: 2462856967897678562, guid: 41011cdfc5b9e4cf495e0982c5c27e34, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2462856968092374689, guid: 41011cdfc5b9e4cf495e0982c5c27e34, type: 3}
       propertyPath: m_Name
       value: Decrease Slider
@@ -374,6 +382,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9021194777629564947}
     m_Modifications:
+    - target: {fileID: 4523594725607507959, guid: e3f84470e7cb54c74bfcca4a1b8e1983, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4523594725855355478, guid: e3f84470e7cb54c74bfcca4a1b8e1983, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -682,6 +694,10 @@ PrefabInstance:
     - target: {fileID: 4096327916724914192, guid: fb0d2e6e996204cf395b581fe483d3ce, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 389
+      objectReference: {fileID: 0}
+    - target: {fileID: 4096327916724914195, guid: fb0d2e6e996204cf395b581fe483d3ce, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb0d2e6e996204cf395b581fe483d3ce, type: 3}
