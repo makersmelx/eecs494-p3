@@ -205,7 +205,7 @@ public class PlayerParkour : MonoBehaviour
             {
                 currentNormal = normal;
             }
-            else if (currentNormal != normal)
+            else if ((currentNormal - normal).magnitude > 0.01f)
             {
                 isWallRunning = false;
                 isWallRunningLeft = false;
