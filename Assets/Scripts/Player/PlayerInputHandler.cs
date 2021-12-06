@@ -49,7 +49,6 @@ public class PlayerInputHandler : MonoBehaviour
     // Hides cursor and locks it to the center of the screen
     public void EnterGameMode()
     {
-        // todo(#49): refactor here as part of the pause mechanic
         inGameMode = true;
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,7 +58,6 @@ public class PlayerInputHandler : MonoBehaviour
     // Returns cursor control to the player
     public void ExitGameMode()
     {
-        // todo(#49): refactor here as part of the pause mechanic
         inGameMode = false;
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
@@ -130,18 +128,8 @@ public class PlayerInputHandler : MonoBehaviour
     // -------------------------------------------------------------------------
     // Private methods
     // -------------------------------------------------------------------------
-    private void Start()
-    {
-        EnterGameMode();
-    }
-
     private void Update()
     {
-        // Press 'ESC' to regain mouse control
-        if (Input.GetKey(KeyCode.Escape) && CanProcessInput())
-            ExitGameMode();
-
-        // todo(#49): refactor here as part of the pause mechanic
         // todo (#33): this is only a temp solution for triggering winning, an issue is created to modify this, check #33 for details
         if (IsMouseOverGameWindow && !PlayerMoveControl.Instance.isWin)
         {
@@ -151,10 +139,6 @@ public class PlayerInputHandler : MonoBehaviour
         {
             canProcessMouseInput = false;
         }
-    }
-
-    private void UpdateUserInput()
-    {
     }
 
     // todo: add condition that cannot control
