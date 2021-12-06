@@ -11,7 +11,9 @@ public class PlayerShieldManager : MonoBehaviour
     // -------------------------------------------------------------------------
     [SerializeField] ShieldControl shield;
     [SerializeField] PlayerAudio playerAudio;
-    public Slider sliderUI;
+    [SerializeField] Slider shieldSlider;
+    [SerializeField] CanvasGroup shieldCanvas;
+
     public float powerCapacity = 100f;
     public float powerDecreaseRate = 20f;
     public float powerRestoreRate = 15f;
@@ -30,15 +32,20 @@ public class PlayerShieldManager : MonoBehaviour
     {
         shield.gameObject.SetActive(false);
         currentPower = powerCapacity;
+
+        if (shieldCanvas == null) Debug.LogError("Assign the shield canvas object");
+        if (shieldSlider == null) Debug.LogError("Assign the shield slider object");
+
+        shieldCanvas.alpha = 0.2f;
     }
 
     void Update()
     {
         SetActive();
         HandlePower();
-        if (sliderUI != null)
+        if (shieldSlider != null)
         {
-            sliderUI.value = currentPower / powerCapacity;
+            shieldSlider.value = currentPower / powerCapacity;
         }
     }
 
@@ -54,12 +61,14 @@ public class PlayerShieldManager : MonoBehaviour
         if (!isActive && buttonPressed && currentPower > 0f)
         {
             ActivateShield();
+            shieldCanvas.alpha = 1f;
         }
 
         // Deactivate
         if (isActive && !buttonPressed)
         {
             DeactivateShield();
+            shieldCanvas.alpha = .2f;
         }
     }
 
