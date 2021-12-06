@@ -268,7 +268,7 @@ public class PlayerMoveControl : MonoBehaviour
     // Jump Function will not check the character's current state
     private void HandleCharacterJump()
     {
-        if (IsGrounded || Time.time - lastGroundedTime <= jumpForgivingTime)
+        if ((IsGrounded || Time.time - lastGroundedTime <= jumpForgivingTime) && !playerParkour.isParkour)
         {
             if (playerInputHandler.GetJumpInputIsHolding())
             {
@@ -276,11 +276,11 @@ public class PlayerMoveControl : MonoBehaviour
                 {
                     isJumping = true;
                     lastJumpTime = Time.time;
+                    playerAudio.PlayJumpSound();
                 }
 
                 if (isJumping && Time.time - lastJumpTime <= maxJumpDuration)
                 {
-                    playerAudio.PlayJumpSound();
                     rigidBody.AddForce(jumpForce * Vector3.up * Time.deltaTime, ForceMode.Impulse);
                 }
             }
