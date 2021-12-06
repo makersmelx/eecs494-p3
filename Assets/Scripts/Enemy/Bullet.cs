@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
     [Header("Accelaertaion configuration")]
     [SerializeField] bool isAccelerate = true;
     [SerializeField] float accelerationParameter = 2.5f;
-
+    [SerializeField] float maxSpeed = 100f;
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class Bullet : MonoBehaviour
         // Update position
         transform.position += transform.forward * (Time.deltaTime * velocity);
 
-        if (isAccelerate) Accelerate();
+        if (isAccelerate && velocity < maxSpeed) Accelerate();
     }
 
     void Accelerate()

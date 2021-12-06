@@ -10,6 +10,8 @@ public class SpringPush : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) return;
         Vector3 force = springStrength * Vector3.up;
-        collision.gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+        Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.Scale(Vector3.right + Vector3.forward, rb.velocity);
+        rb.AddForce(force, ForceMode.Impulse);
     }
 }

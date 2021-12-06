@@ -33,7 +33,7 @@ public class PlayerDeath : MonoBehaviour
         }
 
         isDead = true;
-        LevelManager.Instance.UpdateCheckpoint(initPos);
+        LevelManager.Instance.UpdateCheckpoint(initPos, Quaternion.identity);
         LevelManager.Instance.currentTrial += 1;
         CustomAnalyticsEvent.instance.LevelFailedEvent(transform.position, Time.time);
         if (currentCoroutine != null)

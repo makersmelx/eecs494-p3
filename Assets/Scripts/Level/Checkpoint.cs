@@ -13,7 +13,7 @@ public class Checkpoint : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            LevelManager.Instance.UpdateCheckpoint(transform.position);
+            LevelManager.Instance.UpdateCheckpoint(transform.position, other.transform.rotation);
             activatedTrial = LevelManager.Instance.currentTrial;
         }
     }

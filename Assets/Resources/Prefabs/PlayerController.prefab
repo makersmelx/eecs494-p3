@@ -565,10 +565,12 @@ MonoBehaviour:
   rightWallDetection: {fileID: 582867425243197169}
   wallRunUpForce: 2
   wallRunUpForceChangeRate: 0.8
-  wallJumpHorizonForce: 300
-  wallJumpUpForce: 100
+  wallJumpHorizonForce: 1000
+  wallJumpForwardForce: 700
+  wallJumpUpForce: 200
   wallJumpMaxDuration: 1
   cameraAnimationDuration: 0.15
+  cameraRotationAngle: 15
   isWallRunning: 0
   isParkour: 0
   climbTime: 0.6
@@ -1299,8 +1301,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 4.4615803, z: 1.2}
-  m_Center: {x: 0, y: 1.7307881, z: 4.556148e-17}
+  m_Size: {x: 1.3, y: 6, z: 1.4}
+  m_Center: {x: 0, y: 0.13, z: 4.556148e-17}
 --- !u!1 &4938341553612748188
 GameObject:
   m_ObjectHideFlags: 0
