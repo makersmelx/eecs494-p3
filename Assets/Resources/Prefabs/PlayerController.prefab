@@ -93,6 +93,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424101790067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,6 +214,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424249923622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +284,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424288669643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +354,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424494746684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -383,8 +387,8 @@ GameObject:
   - component: {fileID: 4873441086245271055}
   - component: {fileID: 3014851100786924751}
   - component: {fileID: 3955071577839778461}
+  - component: {fileID: 490179817679046307}
   m_Layer: 6
-
   m_Name: PlayerController
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -620,6 +624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinsBeforeBonus: 3
   bonusTime: 14
+  coinUI: {fileID: 0}
   totalCoins: 0
   coinBonusCount: 0
 --- !u!1 &582867424891310558
@@ -740,6 +745,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425243197168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -840,6 +846,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425780118487
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -953,6 +960,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!1 &582867426050836306
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,7 +1233,7 @@ Transform:
   m_GameObject: {fileID: 1754889889593795304}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 2, y: 0.1, z: 1}
+  m_LocalScale: {x: 2.5, y: 0.1, z: 1.35}
   m_Children: []
   m_Father: {fileID: 2935207116322931890}
   m_RootOrder: 0
@@ -1303,8 +1311,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 4.4615803, z: 1.2}
-  m_Center: {x: 0, y: 1.7307881, z: 4.556148e-17}
+  m_Size: {x: 1.3, y: 9, z: 1.3}
+  m_Center: {x: 0, y: 0.25, z: 0.09}
 --- !u!1 &4938341553612748188
 GameObject:
   m_ObjectHideFlags: 0

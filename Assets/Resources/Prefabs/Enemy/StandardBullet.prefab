@@ -243,7 +243,8 @@ MonoBehaviour:
   timeReductionOnHit: 15
   timeIncreaseOnHit: 20
   isAccelerate: 1
-  accelerationParameter: 100
+  accelerationParameter: 80
+  maxSpeed: 60
 --- !u!54 &5501414586078049247
 Rigidbody:
   m_ObjectHideFlags: 0
