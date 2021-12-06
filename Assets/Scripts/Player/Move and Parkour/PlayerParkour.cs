@@ -37,11 +37,14 @@ public class PlayerParkour : MonoBehaviour
     public float wallRunUpForceChangeRate = 6f;
 
     public float wallJumpHorizonForce = 500f;
+    public float wallJumpForwardForce = 100f;
     public float wallJumpUpForce = 10f;
     public float wallJumpMaxDuration = 1f;
 
     [Tooltip("How long it takes to rotate the camera")]
     public float cameraAnimationDuration = 0.25f;
+
+    public float cameraRotationAngle = 15f;
 
     public bool isWallRunning;
     private bool isWallRunningLeft;
@@ -232,17 +235,19 @@ public class PlayerParkour : MonoBehaviour
 
         if (isWallRunning)
         {
-            Vector3 finalVelocity = Vector3.zero;
-            float finalSpeed = playerMoveControl.CurrentMaxSpeed;
+            Vector3 forwardNormal = Vector3.zero;
+
             if (isWallRunningLeft)
             {
-                finalVelocity = Vector3.Cross(currentNormal, Vector3.up) * finalSpeed;
+                forwardNormal = Vector3.Cross(currentNormal, Vector3.up);
             }
             else if (isWallRunningRight)
             {
-                finalVelocity = Vector3.Cross(Vector3.up, currentNormal) * finalSpeed;
+                forwardNormal = Vector3.Cross(Vector3.up, currentNormal);
             }
 
+            float finalSpeed = playerMoveControl.CurrentMaxSpeed;
+            Vector3 finalVelocity = forwardNormal * finalSpeed;
             Vector3 wallVelocity = Vector3.Dot(finalVelocity, currentNormal) * currentNormal;
             finalVelocity -= wallVelocity;
             rigidbodyRef.velocity = finalVelocity + upForce * Vector3.up;
@@ -251,7 +256,9 @@ public class PlayerParkour : MonoBehaviour
 
             if (PlayerInputHandler.Instance.GetJumpKeyDown())
             {
+                Vector3 forwardForce = forwardNormal * wallJumpForwardForce;
                 Vector3 horizonForce = Vector3.zero;
+                Vector3 jumpForce = transform.up * wallJumpUpForce;
                 if (isWallRunningLeft)
                 {
                     horizonForce = Vector3.right * wallJumpHorizonForce *
@@ -263,14 +270,12 @@ public class PlayerParkour : MonoBehaviour
                                    Vector3.Dot(transform.forward, Vector3.forward);
                 }
 
-                rigidbodyRef.AddForce(transform.up * wallJumpUpForce, ForceMode.VelocityChange);
-
                 if (currentWallJumpCoroutine != null)
                 {
                     StopCoroutine(currentWallJumpCoroutine);
                 }
 
-                currentWallJumpCoroutine = StartCoroutine(WallJump(horizonForce));
+                currentWallJumpCoroutine = StartCoroutine(WallJump(forwardForce, horizonForce, jumpForce));
             }
 
             if (playerMoveControl.IsGrounded)
@@ -282,14 +287,22 @@ public class PlayerParkour : MonoBehaviour
         }
     }
 
-    private IEnumerator WallJump(Vector3 horizonForce)
+    private IEnumerator WallJump(Vector3 forwardForce, Vector3 horizonForce, Vector3 jumpForce)
     {
         float start = Time.time;
         float progress = (Time.time - start) / wallJumpMaxDuration;
+        // rigidbodyRef.AddForce(forwardForce, ForceMode.VelocityChange);
         while (progress < 1f)
         {
             progress = (Time.time - start) / wallJumpMaxDuration;
-            rigidbodyRef.AddForce(horizonForce * Time.deltaTime, ForceMode.VelocityChange);
+            if (progress < 0.625f)
+            {
+                float coefficient = Mathf.Pow(0.625f - progress, 2);
+                rigidbodyRef.AddForce(forwardForce * coefficient * Time.deltaTime, ForceMode.VelocityChange);
+                rigidbodyRef.AddForce(horizonForce * coefficient * Time.deltaTime, ForceMode.VelocityChange);
+                rigidbodyRef.AddForce(jumpForce * coefficient * Time.deltaTime, ForceMode.VelocityChange);
+            }
+
             if (!leftWallDetection.isObstructed && !rightWallDetection.isObstructed)
             {
                 isWallRunningLeft = false;
@@ -311,7 +324,7 @@ public class PlayerParkour : MonoBehaviour
         float sign = isLeft ? -1 : 1;
         currentCameraAnimation = StartCoroutine(
             MoveCameraWithRotation(
-                new Vector3(0, 0, 30f * sign)
+                new Vector3(0, 0, cameraRotationAngle * sign)
             ));
     }
 

@@ -93,6 +93,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424101790067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,6 +214,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424249923622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +284,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424288669643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +354,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867424494746684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -562,10 +566,12 @@ MonoBehaviour:
   rightWallDetection: {fileID: 582867425243197169}
   wallRunUpForce: 2
   wallRunUpForceChangeRate: 0.8
-  wallJumpHorizonForce: 300
-  wallJumpUpForce: 100
+  wallJumpHorizonForce: 1000
+  wallJumpForwardForce: 700
+  wallJumpUpForce: 200
   wallJumpMaxDuration: 1
-  cameraAnimationDuration: 0.25
+  cameraAnimationDuration: 0.15
+  cameraRotationAngle: 15
   isWallRunning: 0
   isParkour: 0
   climbTime: 0.6
@@ -747,6 +753,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425243197168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -847,6 +854,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!65 &582867425780118487
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -960,6 +968,7 @@ MonoBehaviour:
   targetTagName: 
   isObstructed: 0
   target: {fileID: 0}
+  currentCollider: {fileID: 0}
 --- !u!1 &582867426050836306
 GameObject:
   m_ObjectHideFlags: 0
