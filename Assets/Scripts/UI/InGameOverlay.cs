@@ -58,7 +58,7 @@ public class InGameOverlay : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (PlayerInputHandler.Instance.GetEscapeButtonDown())
         {
             PauseGame();
         }
