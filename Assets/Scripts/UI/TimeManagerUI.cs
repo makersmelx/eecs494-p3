@@ -1,17 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TimeManagerUI : MonoBehaviour
 {
-    [Tooltip("Main Slider displays the current time left")]
+    [Header("Time Display")] [Tooltip("Main Slider displays the current time left")]
     public Slider mainSlider;
 
-    [Header("Arbitrary Change")]
-    [Tooltip("Decrease Slider highlights the arbitrary time decrease")]
+    public TextMeshProUGUI timer;
+
+    [Header("Arbitrary Change")] [Tooltip("Decrease Slider highlights the arbitrary time decrease")]
+    public TextMeshProUGUI changeText;
+
     public Slider decreaseSlider;
+
 
     [Tooltip("Increase Slider highlights the arbitrary time decrease")]
     public Slider increaseSlider;
@@ -25,12 +31,13 @@ public class TimeManagerUI : MonoBehaviour
     private void Start()
     {
         TimeManager.Instance.AddTimeChangeCallback(UpdateTimeChange);
-        ResetAllSubSlider();
+        ResetAllChangeUI();
     }
 
     private void Update()
     {
         mainSlider.value = TimeManager.Instance.GetCurrentTime() / TimeManager.Instance.maxTime;
+        timer.text = Mathf.Floor(TimeManager.Instance.GetCurrentTime()).ToString(CultureInfo.InvariantCulture);
     }
 
     private void UpdateTimeChange(float previous, float current, float change)
@@ -40,21 +47,25 @@ public class TimeManagerUI : MonoBehaviour
             StopCoroutine(currentUIAnimation);
         }
 
-        ResetAllSubSlider();
-        currentUIAnimation = StartCoroutine(DisplayThenResetSlider(previous, current, change));
+        ResetAllChangeUI();
+        currentUIAnimation = StartCoroutine(DisplayChangeThenReset(previous, current, change));
     }
 
-    private void ResetAllSubSlider()
+    private void ResetAllChangeUI()
     {
         decreaseSlider.value = 0;
         increaseSlider.value = 0;
         increaseHelperSlider.value = 0;
+        changeText.gameObject.SetActive(false);
     }
 
-    private IEnumerator DisplayThenResetSlider(float previous, float current, float change)
+    private IEnumerator DisplayChangeThenReset(float previous, float current, float change)
     {
         if (change < 0f)
         {
+            changeText.gameObject.SetActive(true);
+            changeText.color = Color.red;
+            changeText.text = "- " + Mathf.Abs(change).ToString(CultureInfo.InvariantCulture);
             float count = 0;
             decreaseSlider.value = previous / TimeManager.Instance.maxTime;
             while (count <= changeDuration)
@@ -68,6 +79,9 @@ public class TimeManagerUI : MonoBehaviour
         }
         else if (change > 0f)
         {
+            changeText.gameObject.SetActive(true);
+            changeText.color = Color.yellow;
+            changeText.text = "+ " + Mathf.Abs(change).ToString(CultureInfo.InvariantCulture);
             float count = 0;
             increaseHelperSlider.value = previous / TimeManager.Instance.maxTime;
             while (count <= changeDuration)
@@ -82,6 +96,6 @@ public class TimeManagerUI : MonoBehaviour
             increaseHelperSlider.value = 0f;
         }
 
-        ResetAllSubSlider();
+        ResetAllChangeUI();
     }
 }
