@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 4873441086245271055}
   - component: {fileID: 3014851100786924751}
   - component: {fileID: 3955071577839778461}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerController
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -587,7 +587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5267b6e23ed9d824bbe56eabfbc18b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelDiePrefabName: PanelDie
+  timeUpUI: {fileID: 0}
+  timeUpUIName: TimeUp
 --- !u!114 &3014851100786924751
 MonoBehaviour:
   m_ObjectHideFlags: 0

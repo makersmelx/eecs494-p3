@@ -10,4 +10,10 @@ public class CanKill : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player")) return;
         LevelManager.Instance.ResetAtCheckpoint();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        LevelManager.Instance.ResetAtCheckpoint();
+
+    }
 }

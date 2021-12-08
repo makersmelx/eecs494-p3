@@ -241,7 +241,7 @@ MonoBehaviour:
   maxLifetimeInSeconds: 2
   bulletFlyingSound: {fileID: 8300000, guid: bdd472cb46f9d448f841385905a791a2, type: 3}
   timeReductionOnHit: 15
-  timeIncreaseOnHit: 20
+  timeIncreaseOnHit: 12
   isAccelerate: 1
   accelerationParameter: 80
   maxSpeed: 60
