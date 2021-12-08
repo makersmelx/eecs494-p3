@@ -87,6 +87,7 @@ public class PlayerMoveControl : MonoBehaviour
     private float lastGroundedTime = 0f;
     private float lastJumpTime = 0f;
     private bool isJumping = false;
+    private Coroutine speedBoostCoroutine;
 
 
     [SerializeField] private float currentMaxSpeedThreshold = 1f;
@@ -130,9 +131,21 @@ public class PlayerMoveControl : MonoBehaviour
     // -------------------------------------------------------------------------
     // API
     // -------------------------------------------------------------------------
-    public void SetCurrentMaxSpeedThreshold(float value)
+    public void BoostMaxSpeed(float value, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
+
+        StartCoroutine(IEnumerateSpeedBoost(value, duration));
+    }
+
+    IEnumerator IEnumerateSpeedBoost(float value, float duration)
     {
         currentMaxSpeedThreshold = value;
+        yield return new WaitForSeconds(duration);
+        currentMaxSpeedThreshold = 1f;
     }
 
     public float CurrentMaxSpeed => initialMaxSpeed * currentMaxSpeedThreshold;
@@ -199,11 +212,11 @@ public class PlayerMoveControl : MonoBehaviour
     private Vector3 CalculateBobOffset(float timer)
     {
         Vector3 offset = Vector3.zero;
-
+        float cof = Mathf.Pow(currentMaxSpeedThreshold, 2);
         if (timer > 0)
         {
-            float horizon = Mathf.Cos(timer * bobFrequency) * bobHorizontalAmplitude;
-            float vertical = Mathf.Sin(timer * bobFrequency * 2) * bobVerticalAmplitude;
+            float horizon = Mathf.Cos(timer * bobFrequency * cof) * bobHorizontalAmplitude * cof;
+            float vertical = Mathf.Sin(timer * bobFrequency * 2 * cof) * bobVerticalAmplitude * cof;
             offset = playerCameraAnimator.transform.right * horizon + playerCameraAnimator.transform.up * vertical;
         }
 

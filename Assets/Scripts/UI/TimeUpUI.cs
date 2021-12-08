@@ -21,6 +21,7 @@ public class TimeUpUI : MonoBehaviour
     // Update is called once per frame
     public void OnClick()
     {
+        LevelManager.Instance.isDead = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         TimeManager.Instance.ResetTimer();
@@ -29,6 +30,7 @@ public class TimeUpUI : MonoBehaviour
 
     public IEnumerator DeathSceneTransaction()
     {
+        LevelManager.Instance.isDead = true;
         button.SetActive(false);
         yield return CameraFade(true, 0.3f);
         yield return new WaitForSeconds(0.2f);

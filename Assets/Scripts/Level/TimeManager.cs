@@ -13,22 +13,23 @@ public class TimeManager : MonoBehaviour
 
     //Register everything that is done when we arbitrarily changes the time. 
     public delegate void ChangeTimeCallback(float previous, float current, float change);
+
     private List<ChangeTimeCallback> callbacks = new List<ChangeTimeCallback>();
 
-    [Header("Time Manager Settings")]
-    [Tooltip("Time limit that this level provides")]
+    [Header("Time Manager Settings")] [Tooltip("Time limit that this level provides")]
     public float maxTime = 20f;
 
     //After fastFlowThreshold * maxtime has spent in a level, the time flow would accelerate increaseFactor
     // per second (time losing becomes squared).
     public float fastFlowThreshold = 1.4f;
     public float increaseFactor = 0.5f;
-    
+
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
     private float timeRemaining;
     private float velocity = 1f;
+
     private float timeSpent = 0f;
     ////Use to reduce update rate and make your eyes feel better. 
     //private int alternator = 0;
@@ -94,7 +95,7 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         // MockTimeChange();
-        timeRemaining -= Time.deltaTime * velocity;
+        timeRemaining -= Time.deltaTime;
         timeSpent += Time.deltaTime;
 
         UpdateVelocity();
@@ -108,7 +109,6 @@ public class TimeManager : MonoBehaviour
 
     private void ChangeTime(float value)
     {
-        Debug.Log("Time change:" + value.ToString());
         float newTimeRemaining = Mathf.Clamp(timeRemaining + value, 0, maxTime);
 
         foreach (ChangeTimeCallback callback in callbacks)
@@ -122,12 +122,12 @@ public class TimeManager : MonoBehaviour
     // Change velocity above threshold. 
     private void UpdateVelocity()
     {
-
         if (timeSpent >= maxTime * fastFlowThreshold)
         {
             velocity += increaseFactor * Time.deltaTime;
         }
     }
+
     private void MockTimeChange()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
