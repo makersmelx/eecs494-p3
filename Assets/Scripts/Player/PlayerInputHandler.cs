@@ -124,6 +124,16 @@ public class PlayerInputHandler : MonoBehaviour
         return inGameMode && CanProcessInput() && Input.GetMouseButton(1);
     }
 
+    public bool GetEscapeButtonDown()
+    {
+        if (inGameMode && CanProcessInput())
+        {
+            return Input.GetKeyDown(KeyCode.Escape);
+        }
+
+        return false;
+    }
+
 
     // -------------------------------------------------------------------------
     // Private methods
