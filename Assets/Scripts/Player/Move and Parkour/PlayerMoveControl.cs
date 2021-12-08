@@ -212,11 +212,11 @@ public class PlayerMoveControl : MonoBehaviour
     private Vector3 CalculateBobOffset(float timer)
     {
         Vector3 offset = Vector3.zero;
-
+        float cof = Mathf.Pow(currentMaxSpeedThreshold, 2);
         if (timer > 0)
         {
-            float horizon = Mathf.Cos(timer * bobFrequency) * bobHorizontalAmplitude;
-            float vertical = Mathf.Sin(timer * bobFrequency * 2) * bobVerticalAmplitude;
+            float horizon = Mathf.Cos(timer * bobFrequency * cof) * bobHorizontalAmplitude * cof;
+            float vertical = Mathf.Sin(timer * bobFrequency * 2 * cof) * bobVerticalAmplitude * cof;
             offset = playerCameraAnimator.transform.right * horizon + playerCameraAnimator.transform.up * vertical;
         }
 
