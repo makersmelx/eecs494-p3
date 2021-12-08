@@ -387,6 +387,7 @@ GameObject:
   - component: {fileID: 4873441086245271055}
   - component: {fileID: 3014851100786924751}
   - component: {fileID: 3955071577839778461}
+  - component: {fileID: 2060920283783164596}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -618,6 +619,22 @@ MonoBehaviour:
   zoomScale: 30
   imageFlash: {fileID: 0}
   flashDuration: 1
+--- !u!114 &2060920283783164596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinUI: {fileID: 0}
+  totalCoins: 0
+  speedBoostThreshold: 1.5
+  speedBoostDuration: 2
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0

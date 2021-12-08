@@ -87,6 +87,7 @@ public class PlayerMoveControl : MonoBehaviour
     private float lastGroundedTime = 0f;
     private float lastJumpTime = 0f;
     private bool isJumping = false;
+    private Coroutine speedBoostCoroutine;
 
 
     [SerializeField] private float currentMaxSpeedThreshold = 1f;
@@ -130,9 +131,21 @@ public class PlayerMoveControl : MonoBehaviour
     // -------------------------------------------------------------------------
     // API
     // -------------------------------------------------------------------------
-    public void SetCurrentMaxSpeedThreshold(float value)
+    public void BoostMaxSpeed(float value, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
+
+        StartCoroutine(IEnumerateSpeedBoost(value, duration));
+    }
+
+    IEnumerator IEnumerateSpeedBoost(float value, float duration)
     {
         currentMaxSpeedThreshold = value;
+        yield return new WaitForSeconds(duration);
+        currentMaxSpeedThreshold = 1f;
     }
 
     public float CurrentMaxSpeed => initialMaxSpeed * currentMaxSpeedThreshold;
