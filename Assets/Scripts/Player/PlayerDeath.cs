@@ -9,27 +9,48 @@ public class PlayerDeath : MonoBehaviour
     //This is a test code that is temporary to automatically respawn the main player.
     Vector3 initPos;
     private Quaternion initRotation;
+    private Coroutine currentCoroutine;
+    private bool isDead = false;
 
-    GameObject panelDie;
-    [SerializeField] string panelDiePrefabName = "PanelDie";
+    public GameObject timeUpUI;
+    [SerializeField] string timeUpUIName = "TimeUp";
 
     void Start()
     {
-        initPos = transform.position;
-        initRotation = transform.rotation;
+        Transform playerTransform = PlayerMoveControl.Instance.transform;
+        initPos = playerTransform.position;
+        initRotation = playerTransform.rotation;
         TimeManager.Instance.TimeUpEffect += Die;
-        panelDie = Resources.Load<GameObject>("prefabs/UI/" + panelDiePrefabName);
-        panelDie = Instantiate(panelDie, GameObject.Find("Canvas").transform);
+        timeUpUI = Instantiate(Resources.Load<GameObject>("prefabs/UI/" + timeUpUIName),
+            GameObject.Find("Canvas").transform);
     }
 
     public void Die()
     {
-        LevelManager.Instance.UpdateCheckpoint(initPos);
+        if (isDead || timeUpUI.activeInHierarchy)
+        {
+            return;
+        }
+
+        isDead = true;
+        LevelManager.Instance.UpdateCheckpoint(initPos, Quaternion.identity);
         LevelManager.Instance.currentTrial += 1;
-        transform.position = initPos;
-        transform.rotation = initRotation;
-        panelDie.SetActive(true);
-        //TimeManager.Instance.ResetTimer();
         CustomAnalyticsEvent.instance.LevelFailedEvent(transform.position, Time.time);
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        
+        timeUpUI.SetActive(true);
+        currentCoroutine = StartCoroutine(DeathCoroutine());
+        //TimeManager.Instance.ResetTimer();
+    }
+
+    IEnumerator DeathCoroutine()
+    {
+        yield return timeUpUI.GetComponent<TimeUpUI>().DeathSceneTransaction();
+        PlayerMoveControl.Instance.transform.position = initPos;
+        PlayerMoveControl.Instance.transform.rotation = initRotation;
+        isDead = false;
     }
 }

@@ -428,7 +428,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582867424584648114}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -573,7 +573,7 @@ MonoBehaviour:
   cameraRotationAngle: 15
   isWallRunning: 0
   isParkour: 0
-  climbTime: 0.6
+  climbTime: 0.5
   climbEndPoint: {fileID: 582867426007039118}
 --- !u!114 &4873441086245271055
 MonoBehaviour:
@@ -1301,8 +1301,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 4.4615803, z: 1.2}
-  m_Center: {x: 0, y: 1.7307881, z: 4.556148e-17}
+  m_Size: {x: 1.3, y: 6, z: 1.4}
+  m_Center: {x: 0, y: 0.13, z: 4.556148e-17}
 --- !u!1 &4938341553612748188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1477,7 +1477,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shield: {fileID: 2572566386148783455}
   playerAudio: {fileID: 1434578508761396555}
-  sliderUI: {fileID: 0}
+  shieldSlider: {fileID: 0}
+  shieldCanvas: {fileID: 0}
   powerCapacity: 100
   powerDecreaseRate: 40
   powerRestoreRate: 15

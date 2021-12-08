@@ -125,7 +125,7 @@ AudioSource:
   m_GameObject: {fileID: 4292419665566623347}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.835
@@ -243,7 +243,8 @@ MonoBehaviour:
   timeReductionOnHit: 15
   timeIncreaseOnHit: 20
   isAccelerate: 1
-  accelerationParameter: 100
+  accelerationParameter: 80
+  maxSpeed: 60
 --- !u!54 &5501414586078049247
 Rigidbody:
   m_ObjectHideFlags: 0
