@@ -95,8 +95,8 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         // MockTimeChange();
-        timeRemaining -= Time.deltaTime;
-        timeSpent += Time.deltaTime;
+        timeRemaining -= Time.deltaTime * LevelManager.Instance.timeScale;
+        timeSpent += Time.deltaTime * LevelManager.Instance.timeScale;
 
         UpdateVelocity();
 
