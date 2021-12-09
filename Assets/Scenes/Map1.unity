@@ -899,17 +899,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6706977073228176383, guid: 6a049cab9283feb4593f78123d593e1b, type: 3}
   m_PrefabInstance: {fileID: 843960738}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &172660124 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6068744507761682535, guid: efa0f9d4bcec247418a216d655e46e54, type: 3}
-  m_PrefabInstance: {fileID: 6068744507664793083}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &175108616
 GameObject:
   m_ObjectHideFlags: 0
@@ -5190,6 +5179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerController
       objectReference: {fileID: 0}
+    - target: {fileID: 810815417316258593, guid: 7a862c3044b9ad649af4477072598580, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5381693675783003900, guid: 7a862c3044b9ad649af4477072598580, type: 3}
       propertyPath: sliderUI
       value: 
@@ -7801,6 +7794,7 @@ MonoBehaviour:
   fallResetHeight: 20
   isDead: 0
   resetPanelPrefab: {fileID: 2922705586810113020, guid: 40f9e3ff7b049c74ab09cd0b0cbac9bd, type: 3}
+  timeScale: 1
   currentTrial: 0
 --- !u!4 &1189071721
 Transform:
@@ -12476,23 +12470,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 582867424584648114, guid: 7a862c3044b9ad649af4477072598580, type: 3}
   m_PrefabInstance: {fileID: 837123129}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1803533608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803533596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinsBeforeBonus: 3
-  bonusTime: 14
-  coinUI: {fileID: 172660124}
-  totalCoins: 0
-  coinBonusCount: 0
 --- !u!1001 &1806003980
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class PlayerShieldManager : MonoBehaviour
     [SerializeField] ShieldControl shield;
     [SerializeField] PlayerAudio playerAudio;
     [SerializeField] Slider shieldSlider;
-    [SerializeField] CanvasGroup shieldCanvas;
+    public CanvasGroup shieldCanvas;
 
     public float powerCapacity = 100f;
     public float powerDecreaseRate = 20f;
@@ -22,8 +22,8 @@ public class PlayerShieldManager : MonoBehaviour
     // -------------------------------------------------------------------------
     // Internal State
     // -------------------------------------------------------------------------
-    private bool isActive = false;
-    private float currentPower;
+    public bool isActive = false;
+    public float currentPower;
 
     // -------------------------------------------------------------------------
     // Update methods

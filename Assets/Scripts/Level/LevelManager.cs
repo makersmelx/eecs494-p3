@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     private GameObject resetPanel;
     private Coroutine resetCoroutine;
     private bool canReset = true;
+    public float timeScale = 1f;
 
     private static LevelManager _instance;
 

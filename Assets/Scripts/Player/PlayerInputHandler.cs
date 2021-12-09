@@ -124,6 +124,11 @@ public class PlayerInputHandler : MonoBehaviour
         return inGameMode && CanProcessInput() && Input.GetMouseButton(1);
     }
 
+    public bool GetMouseLeftButton()
+    {
+        return inGameMode && CanProcessInput() && Input.GetMouseButton(0);
+    }
+
     public bool GetEscapeButtonDown()
     {
         if (inGameMode && CanProcessInput())

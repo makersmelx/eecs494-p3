@@ -12,7 +12,7 @@ public class PlayerDeath : MonoBehaviour
     private Coroutine currentCoroutine;
     private bool isDead = false;
 
-    public GameObject timeUpUI;
+    private GameObject timeUpUI;
     [SerializeField] string timeUpUIName = "TimeUp";
 
     void Start()

@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 3014851100786924751}
   - component: {fileID: 3955071577839778461}
   - component: {fileID: 2060920283783164596}
+  - component: {fileID: 810815417316258593}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -588,7 +589,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5267b6e23ed9d824bbe56eabfbc18b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeUpUI: {fileID: 0}
   timeUpUIName: TimeUp
 --- !u!114 &3014851100786924751
 MonoBehaviour:
@@ -631,10 +631,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinUI: {fileID: 0}
   totalCoins: 0
   speedBoostThreshold: 1.5
   speedBoostDuration: 2
+--- !u!114 &810815417316258593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582867424584648114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac052f2b43aa3c46b01be4f6da4badb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeScale: 0.1
+  powerConsume: 60
+  playerShieldManager: {fileID: 5381693675783003900}
 --- !u!1 &582867424891310558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,6 +1514,7 @@ MonoBehaviour:
   powerCapacity: 100
   powerDecreaseRate: 40
   powerRestoreRate: 15
+  currentPower: 0
 --- !u!1 &5772625069114169104
 GameObject:
   m_ObjectHideFlags: 0
