@@ -101,6 +101,7 @@ public class WinPanelUI : MonoBehaviour
         }
         catch (FileNotFoundException e)
         {
+            Debug.Log(e.ToString());
         }
 
         try
@@ -111,6 +112,7 @@ public class WinPanelUI : MonoBehaviour
         }
         catch (FileNotFoundException e)
         {
+            Debug.Log(e.ToString());
         }
     }
 
