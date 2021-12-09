@@ -16,7 +16,7 @@ public class ShieldControl : MonoBehaviour
         if (other.CompareTag(GameConstants.BulletTag))
         {
             Bullet bullet = other.gameObject.GetComponent<Bullet>();
-            TimeManager.Instance.AddTime(bullet.timeIncreaseOnHit);
+            // TimeManager.Instance.AddTime(bullet.timeIncreaseOnHit);
             Destroy(other.gameObject);
             PlayerAudio.Instance.PlayPlayerShieldAbsorbBulletSound();
         }

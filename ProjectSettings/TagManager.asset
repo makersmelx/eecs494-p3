@@ -8,6 +8,7 @@ TagManager:
   - WinTrigger
   - Bullet
   - Coin
+  - CloudsToy
   layers:
   - Default
   - TransparentFX

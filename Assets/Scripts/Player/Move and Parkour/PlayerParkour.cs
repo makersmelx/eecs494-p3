@@ -261,13 +261,13 @@ public class PlayerParkour : MonoBehaviour
                 Vector3 jumpForce = transform.up * wallJumpUpForce;
                 if (isWallRunningLeft)
                 {
-                    horizonForce = Vector3.right * wallJumpHorizonForce *
-                                   Vector3.Dot(transform.forward, Vector3.forward);
+                    horizonForce = currentNormal * wallJumpHorizonForce;
+                    print(horizonForce.normalized + "<<");
                 }
                 else if (isWallRunningRight)
                 {
-                    horizonForce = Vector3.left * wallJumpHorizonForce *
-                                   Vector3.Dot(transform.forward, Vector3.forward);
+                    horizonForce = currentNormal * wallJumpHorizonForce;
+                    print(horizonForce.normalized + ">>");
                 }
 
                 if (currentWallJumpCoroutine != null)
