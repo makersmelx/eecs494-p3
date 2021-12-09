@@ -9,7 +9,10 @@ public class MoveOneDirection : MonoBehaviour
     public bool isBackAndForth = true;
     public bool isMoveWith = true;
     [Tooltip("How much percent of distance it travels per second from initPos to endPos")]
-    public float travelRate= 0.33f;
+    public float travelRate = 0.33f;
+    [Tooltip("Wait time before re travel")]
+    public float waitTime = 0;
+    private bool isMove = true;
 
     Vector3 velocity;
     float dist;
@@ -23,8 +26,11 @@ public class MoveOneDirection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += velocity * Time.deltaTime;
-        if((transform.position - endPos).magnitude< 0.1f || (transform.position - initPos).magnitude > dist * 1.1f)
+        if (isMove)
+        {
+            transform.position += velocity * Time.deltaTime;
+        }
+        if ((transform.position - endPos).magnitude < 0.1f || (transform.position - initPos).magnitude > dist * 1.1f)
         {
             if (isBackAndForth)
             {
@@ -38,6 +44,7 @@ public class MoveOneDirection : MonoBehaviour
             {
                 transform.position = initPos;
             }
+            StartCoroutine(Wait());
         }
     }
 
@@ -51,5 +58,12 @@ public class MoveOneDirection : MonoBehaviour
     {
         if (!isMoveWith || !collision.gameObject.CompareTag("Player")) return;
         collision.gameObject.transform.SetParent(null);
+    }
+
+    IEnumerator Wait()
+    {
+        isMove = false;
+        yield return new WaitForSeconds(waitTime);
+        isMove = true;
     }
 }
