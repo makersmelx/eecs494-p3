@@ -49,6 +49,12 @@ public class Turret : MonoBehaviour
     private float timeOfLastFire;
     IEnumerator currentShot;
 
+    private float timeOfLastBullet;
+    private int currentBullet;
+    private bool isShooting;
+
+    private float timer;
+
     void Start()
     {
         // Set references
@@ -65,8 +71,7 @@ public class Turret : MonoBehaviour
         actualCD = cooldownTime;
         //Prevent noise that is too large. 
         cdNoisePercent = cdNoisePercent > 1 ? 1 : cdNoisePercent;
-
-        currentShot = ConsecutiveShoot();
+        timer = Time.time;
     }
 
     // Update is called once per frame
@@ -81,50 +86,57 @@ public class Turret : MonoBehaviour
         }
 
         Shoot();
+        timer += Time.deltaTime * LevelManager.Instance.timeScale;
     }
 
     private void PointAtPlayer()
     {
         Quaternion desiredRotation = Quaternion.LookRotation(playerPosition - gunTransform.position);
-        gunTransform.rotation = Quaternion.Slerp(gunTransform.rotation, desiredRotation, Time.deltaTime * rotationRate);
+        gunTransform.rotation = Quaternion.Slerp(gunTransform.rotation, desiredRotation,
+            Time.deltaTime * LevelManager.Instance.timeScale * rotationRate);
     }
 
     private void Shoot()
     {
-        if (Time.time - timeOfLastFire < actualCD) return;
-        GenerateNextCD();
-
         // Not try to debug for overlap. If overlap, the designer should review if they enter the wrong time interval for bullets. 
-        currentShot = ConsecutiveShoot();
-        StartCoroutine(currentShot);
+        if (timer - timeOfLastFire < actualCD && !isShooting) return;
 
-        timeOfLastFire = Time.time;
+        if (!isShooting)
+        {
+            isShooting = true;
+            GenerateNextCD();
+        }
+        else
+        {
+            if (timer - timeOfLastBullet < timeInBetweenBullet)
+            {
+                return;
+            }
+
+            Bullet bulletRef = Instantiate(
+                bulletPrefab,
+                gunHeadTransform.position + gunHeadTransform.forward * 1f,
+                transform.rotation
+            );
+
+            bulletRef.SetBulletRotation(gunTransform.rotation);
+            // Play shoot sound
+            audioSource.Play();
+            timeOfLastBullet = timer;
+            currentBullet += 1;
+            if (currentBullet == numBullet)
+            {
+                timeOfLastFire = timer;
+                isShooting = false;
+                currentBullet = 0;
+            }
+        }
     }
 
     void GenerateNextCD()
     {
         //We add a small noise around 
         actualCD = cooldownTime + (Random.value - 0.5f) * 2 * cdNoisePercent;
-    }
-
-    IEnumerator ConsecutiveShoot()
-    {
-        // Create bullet instance, set rotation
-        for (int i = 0; i < numBullet; i++)
-        {
-            Bullet bulletRef = Instantiate(
-                bulletPrefab,
-                gunHeadTransform.position + gunHeadTransform.forward * 1f,
-                transform.rotation
-            );
-            Vector3 noise = Random.insideUnitSphere * randomAimRange;
-            Quaternion bulletRotation = Quaternion.LookRotation(playerPosition + noise - gunTransform.position);
-            //bulletRef.SetBulletRotation(bulletRotation);
-            bulletRef.SetBulletRotation(gunTransform.rotation);
-            // Play shoot sound
-            audioSource.Play();
-            yield return new WaitForSeconds(timeInBetweenBullet);
-        }
     }
 
     private void OnTriggerStay(Collider other)
