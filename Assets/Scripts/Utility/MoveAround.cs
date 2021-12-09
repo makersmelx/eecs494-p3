@@ -17,22 +17,26 @@ public class MoveAround : MonoBehaviour
 
     int now = 0;
     int next = 0;
+
     void Start()
     {
         if (positions.Count == 0)
         {
             positions.Add(transform.position);
         }
+
         for (int i = 0; i < positions.Count; i++)
         {
-            dist += (positions[i + 1 < positions.Count? i+1 : 0] - positions[i]).magnitude;
+            dist += (positions[i + 1 < positions.Count ? i + 1 : 0] - positions[i]).magnitude;
         }
+
         speed = dist * travelRate;
         if (positions.Count == 1)
         {
             velocity = Vector3.zero;
             return;
         }
+
         velocity = (positions[1] - positions[0]).normalized * speed;
         next = 1;
     }
@@ -40,16 +44,14 @@ public class MoveAround : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * Time.deltaTime * LevelManager.Instance.timeScale;
         if ((transform.position - positions[next]).magnitude < 0.1f ||
-            (transform.position - positions[now]).magnitude > (positions[next]-positions[now]).magnitude * 1.1f)
+            (transform.position - positions[now]).magnitude > (positions[next] - positions[now]).magnitude * 1.1f)
         {
             transform.position = positions[next];
             ChooseEnd();
             velocity = (positions[next] - positions[now]).normalized * speed;
-
         }
-
     }
 
     void ChooseEnd()
@@ -61,6 +63,7 @@ public class MoveAround : MonoBehaviour
             next -= positions.Count;
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!isMoveWith || !collision.gameObject.CompareTag("Player")) return;
