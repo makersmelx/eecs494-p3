@@ -291,6 +291,9 @@ public class PlayerParkour : MonoBehaviour
     {
         float start = Time.time;
         float progress = (Time.time - start) / wallJumpMaxDuration;
+
+        PlayerAudio.Instance.PlayJumpSound();
+
         // rigidbodyRef.AddForce(forwardForce, ForceMode.VelocityChange);
         while (progress < 1f)
         {
