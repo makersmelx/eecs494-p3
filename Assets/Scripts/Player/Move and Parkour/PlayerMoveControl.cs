@@ -121,25 +121,6 @@ public class PlayerMoveControl : MonoBehaviour
     private void Update()
     {
         HandleCameraMove();
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentMaxSpeedThreshold = 6 - currentMaxSpeedThreshold;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            transform.position = transport;
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            rigidBody.AddForce(20f * Vector3.up, ForceMode.Impulse);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            rigidBody.AddForce(20f * Vector3.down, ForceMode.Impulse);
-        }
     }
 
     private void FixedUpdate()
