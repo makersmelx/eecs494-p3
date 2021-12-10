@@ -16,6 +16,7 @@ public class TimeUpUI : MonoBehaviour
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        AudioManager.Instance.PlayFailSound();
     }
 
     // Update is called once per frame
