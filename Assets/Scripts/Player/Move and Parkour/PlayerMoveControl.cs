@@ -97,6 +97,8 @@ public class PlayerMoveControl : MonoBehaviour
 
     private float bobTimer;
 
+    [SerializeField] private Vector3 transport;
+
     private void Awake()
     {
         if (Instance == null)

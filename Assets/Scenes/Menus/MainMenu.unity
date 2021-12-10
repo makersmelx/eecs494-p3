@@ -1132,7 +1132,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: bb9e698f4623a42ae98f826ed9a4bee6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1279,8 +1279,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: e0650d11dc4694c11b5fa10c0a0ddd2d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1288,7 +1288,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 100
 --- !u!222 &1451183539
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1309,6 +1309,7 @@ GameObject:
   - component: {fileID: 1651752026}
   - component: {fileID: 1651752025}
   - component: {fileID: 1651752024}
+  - component: {fileID: 1651752028}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1381,7 +1382,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 120
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1406,13 +1407,31 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651752023}
-  m_LocalRotation: {x: -0.44468078, y: -0.008125731, z: 0.10725073, w: 0.88920766}
-  m_LocalPosition: {x: 67.1, y: 36, z: -111.7}
+  m_LocalRotation: {x: -0.3349734, y: -0.26069084, z: -0.097001836, w: 0.90023535}
+  m_LocalPosition: {x: 72, y: 32, z: -122}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -52.1, y: -10.3, z: 18.8}
+  m_LocalEulerAnglesHint: {x: -40.82, y: -32.3, z: 0}
+--- !u!114 &1651752028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651752023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca426ab744d6b374ea13fb45244cd8f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initPos: {x: 72, y: 32, z: -122}
+  endPos: {x: 72, y: 32, z: -25}
+  isBackAndForth: 1
+  isMoveWith: 1
+  travelRate: 0.008
+  waitTime: 0
 --- !u!224 &1868716503 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 910431586710434618, guid: fcbed25b01adb428484565ded266e49c, type: 3}
@@ -1673,7 +1692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 910431586710434618, guid: fcbed25b01adb428484565ded266e49c, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 910431586710434618, guid: fcbed25b01adb428484565ded266e49c, type: 3}
       propertyPath: m_AnchorMax.x

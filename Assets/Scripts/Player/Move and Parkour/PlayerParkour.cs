@@ -261,13 +261,13 @@ public class PlayerParkour : MonoBehaviour
                 Vector3 jumpForce = transform.up * wallJumpUpForce;
                 if (isWallRunningLeft)
                 {
-                    horizonForce = Vector3.right * wallJumpHorizonForce *
-                                   Vector3.Dot(transform.forward, Vector3.forward);
+                    horizonForce = currentNormal * wallJumpHorizonForce;
+                    print(horizonForce.normalized + "<<");
                 }
                 else if (isWallRunningRight)
                 {
-                    horizonForce = Vector3.left * wallJumpHorizonForce *
-                                   Vector3.Dot(transform.forward, Vector3.forward);
+                    horizonForce = currentNormal * wallJumpHorizonForce;
+                    print(horizonForce.normalized + ">>");
                 }
 
                 if (currentWallJumpCoroutine != null)
@@ -291,6 +291,9 @@ public class PlayerParkour : MonoBehaviour
     {
         float start = Time.time;
         float progress = (Time.time - start) / wallJumpMaxDuration;
+
+        PlayerAudio.Instance.PlayJumpSound();
+
         // rigidbodyRef.AddForce(forwardForce, ForceMode.VelocityChange);
         while (progress < 1f)
         {

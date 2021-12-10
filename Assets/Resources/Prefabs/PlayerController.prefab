@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 3014851100786924751}
   - component: {fileID: 3955071577839778461}
   - component: {fileID: 2060920283783164596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerController
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -543,6 +543,7 @@ MonoBehaviour:
   currentCameraAngleVertical: 0
   currentMaxSpeedThreshold: 1
   isWin: 0
+  transport: {x: 0, y: 0, z: 0}
 --- !u!114 &8779323787863558202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,7 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451b4390e6052b143864c58b1544b1fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinUI: {fileID: 0}
   totalCoins: 0
   speedBoostThreshold: 1.5
   speedBoostDuration: 2
@@ -1127,7 +1127,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
@@ -1363,7 +1363,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.475
   m_Pitch: 1
   Loop: 0
@@ -1552,14 +1552,13 @@ MonoBehaviour:
   jumpClips:
   - {fileID: 8300000, guid: c6c150c59c89f4967884dcd9813b7357, type: 3}
   - {fileID: 8300000, guid: 2fd56592b52fe4eedbcfee1763ca3339, type: 3}
-  - {fileID: 8300000, guid: f35e5152d24f34fbfb0f107ea1df14a9, type: 3}
   shieldActiveClip: {fileID: 8300000, guid: 7ba8d4e34f5664eb8a52d32bda8dec32, type: 3}
   shieldDeactivateClip: {fileID: 8300000, guid: 831a48fad48c9444cbb8cd5fb1078276, type: 3}
   playerHitByBulletClips:
-  - {fileID: 8300000, guid: 68b539eec3bcb4a339e472c232703f44, type: 3}
-  - {fileID: 8300000, guid: d191df8c442a34cd6a564ca9809c51aa, type: 3}
-  - {fileID: 8300000, guid: 4437dfd5c7ff84b5893ec3f4bb120257, type: 3}
-  shieldAbsorbBulletClip: {fileID: 8300000, guid: 5b98445d5818043d0afffb05cb0dd3b6, type: 3}
+  - {fileID: 8300000, guid: 8078992d96a51684a841562d1cda1c27, type: 3}
+  - {fileID: 8300000, guid: 4b1857e9b51f12543939d42d0f5aa5fe, type: 3}
+  - {fileID: 8300000, guid: 58c7ac8eb51aa044a8fe888197726f2f, type: 3}
+  shieldAbsorbBulletClip: {fileID: 8300000, guid: cbd976c5a7c26954d8fb4549c494672a, type: 3}
 --- !u!1 &7707397206489736844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1601,8 +1600,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1941129475386042685, guid: f69ceee7fe3424882a4a3fbc11b54a83, type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 8078992d96a51684a841562d1cda1c27, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

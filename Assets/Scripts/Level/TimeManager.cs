@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,8 @@ public class TimeManager : MonoBehaviour
     private float velocity = 1f;
 
     private float timeSpent = 0f;
+
+    public DateTime startTime;
     ////Use to reduce update rate and make your eyes feel better. 
     //private int alternator = 0;
     //private int updatePeriod = 5;
@@ -90,6 +93,7 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         timeRemaining = maxTime;
+        startTime = DateTime.Now;
     }
 
     void Update()

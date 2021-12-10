@@ -22,8 +22,10 @@ public class LevelManager : MonoBehaviour
 
     private static LevelManager _instance;
 
-    // Record the times of trial, also the number of the current trial
+    // Record the times of trial, also the number of the current trial. Fall reset is not a trial but the whole game until time up is.
     public int currentTrial = 0;
+
+    public int fallTime = 0;
 
     public static LevelManager Instance
     {
@@ -77,6 +79,7 @@ public class LevelManager : MonoBehaviour
     {
         // Send data to Unity Analytics
         CustomAnalyticsEvent.instance.CheckpointResetEvent(player.transform.position, Time.time);
+        fallTime += 1;
 
         // disable input, also make sure this coroutine works only once
         canReset = false;
