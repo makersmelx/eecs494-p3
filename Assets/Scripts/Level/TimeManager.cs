@@ -98,7 +98,7 @@ public class TimeManager : MonoBehaviour
 
     void Update()
     {
-        MockTimeChange();
+        // MockTimeChange();
         timeRemaining -= Time.deltaTime;
         timeSpent += Time.deltaTime;
 
